@@ -15,7 +15,7 @@ if (process.argv.length != 4) {
 }
 
 // For demo purposes we ignore self-signed certificate
-process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = "1";
 
 // http2 protocol
 const spdy = require("spdy");
