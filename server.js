@@ -21,7 +21,8 @@ process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 const spdy = require("spdy");
 const path = require("path");
 var compression = require("compression");
-// var cors = require("cors");
+var cors = require("cors");
+
 // Node imports
 var express = require("express");
 var fs = require("fs");
@@ -31,6 +32,8 @@ var bodyParser = require("body-parser");
 var app = express();
 var URL_ARG = process.argv[2];
 var options = null;
+
+app.use(cors());
 
 // express.compress()
 app.use(compression({

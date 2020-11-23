@@ -17,12 +17,13 @@ Vue.prototype.window = window
  * use it on http://localhost:30100/ hosted by 
  * our `node server.js localhost nidza`
  */
+
 var Application = new Vue({
   store,
   render: h => h(App, {
     props: {
       AppPropVersion: '0.1.0',
-      AppDomainHost: 'https://localhost:30100/'
+      AppDomainHost: location.protocol + '//' + location.host + '/'
     }
   }),
 }).$mount('#app')
