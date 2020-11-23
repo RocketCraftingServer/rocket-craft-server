@@ -93,7 +93,7 @@ app.get("/rocket/user", (req, res) => {
  * @description
  * Almost any case
  */
-app.post("/rocket/register", (req, res) => {
+app.post("/rocket/register", cors(), (req, res) => {
 
   console.log("POST DETECTED");
   if (req.secure) {
