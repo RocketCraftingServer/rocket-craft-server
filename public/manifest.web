@@ -1,0 +1,44 @@
+{
+  "name": "node-mongo-account",
+  "short_name": "connector",
+  "start_url": "https://maximumroulette.com:888",
+  "display": "standalone",
+  "theme_color" : "orangered",
+  "background_color": "black",
+  "description": "Node.js vs MongoDB project. Use simple rest api powered account feature. This is special because i will make connection with ue4 project based.",
+  "orientation": "any",
+  "icons": [
+    {
+      "src": "images/icons/512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "images/icons/ms-icon.png",
+      "sizes": "310x310",
+      "type": "image/png"
+    },
+    {
+      "src": "images/icons/android-icon.png",
+      "sizes": "76x76",
+      "type": "image/png"
+    },
+    {
+      "src": "images/icons/favicon-96x96.png",
+      "sizes": "96x96",
+      "type": "image/png"
+    }
+  ],
+  "related_applications": [
+    {
+      "platform": "play",
+      "url": "/"
+    }
+  ],
+  "author": {
+      "name": "Nikola Lukic",
+      "website": "https://maximumroulette.com",
+      "github": "https://github.com/zlatnaspirala",
+      "source-repo": "https://github.com/zlatnaspirala/node-mongo-account"
+  }
+}

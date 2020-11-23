@@ -1,0 +1,31 @@
+{
+  "name": "kure-server",
+  "version": "1.0.0",
+  "description": "Based on openvidu-recording-node 2.2.0. Integrated session staff lib from visual ts game engine.",
+  "main": "server.js",
+  "scripts": {
+    "test": "ng test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/OpenVidu/openvidu-tutorials.git"
+  },
+  "author": "zlatnaspirala@gmail.com",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/OpenVidu/openvidu-tutorials/issues"
+  },
+  "homepage": "https://github.com/OpenVidu/openvidu-tutorials#readme",
+  "dependencies": {
+    "body-parser": "1.18.2",
+    "compression": "^1.7.4",
+    "cors": "^2.8.5",
+    "crypto": "^1.0.1",
+    "express": "4.16.3",
+    "gmail-send": "^1.8.10",
+    "mongodb": "^3.5.9",
+    "node-static": "^0.7.11",
+    "spdy": "^4.0.2",
+    "websocket": "^1.0.31"
+  }
+}
