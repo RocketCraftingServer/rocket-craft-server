@@ -26,7 +26,10 @@ var cors = require("cors");
 // Node imports
 var express = require("express");
 var fs = require("fs");
-// var https = require('https');
+
+var https = require('https');
+var http = require('http');
+
 // Pull information from HTML POST (express4)
 var bodyParser = require("body-parser"); 
 var app = express();
@@ -173,7 +176,7 @@ if (URL_ARG.indexOf("localhost") !== -1) {
  * @description
  * Init on the end.
  */
-spdy.createServer(options, app).listen(config.connectorPort, error => {
+http.createServer(options, app).listen(config.connectorPort, error => {
   if (error) {
     console.warn("Something wrong with rocket-craft server.")
     console.error(error);
