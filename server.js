@@ -176,7 +176,7 @@ if (URL_ARG.indexOf("localhost") !== -1) {
  * @description
  * Init on the end.
  */
-http.createServer(options, app).listen(config.connectorPort, error => {
+https.createServer(options, app).listen(config.connectorPort, error => {
   if (error) {
     console.warn("Something wrong with rocket-craft server.")
     console.error(error);
