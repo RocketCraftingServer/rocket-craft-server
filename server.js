@@ -8,6 +8,9 @@
 const ConfigAccountSession = require("./config");
 const config = new ConfigAccountSession();
 
+const MyDatabase = require("./database/database");
+let database = new MyDatabase(config);
+
 // Check launch arguments: must receive URL (localhost) and the secret
 if (process.argv.length != 4) {
   console.log("Usage: node " + __filename + " . ");
@@ -20,13 +23,17 @@ process.env.NODE_TLS_REJECT_UNAUTHORIZED = 0;
 // http2 protocol
 const spdy = require("spdy");
 const path = require("path");
-var compression = require("compression");
-var cors = require("cors");
+const compression = require("compression");
+const cors = require("cors");
 
 // Node imports
 var express = require("express");
 var fs = require("fs");
 
+const Crypto = require("./common/crypto");
+var crypto = new Crypto();
+
+// http1.1
 var https = require('https');
 var http = require('http');
 
@@ -38,38 +45,39 @@ var options = null;
 
 app.use(cors());
 
-// express.compress()
-/*app.use(compression({
-  filter: function () { return true; }
-}));
-*/
+/**
+ * @description Compression
+ * @example
+ *  app.use(compression({
+ *    filter: function () { return true; }
+ *  }));
+ *  express.compress()
+ */
 
-// Add headers
+/**
+ * @description  Allow or disallow headers flags.
+ * Add headers
+ */
 app.use(function (req, res, next) {
-
   // Website you wish to allow to connect
   res.setHeader('Access-Control-Allow-Origin', '*');
-
   // Request methods you wish to allow
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
-
   // Request headers you wish to allow
   res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
-
   // Set to true if you need the website to include cookies in the requests sent
   // to the API (e.g. in case you use sessions)
   res.setHeader('Access-Control-Allow-Credentials', false);
-
   // Pass to next layer of middleware
   next();
 });
 
+// Parse application/x-www-form-urlencoded
 app.use(
   bodyParser.urlencoded({
     extended: "true"
   })
 );
-// Parse application/x-www-form-urlencoded
 
 // Parse application/json
 app.use(bodyParser.json()); 
@@ -83,64 +91,7 @@ app.use(
 // Parse application/vnd.api+json as json
 // app.use(cors());
 
-app.post("/rocket/login", (req, res) => {
-
-  if (req.secure) {
-    console.log("Good");
-  };
-
-  console.log("/rocket/login ", req.body);
-
-  console.log("/rocket/login ", req.body.username);
-
-  res.status(200).json({
-    message: "POST /rocket/login",
-    rocketStatus: "welcome"
-  });
-
-})
-
-app.get("/rocket/user", (req, res) => {
-
-  if (req.secure) {
-  };
-  console.log("Request req.headers.host = ", req.headers.host);
-
-  res.status(300).json({
-    message: "/rocket/user",
-    rocketStatus: "login"
-  });
-
-});
-
-/**
- * @description
- * Almost any case
- */
-app.post("/rocket/register", (req, res) => {
-
-  console.log("POST DETECTED");
-  if (req.secure) {
-    console.log("SECURED!");
-  };
-
-  console.log("/rocket/register ", req.headers);
-
-  // Test native cors,
-  res.header('Access-Control-Allow-Origin', '*');
-  res.header('Accept-Encoding', 'deflate, gzip;q=1.0, *;q=0.5');
-  res.header('Cache-Control', 'public, max-age=31557600');
-
-  // res.redirect('https://' + req.headers.host + req.url);
-
-  res.status(200).json({
-    message: "ok",
-    rocketStatus: "cheking client signal"
-  });
-
-});
-
-app.use(express.static(__dirname + "/public/dist")); // Set the static files location
+let routerRocket = new require('./api/account/account')(app, express, database, crypto);
 
 // Server configuration
 // app.use(express.static(__dirname + "/public"));
@@ -176,7 +127,22 @@ if (URL_ARG.indexOf("localhost") !== -1) {
  * @description
  * Init on the end.
  */
-https.createServer(options, app).listen(config.connectorPort, error => {
+var serverRunner = null;
+
+if (config.protocol == 'http') {
+  serverRunner = http;
+} else if (config.protocol == 'https') {
+  serverRunner = https;
+} else if (config.protocol == 'http2') {
+  serverRunner = spdy;
+}
+
+/**
+ * @description serverRunner
+ * Run web server.
+ */
+
+serverRunner.createServer(options, app).listen(config.connectorPort, error => {
   if (error) {
     console.warn("Something wrong with rocket-craft server.")
     console.error(error);
@@ -186,8 +152,4 @@ https.createServer(options, app).listen(config.connectorPort, error => {
   }
 });
 
-/**
- * @description
- * If any reason for classic http 1.1
- * use https.createServer(options, app).listen(port);
- */
+

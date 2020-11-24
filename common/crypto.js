@@ -1,50 +1,8 @@
-/*
-
-  Old class in future can be used for resolving database key reading.
-
-class CryptoHandler {
-
-  constructor() {
-
-    this.crypto = require('crypto');
-    this.algorithm = 'aes-256-cbc';
-    this.key = this.crypto.randomBytes(32);
-    // let iv = Buffer.from(textParts.shift(), 'hex');
-    this.iv = "nikola";
-
-  }
-
-  encrypt(text) {
-
-    const password = text;
-    const cipher = this.crypto.createDecipheriv('aes128', "a password");
-    var encrypted = cipher.update(password, 'utf8', 'hex');
-    encrypted += cipher.final('hex');
-    return encrypted;
-
-  }
-
-  decrypt(text) {
-
-    const encrypt_password = text;
-    const decipher = this.crypto.createDecipheriv('aes128','a password');
-    var decrypted = decipher.update(encrypt_password,'hex', 'utf8');
-    decrypted += decipher.final('utf8');
-    return decrypted;
-
-  }
-}
-*/
 
 const crypto = require('crypto');
+
 const algorithm = 'aes-256-ctr';
-//const ENCRYPTION_KEY = 'Iamtunderbuttheresnorainprodigy-';
-// or generate sample key Buffer.from('FoCKvdLslUuB4y3EZlKate7XGottHski1LmyqJHvUhs=', 'base64');
-// const ENCRYPTION_KEY = 'Put_Your_Password_Here';
- // or generate sample key Buffer.from('FoCKvdLslUuB4y3EZlKate7XGottHski1LmyqJHvUhs=', 'base64');
-
 const ENCRYPTION_KEY = Buffer.from('FoCKvdLslUuB4y3EZlKate7XGottHski1LmyqJHvUhs=', 'base64');
-
 const IV_LENGTH = 16;
 
 class CryptoHandler {

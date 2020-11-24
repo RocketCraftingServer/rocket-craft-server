@@ -5,7 +5,7 @@ class ServerConfig {
      */
 
     // enum : 'dev' or 'prod'
-    this.serverMode = "prod";
+    this.serverMode = "dev";
 
     this.networkDeepLogs = false;
     this.connectorPort = 30100;
@@ -15,9 +15,8 @@ class ServerConfig {
       prod: "maximumroulette.com"
     };
 
-    this.masterServerKey = "node-mongo-account";
-    this.protocol = "https";
-    this.isSecure = true;
+    this.masterServerKey = "rocket-server-app-database";
+    this.protocol = "http";
 
     // localhost
     this.certPathSelf = {
@@ -38,7 +37,7 @@ class ServerConfig {
 
     this.databaseRoot = {
       dev: "mongodb://localhost:27017",
-      prod: "mongodb://userAdmin:********@maximumroulette.com:27017/admin"
+      prod: "mongodb://userAdmin:********@localhost:27017/admin"
     };
 
     this.specialRoute = {
@@ -61,7 +60,6 @@ class ServerConfig {
     console.log("-rtc rtc3ServerPort", this.rtc3ServerPort);
     console.log("-rtc connectorPort", this.connectorPort);
     console.log("-rtc protocol", this.protocol);
-    console.log("-rtc isSecure", this.isSecure);
     console.log("-rtc appUseAccountsSystem", this.appUseAccountsSystem);
     console.log("-rtc databaseName", this.databaseName);
   }

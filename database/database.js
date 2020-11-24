@@ -1,15 +1,22 @@
+
 let MongoClient = require("mongodb").MongoClient;
 const shared = require("./../common/shared");
 const fs = require("fs");
 
 /**
  * MyDatabase class
- * MongoDB Database used in this project.
+ * MongoDB Database used in this project
+ * version 4.4.2
  * JavaScript fullstack project
  */
 class MyDatabase {
+
   constructor(serverConfig) {
     this.config = serverConfig;
+  }
+
+  testClass () {
+    console.log("Loaded....................MyDatabase");
   }
 
   /**
@@ -27,7 +34,7 @@ class MyDatabase {
      * to be used by others classes.
      * Connector class is allowed.
      */
-    if (callerInstance.constructor.name !== "Connector") {
+    if (callerInstance.constructor.name !== "RocketRouteHandler") {
       console.error("Potencial Critical Hack Attack");
       return;
     }
@@ -59,7 +66,7 @@ class MyDatabase {
           dbo.createCollection("users").createIndex({ profileUrl: 1 }, { unique: true });
         }
 
-        dbo.collection("users").findOne({ email: user.userRegData.email }, function(err, result) {
+        dbo.collection("users").findOne({ email: user.email }, function(err, result) {
           if (err) {
             console.log("MyDatabase err2:" + err);
             return null;
@@ -68,10 +75,12 @@ class MyDatabase {
           if (result === null) {
             let uniqLocal = shared.generateToken();
 
+            console.log("MyDatabase >>>>>>>>>>" + callerInstance);
+
             dbo.collection("users").insertOne(
               {
-                email: user.userRegData.email,
-                password: callerInstance.crypto.encrypt(user.userRegData.password),
+                email: user.email,
+                password: callerInstance.crypto.encrypt(user.password),
                 nickname: "no-nick-name" + shared.getDefaultNickName(),
                 confirmed: false,
                 token: uniqLocal,
@@ -99,7 +108,7 @@ class MyDatabase {
           } else {
             callerInstance.onRegisterResponse(
               "USER_ALREADY_REGISTERED",
-              user.userRegData.email,
+              user.email,
               null,
               user.socketId,
               callerInstance
