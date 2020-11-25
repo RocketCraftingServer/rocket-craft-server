@@ -1,3 +1,6 @@
+
+const path = require("path");
+
 /**
  * @description Class RocketRoute
  * is place for definition of route jobs.
@@ -17,6 +20,10 @@ class RocketRoute {
 
   testCall () {
     console.log("TEST CALL...................RocketRoute")
+  }
+
+  onRegisterResponse(data) {
+    
   }
 
   routeRegister() {
@@ -65,8 +72,10 @@ class RocketRoute {
           password: req.body.passwordField
         };
 
-        console.log("/rocket/register Data Action: register(..)");
-        this.dataAction.register(user, this.handler)
+        
+        var TEST = await this.dataAction.register(user, this.handler)
+        console.log("/rocket/register WAIT ", TEST);
+
         
       } else {
 
@@ -92,7 +101,7 @@ class RocketRoute {
      * Almost any undefined case use admin page for now
      */
     var root = this;
-    this.app.use(root.express.static(__dirname + "/public/dist"));
+    this.app.use(root.express.static(__dirname + "./../../public/dist"));
 
     console.log("Loaded...................RocketRoute");
   }

@@ -102,7 +102,9 @@ class MyDatabase {
                   res.ops[0].socketid,
                   callerInstance
                 );
+               
                 db.close();
+                return new Promise((resolve) => { resolve(); /* "BLABAL USER_REGISTERED"*/ })
               }
             );
           } else {
@@ -114,6 +116,7 @@ class MyDatabase {
               callerInstance
             );
             db.close();
+            return new Promise((resolve) => { resolve(); /* "BLABAL USER_REGISTERED"*/ })
           }
         });
       }

@@ -8,19 +8,19 @@
       <md-button class="md-primary md-raised" md-menu-trigger>Testing</md-button>
       <md-menu-content>
         <md-menu-item>
-           <md-button @click="showPostDialogClick()" class="md-primary md-raised" md-menu-trigger>POST</md-button>
+           <md-button @click="showRegisterDialogClick()" class="md-primary md-raised" md-menu-trigger>register</md-button>
         </md-menu-item>
         <md-menu-item>
-          <md-button @click="showPostDialogClick()" class="md-primary md-raised" md-menu-trigger>GET</md-button>
+          <md-button @click="showLoginDialogClick()" class="md-primary md-raised" md-menu-trigger>login</md-button>
         </md-menu-item>
       </md-menu-content>
     </md-menu>
     
-    <md-dialog :md-active.sync="showPostDialog">
-      <md-dialog-title>Administrator developing panel</md-dialog-title>
+    <md-dialog :md-active.sync="showLoginDialog">
+      <md-dialog-title>Route card</md-dialog-title>
       <md-tabs md-dynamic-height>
 
-        <md-tab md-label="POST">
+        <md-tab md-label="Login">
           <md-content class="md-scrollbar">
             <md-content v-bind:style="optionsStyle">
                <h3> /login  </h3>
@@ -48,20 +48,65 @@
             </md-content>
           </md-content>
         </md-tab>
-
-        <md-tab md-label="GET">
-          <md-content class="md-scrollbar" style="text-align:center;" >
-            <h3> GET </h3>
-            <br>
-            <h4>Get function call </h4>
-          </md-content>
-        </md-tab>
-
-        <md-tab md-label="ROUTE - CALLS">
+        <md-tab md-label="Route Info">
           <md-content class="md-scrollbar" v-bind:style="optionsStyle">
             <img style="width:200px;margin: -5px -5px -5px -5px;" src="/assets/vule-logo1.png" />
             <h3> Project name: rocket-craft-server service</h3>
-            <p>This project is open source :</p>
+            <p> @params { } </p>
+          </md-content>
+        </md-tab>
+      </md-tabs>
+      <md-dialog-actions>
+        <md-button color="md-primary" @click="showLoginDialog = false">HIDE</md-button>
+      </md-dialog-actions>
+    </md-dialog>
+
+    <md-dialog :md-active.sync="showRegisterDialog">
+      <md-dialog-title>Route card Register </md-dialog-title>
+      <md-tabs md-dynamic-height>
+
+        <md-tab md-label="POST - Register">
+          <md-content class="md-scrollbar">
+            <md-content v-bind:style="optionsStyle">
+               <h3> /register  </h3>
+              <md-field class="md-content-options">
+                <label class="labelText" >User email address:</label>
+                <md-input
+                        @keyup.enter="runApiCallByActionName('login')"
+                        v-model="defaults.useremail"
+                        class="md-primary md-raised"
+                        placeholder="Please enter your email"
+                        maxlength="25">
+                </md-input>
+              </md-field>
+              <md-field class="md-content-options">
+                <label class="labelText" >Password:</label>
+                <md-input
+                        @keyup.enter="runApiCallByActionName('login')"
+                        v-model="defaults.password"
+                        class="md-primary md-raised"
+                        placeholder="Default password:"
+                        maxlength="200">
+                </md-input>
+              </md-field>
+              <md-button @click="runApiCallByActionName('register')"> /rocket/register/ </md-button>
+            </md-content>
+              <md-content ref="responseContainer" v-bind:style="optionsStyle">
+                <ul id="example-1">
+                  <li v-for="item in registerResponse" :key="item.message">
+                    {{ item }}
+                  </li>
+              </ul> 
+              </md-content>   
+          </md-content>
+        </md-tab>
+
+        <md-tab md-label="Route Info">
+          <md-content class="md-scrollbar" v-bind:style="optionsStyle">
+            <img style="width:200px;margin: -5px -5px -5px -5px;" src="/assets/vule-logo1.png" />
+            <h3> rocket-craft-server service-route register</h3>
+            <p> `@param useremail` </p>
+            <p> `@param userpassword` </p>
           </md-content>
         </md-tab>
       </md-tabs>
@@ -107,7 +152,7 @@
            mdContent,
            mdProgressSpinner } from 'vue-material'
   import { switchTheme } from '../../my-common/common-func'
-  import IRocketLogin from './IRocketLogin'
+  import IAccounts from './IAccounts'
 
   const CompProps = Vue.extend({
     props: {
@@ -128,9 +173,12 @@
   })
 
   @Component
-  export default class RocketLogin extends CompProps implements IRocketLogin{
+  export default class RocketAccounts extends CompProps implements IAccounts {
 
-    private showPostDialog: boolean = false
+    private showLoginDialog: boolean = false
+    private showRegisterDialog: boolean = false
+
+    private registerResponse = {}
 
     public optionsStyle = {
       display: 'flex',
@@ -155,21 +203,27 @@
           useremail: 'zlatnaspirala@gmail.com',
           username: "nikola",
           password: "123123123"
-        }
+        },
+        
       }
     }
 
     async runApiCallByActionName(apiCallFlag) {
   
-      const rawResponse = await fetch(this.$props.domain + this.$props.prefix + '/' +  apiCallFlag, {
+      let route = this.$props.domain
+      if (location.port == "3000") {
+        route = route.replace(":3000/", ":30100/")
+      }
+      const rawResponse = await fetch(route+ this.$props.prefix + '/' +  apiCallFlag, {
         method: 'POST',
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({username: "Nikola Lukic", password: '123456'})
+        body: JSON.stringify({emailField: "Nikola Lukic", passwordField: '123456'})
       });
       const content = await rawResponse.json();
+      this.registerResponse = content
       console.log(content);
 
     }
@@ -182,10 +236,12 @@
 
     }
 
-    public showPostDialogClick() {
+    public showLoginDialogClick() {
+      this.showLoginDialog = true
+    }
 
-      this.showPostDialog = true
-
+    public showRegisterDialogClick() {
+      this.showRegisterDialog = true
     }
 
   }

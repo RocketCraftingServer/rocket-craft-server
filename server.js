@@ -22,7 +22,6 @@ process.env.NODE_TLS_REJECT_UNAUTHORIZED = 0;
 
 // http2 protocol
 const spdy = require("spdy");
-const path = require("path");
 const compression = require("compression");
 const cors = require("cors");
 

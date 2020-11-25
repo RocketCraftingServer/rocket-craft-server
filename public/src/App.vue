@@ -8,10 +8,11 @@
         <md-progress-spinner md-mode="indeterminate"></md-progress-spinner>
       </div>
 
-      <rocketLogin slogan="API admin/tester" 
+      <md-button class="md-primary" @click="showDialog = false">SHOW</md-button>
+      <rocketAccounts slogan="API admin/tester" 
                    prefix="rocket"
                    :domain="$props.AppDomainHost" >
-      </rocketLogin>
+      </rocketAccounts>
 
     </div>
     <myFooter textContent='https://maximumroulette.com:30100 RocketCraftServer 2021'></myFooter>
@@ -24,12 +25,10 @@
   import { Component } from 'vue-property-decorator'
   import myHeader from './components/myHeader.vue'
   import myFooter from './components/myFooter.vue'
-  import rocketLogin from './components/administrator/rocket-login.vue'
+  import RocketAccounts from './components/administrator/accounts.vue'
   import { mapState, mapMutations } from 'vuex'
-  // eslint-disable-line no-unused-vars
   import IApp from './IApp'
   import LocalStorageMemory from './local-storage/local-storage'
-
   import VueMaterial from 'vue-material'
   import 'vue-material/dist/vue-material.min.css'
   import './styles/style.scss'
@@ -51,7 +50,7 @@
     components: {
       myHeader,
       myFooter,
-      rocketLogin
+      RocketAccounts
     },
     computed: mapState([
       'permission'
@@ -100,21 +99,18 @@
      * goes back to the default values.
      */
     public options: Object = {}
-
-    /**
-     * Switch place of two main components.
-     * Youtube & webGLPlayer
-     * Better to remove from here ...
-     */
-    public switchPlace: boolean = false
     public currentRoute
+
+    public visibility: Object = {
+
+    }
 
     /**
      * @description Initial method construct.
      */
     constructor() {
       super()
-
+      
       this.styleObject = {
         display: 'flex',
         justifyContent: 'center',
@@ -142,12 +138,10 @@
          * @description Permission staff
          * Cant be read or write
          */
-        // this.ls.save("permission_level", "read")
-
+        this.ls.save("permission_level", "read")
         this.options = {
           permissionLevel: this.ls.load("permission_level"),
         };
-
         this.ls.save("first_time", 'storage-loaded')
 
       } else {
@@ -156,6 +150,7 @@
         this.options = {
           permissionLevel: this.ls.load("permission_level")
         }
+
       }
 
       this.$root.$on('gapiReady', (args: any) => {
@@ -184,7 +179,6 @@
 
     mounted (): void {
       this.setupInstance()
-      this.switchPlace = this.ls.load("o_switch_place")
     }
 
   }
