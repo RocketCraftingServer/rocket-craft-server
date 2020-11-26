@@ -4,7 +4,8 @@
   "description": "Based on openvidu-recording-node 2.2.0. Integrated session staff lib from visual ts game engine.",
   "main": "server.js",
   "scripts": {
-    "test": "ng test"
+    "app": "node server maximumroulette.com nik",
+    "dev": "node server localhost nik"
   },
   "repository": {
     "type": "git",

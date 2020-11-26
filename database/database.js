@@ -15,8 +15,11 @@ class MyDatabase {
     this.config = serverConfig;
   }
 
-  testClass () {
-    console.log("Loaded....................MyDatabase");
+  async populateDatabase() {
+    const CreateDatabaseCollections = require("./create-collections")
+    var databasePopulate = new CreateDatabaseCollections(this.config);
+    var r = await databasePopulate.createCollections();
+    console.log("Database startup migrate -> ", r);
   }
 
   /**
@@ -27,17 +30,18 @@ class MyDatabase {
    * @param {classInstance} callerInstance
    */
   register(user, callerInstance) {
-    var root = this;
-
     /**
+     * @description 
      * This line prevents method register
      * to be used by others classes.
-     * RocketRouteHandler class is allowed.
+     * ResponseHandler class is allowed.
      */
-    if (callerInstance.constructor.name !== "RocketRouteHandler") {
+    /*
+    if (callerInstance.constructor.name !== "RocketRoute") {
       console.error("callerInstance must be registred in database.js");
       return;
     }
+    */
 
     const databaseName = this.config.databaseName;
 
@@ -95,27 +99,24 @@ class MyDatabase {
                     db.close();
                     return;
                   }
-                  callerInstance.onRegisterResponse(
-                    "USER_REGISTERED",
-                    res.ops[0].email,
-                    res.ops[0].token,
-                    res.ops[0].socketid,
-                    callerInstance
-                  );
+                  var responseFromDatabaseEngine = {
+                    status: "USER_REGISTERED",
+                    email: res.ops[0].email,
+                    token: res.ops[0].token,
+                    socketid: res.ops[0].socketid,
+                  };
                   db.close();
-                  resolve("USER_REGISTERED");
+                  resolve(responseFromDatabaseEngine);
                 }
               );
             } else {
-              callerInstance.onRegisterResponse(
+              var responseFromDatabaseEngine = [
                 "USER_ALREADY_REGISTERED",
                 user.email,
                 null,
-                user.socketId,
-                callerInstance
-              );
+              ]
               db.close();
-              resolve("USER_ALREADY_REGISTERED");
+              resolve(responseFromDatabaseEngine);
             }
           });
         }

@@ -11,6 +11,14 @@ const config = new ConfigAccountSession();
 const MyDatabase = require("./database/database");
 let database = new MyDatabase(config);
 
+/**
+ * @description Create if not exist 
+ * all defined collections.
+ * @collections 
+ *  - users
+ */
+database.populateDatabase();
+
 // Check launch arguments: must receive URL (localhost) and the secret
 if (process.argv.length != 4) {
   console.log("Usage: node " + __filename + " . ");

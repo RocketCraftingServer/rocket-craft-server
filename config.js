@@ -1,7 +1,7 @@
 class ServerConfig {
   constructor() {
     /**
-     * Define backend staff
+     * Define backend staff here
      */
 
     // enum : 'dev' or 'prod'
@@ -44,21 +44,20 @@ class ServerConfig {
       default: "/var/www/html/applications/"
     };
 
-    // this.dataServeRoutes = ["../data-serve/platformer/class/activeplayers"];
-
-    console.log("Server running under configuration => ", this.serverMode);
-
+    console.log(" <--------------------------------------------");
+    console.log(" -> Server running under " + this.serverMode + " configuration.");
     if (this.serverMode == "dev") {
-      console.log("-rtc domain dev", this.domain.dev);
+      console.log(" -> domain dev:", this.domain.dev);
     } else if (this.serverMode == "prod") {
-      console.log("-rtc domain prod", this.domain.prod);
+      console.log(" -> domain prod:", this.domain.prod);
     }
 
-    console.log("-rtc masterServerKey", this.masterServerKey);
-    console.log("-rtc connectorPort", this.connectorPort);
-    console.log("-rtc protocol", this.protocol);
-    console.log("-rtc appUseAccountsSystem", this.appUseAccountsSystem);
-    console.log("-rtc databaseName", this.databaseName);
+    console.log(" -> masterServerKey:", this.masterServerKey);
+    console.log(" -> connectorPort:", this.connectorPort);
+    console.log(" -> protocol:", this.protocol);
+    console.log(" -> appUseAccountsSystem:", this.appUseAccountsSystem);
+    console.log(" -> databaseName:", this.databaseName);
+    console.log(" <--------------------------------------------");
   }
 
   get getDatabaseRoot() {

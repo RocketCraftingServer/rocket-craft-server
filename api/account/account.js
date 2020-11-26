@@ -1,33 +1,35 @@
 
-const path = require("path");
+const ResponseHandler = require("./handler")
 
 /**
  * @description Class RocketRoute
- * is place for definition of route jobs.
+ * is place for definition of route jobs
+ * also ResponseHandler comes in same folder
+ * with one route api collections egg.
+ * `api/account`.
  */
-class RocketRoute {
+class RocketRoute extends ResponseHandler {
 
+  /**
+   * @description 
+   * Keep it simple.
+   */
   constructor(app, express, dataAction, crypto) {
+
+    super(crypto);
 
     this.app = app;
     this.express = express;
     this.dataAction = dataAction;
-    this.handler = new require("./handler")(crypto, this);
 
     this.routeRegister();
     
   }
 
-  testCall () {
-    console.log("TEST CALL...................RocketRoute")
-  }
-
-  onRegisterResponse(data) {
-    
-  }
-
   routeRegister() {
-    
+
+    var root = this;
+
     this.app.post("/rocket/login", (req, res) => {
 
       if (req.secure) {
@@ -57,51 +59,15 @@ class RocketRoute {
     
     });
     
-    this.app.post("/rocket/register", async (req, res) => {
-    
-      if (req.secure) {
-        console.log("SECURED!");
-      };
-    
-      console.log("/rocket/register ", req.body.emailField);
-    
-      if (typeof req.body.emailField !== 'undefined' & typeof req.body.passwordField !== 'undefined' ) {
-                
-        var user = {
-          email: req.body.emailField,
-          password: req.body.passwordField
-        };
-
-        
-        var responseFlag = await this.dataAction.register(user, this.handler)
-        console.log("/rocket/register responseFlag = ", responseFlag);
-        res.status(200).json({
-          message: "USER_ALREADY_REGISTERED",
-          rocketStatus: "maybe very bad request"
-        });
-        return;
-        
-      } else {
-
-        console.log("/rocket/register There is no exspected props in request body.");
-
-        res.status(400).json({
-          message: "There is no exspected props in request body.",
-          rocketStatus: "bad request"
-        });
-        return;
-
-      }
-    });
+    this.app.post("/rocket/register", this.onRegisterResponse.bind(this));
     
     /**
      * @description
      * Almost any undefined case use admin page for now
      */
-    var root = this;
     this.app.use(root.express.static(__dirname + "./../../public/dist"));
 
-    console.log("Loaded...................RocketRoute");
+    console.log("RocketRoute loaded with success.");
   }
 
 }
