@@ -60,6 +60,7 @@ class RocketRoute extends ResponseHandler {
     });
     
     this.app.post("/rocket/register", this.onRegisterResponse.bind(this));
+    this.app.post("/rocket/confirmation", this.onRegValidationResponse.bind(this));
     
     /**
      * @description

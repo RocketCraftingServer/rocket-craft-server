@@ -45,7 +45,8 @@ class ResponseHandler {
             emailConnection.then((data) => {
               res.status(200).json({
                 message: "Check email for conmfirmation key.",
-                rocketStatus: "USER_REGISTERED"
+                rocketStatus: "USER_REGISTERED",
+                rocketToken: responseFlag.token
               });
               console.log("Email reg sended. Notify client.");
             }).catch((error) => {
@@ -70,8 +71,14 @@ class ResponseHandler {
         return;
 
       }
-    }
+  }
 
+  async onRegValidationResponse(req, res) {
+
+    var responseFlag = await this.dataAction.regValidator(user, this)
+    console.log("/rocket/confirmation responseFlag ", responseFlag);
+
+  }
 }
 
 module.exports = ResponseHandler

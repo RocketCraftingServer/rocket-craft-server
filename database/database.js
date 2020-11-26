@@ -30,6 +30,7 @@ class MyDatabase {
    * @param {classInstance} callerInstance
    */
   register(user, callerInstance) {
+
     /**
      * @description 
      * This line prevents method register
@@ -55,6 +56,7 @@ class MyDatabase {
         function(error, db) {
           if (error) {
             console.warn("MyDatabase : err1:" + error);
+            resolve("SOMETHING_WRONG_WITH_REGISTRATION")
             return;
           }
 
@@ -110,11 +112,11 @@ class MyDatabase {
                 }
               );
             } else {
-              var responseFromDatabaseEngine = [
-                "USER_ALREADY_REGISTERED",
-                user.email,
-                null,
-              ]
+              var responseFromDatabaseEngine = {
+                status: "USER_ALREADY_REGISTERED",
+                email: user.email,
+                token: null,
+              }
               db.close();
               resolve(responseFromDatabaseEngine);
             }
@@ -123,15 +125,18 @@ class MyDatabase {
     ) });
   }
 
-  regValidator(user, callerInstance) {
+  regValidator(user) {
+
     const databaseName = this.config.databaseName;
+    return new Promise((resolve) => {  
     MongoClient.connect(
       this.config.getDatabaseRoot,
       { useNewUrlParser: true,
         useUnifiedTopology: true },
       function(error, db) {
         if (error) {
-          console.warn("MyDatabase : err1:" + error);
+          console.warn("MyDatabase error:" + error);
+          resolve("SOMETHING_WRONG_MyDatabase_ACCESS")
           return;
         }
 
@@ -148,19 +153,38 @@ class MyDatabase {
               .collection("users")
               .updateOne({ email: user.email }, { $set: { confirmed: true, points: 100 } }, function(err, result) {
                 if (err) {
-                  console.warn("MyDatabase, update confirmed err :" + err);
-                  callerInstance.onRegValidationResponse(null, user.email, user.accessToken);
+                  console.info("MyDatabase, user confirmed err :" + err);
+                  var local = {
+                    result: null,
+                    email: user.email,
+                    accessToken: user.accessToken
+                  };
+                  resolve(local);
                   return;
                 }
-                console.warn("MyDatabase, update confirmed result:" + result);
-                callerInstance.onRegValidationResponse(result, user.email, user.accessToken);
+                console.info("MyDatabase, user confirmed result:" + result);
+                var local = {
+                  result: result,
+                  email: user.email,
+                  accessToken: user.accessToken
+                };
+                resolve(local);
               });
           } else {
-            callerInstance.onRegValidationResponse(result, user.email, user.accessToken);
+            // ? not tested
+            console.warn("MyDatabase, update confirmed result ? not tested:" + result);
+            // callerInstance.onRegValidationResponse(result, user.email, user.accessToken);
+            var local = {
+              result: result,
+              email: user.email,
+              accessToken: user.accessToken
+            };
+            resolve(local);
           }
         });
       }
     );
+    });
   }
 
   loginUser(user, callerInstance) {

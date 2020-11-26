@@ -5,7 +5,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
     <md-menu>
-      <md-button class="md-primary md-raised" md-menu-trigger>Testing</md-button>
+      <md-button class="md-primary md-raised" md-menu-trigger>Router Tester for `Account Component`</md-button>
       <md-menu-content>
         <md-menu-item>
            <md-button @click="showRegisterDialogClick()" class="md-primary md-raised" md-menu-trigger>register</md-button>
@@ -115,7 +115,65 @@
         </md-tab>
       </md-tabs>
       <md-dialog-actions>
-        <md-button color="md-primary" @click="showPostDialog = false">HIDE</md-button>
+        <md-button color="md-primary" @click="showRegisterDialog = false">HIDE</md-button>
+      </md-dialog-actions>
+    </md-dialog>
+
+    <md-dialog :md-active.sync="showRegisterConfirmationDialog">
+      <md-dialog-title>Route card Register Confirmation </md-dialog-title>
+      <md-tabs md-dynamic-height>
+
+        <md-tab md-label="POST - confirmation">
+          <md-content class="md-scrollbar">
+            <md-content v-bind:style="optionsStyle">
+               <md-button > /confirmation  </md-button>
+              <md-field class="md-content-options">
+                <label class="labelText" >User email address:</label>
+                <md-input
+                        @keyup.enter="runApiCallByActionName('login')"
+                        v-model="defaults.userEmail"
+                        class="md-primary md-raised"
+                        placeholder="Please enter your email"
+                        maxlength="25">
+                </md-input>
+              </md-field>
+              <md-field class="md-content-options">
+                <label class="labelText" >Password:</label>
+                <md-input
+                        @keyup.enter="runApiCallByActionName('login')"
+                        v-model="defaults.userPassword"
+                        class="md-primary md-raised"
+                        placeholder="Default password:"
+                        maxlength="200">
+                </md-input>
+              </md-field>
+              <md-button class="md-accent md-raised" 
+                         @click="runApiConfirmation()">
+                    /rocket/register/
+                    <md-icon class="fa fa-bolt md-size-3x"></md-icon>
+              </md-button>
+            </md-content>
+              <md-content ref="responseContainer" v-bind:style="optionsStyle">
+                <ul id="example-1">
+                  <li v-for="item in registerResponse" :key="item.message">
+                    {{ item }}
+                  </li>
+              </ul> 
+              </md-content>   
+          </md-content>
+        </md-tab>
+
+        <md-tab md-label="Route Info">
+          <md-content class="md-scrollbar" v-bind:style="optionsStyle">
+            <img style="width:200px;margin: -5px -5px -5px -5px;" src="/assets/logo.png" />
+            <h3> rocket-craft-server service-route register</h3>
+            <p> `@param useremail` </p>
+            <p> `@param confirmatin code` </p>
+          </md-content>
+        </md-tab>
+      </md-tabs>
+      <md-dialog-actions>
+        <md-button color="md-primary" @click="showRegisterConfirmationDialog = false">HIDE</md-button>
       </md-dialog-actions>
     </md-dialog>
 
@@ -155,7 +213,7 @@
            mdIcon,
            mdContent,
            mdProgressSpinner } from 'vue-material'
-  import { switchTheme } from '../../my-common/common-func'
+  import { setupLocal, switchTheme } from '../../my-common/common-func'
   import IAccounts from './IAccounts'
 
   const CompProps = Vue.extend({
@@ -181,6 +239,7 @@
 
     private showLoginDialog: boolean = false
     private showRegisterDialog: boolean = false
+    private showRegisterConfirmationDialog: boolean = false
 
     private registerResponse = {}
 
@@ -215,9 +274,7 @@
     async runApiCallByActionName(apiCallFlag) {
   
       let route = this.$props.domain
-      if (location.port == "3000") {
-        route = route.replace(":3000/", ":30100/")
-      }
+      route = setupLocal(route)
 
       const args = {
         emailField: this.$data.defaults.userEmail.toString(),
@@ -238,6 +295,10 @@
 
     }
     
+    async runApiConfirmation() {
+
+    }
+
     googleApiLogin(): void {
        this.$root.$emit('googleApiLoginEvent', { start: 'start googleApiLoginEvent' })
     }

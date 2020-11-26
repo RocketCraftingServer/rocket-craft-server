@@ -31,3 +31,12 @@ export function switchTheme (this: any) {
     console.warn('Error =>', err)
   }
 }
+
+export function setupLocal(route) {
+  if (location.port == "3000") {
+    var l = route.replace(":3000/", ":30100/")
+    return l;
+  }
+  return location.port;
+}
+
