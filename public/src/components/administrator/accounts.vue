@@ -68,12 +68,12 @@
         <md-tab md-label="POST - Register">
           <md-content class="md-scrollbar">
             <md-content v-bind:style="optionsStyle">
-               <h3> /register  </h3>
+               <md-button > /register  </md-button>
               <md-field class="md-content-options">
                 <label class="labelText" >User email address:</label>
                 <md-input
                         @keyup.enter="runApiCallByActionName('login')"
-                        v-model="defaults.useremail"
+                        v-model="defaults.userEmail"
                         class="md-primary md-raised"
                         placeholder="Please enter your email"
                         maxlength="25">
@@ -83,13 +83,17 @@
                 <label class="labelText" >Password:</label>
                 <md-input
                         @keyup.enter="runApiCallByActionName('login')"
-                        v-model="defaults.password"
+                        v-model="defaults.userPassword"
                         class="md-primary md-raised"
                         placeholder="Default password:"
                         maxlength="200">
                 </md-input>
               </md-field>
-              <md-button @click="runApiCallByActionName('register')"> /rocket/register/ </md-button>
+              <md-button class="md-accent md-raised" 
+                         @click="runApiCallByActionName('register')">
+                    /rocket/register/
+                    <md-icon class="fa fa-bolt md-size-3x"></md-icon>
+              </md-button>
             </md-content>
               <md-content ref="responseContainer" v-bind:style="optionsStyle">
                 <ul id="example-1">
@@ -187,7 +191,7 @@
       paddingBottom: '10px',
       itemsAlign: 'left',
       height: 'auto',
-      border: '4px double #fCfEAf',
+      border: '4px solid gray',
       borderRadius: '18px',
       padding : '10px',
       margin : '1px 1px 1px 1px',
@@ -200,9 +204,9 @@
     data() {
       return {
         defaults: {
-          useremail: 'zlatnaspirala@gmail.com',
-          username: "nikola",
-          password: "123123123"
+          userEmail: 'zlatnaspirala@gmail.com',
+          userName: "nikola",
+          userPassword: "123123123"
         },
         
       }
@@ -214,13 +218,19 @@
       if (location.port == "3000") {
         route = route.replace(":3000/", ":30100/")
       }
+
+      const args = {
+        emailField: this.$data.defaults.userEmail.toString(),
+        passwordField: this.$data.defaults.userPassword.toString()
+      }
+
       const rawResponse = await fetch(route+ this.$props.prefix + '/' +  apiCallFlag, {
         method: 'POST',
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({emailField: "Nikola Lukic", passwordField: '123456'})
+        body: JSON.stringify(args)
       });
       const content = await rawResponse.json();
       this.registerResponse = content

@@ -57,7 +57,7 @@ class RocketRoute {
     
     });
     
-    this.app.post("/rocket/register", (req, res) => {
+    this.app.post("/rocket/register", async (req, res) => {
     
       if (req.secure) {
         console.log("SECURED!");
@@ -73,27 +73,25 @@ class RocketRoute {
         };
 
         
-        var TEST = await this.dataAction.register(user, this.handler)
-        console.log("/rocket/register WAIT ", TEST);
-
+        var responseFlag = await this.dataAction.register(user, this.handler)
+        console.log("/rocket/register responseFlag = ", responseFlag);
+        res.status(200).json({
+          message: "USER_ALREADY_REGISTERED",
+          rocketStatus: "maybe very bad request"
+        });
+        return;
         
       } else {
 
         console.log("/rocket/register There is no exspected props in request body.");
 
         res.status(400).json({
-          message: "ok",
+          message: "There is no exspected props in request body.",
           rocketStatus: "bad request"
         });
         return;
 
       }
-
-      res.status(200).json({
-        message: "ok",
-        rocketStatus: "client register signal...."
-      });
-    
     });
     
     /**

@@ -32,10 +32,10 @@ class MyDatabase {
     /**
      * This line prevents method register
      * to be used by others classes.
-     * Connector class is allowed.
+     * RocketRouteHandler class is allowed.
      */
     if (callerInstance.constructor.name !== "RocketRouteHandler") {
-      console.error("Potencial Critical Hack Attack");
+      console.error("callerInstance must be registred in database.js");
       return;
     }
 
@@ -44,83 +44,82 @@ class MyDatabase {
     /**
      * Open connection with database.
      */
-    MongoClient.connect(
-      this.config.getDatabaseRoot,
-      { useNewUrlParser: true, useUnifiedTopology: true },
-      function(error, db) {
-        if (error) {
-          console.warn("MyDatabase : err1:" + error);
-          return;
-        }
-
-        const dbo = db.db(databaseName);
-        if (!dbo.collection("users")) {
-          dbo.createCollection("users").createIndex({ email: 1 }, { unique: true });
-          dbo.createCollection("users").createIndex({ password: 1 }, { unique: true });
-          dbo.createCollection("users").createIndex({ socketid: 1 }, { unique: true });
-          dbo.createCollection("users").createIndex({ confirmed: 1 }, { unique: true });
-          dbo.createCollection("users").createIndex({ token: 1 }, { unique: true });
-          dbo.createCollection("users").createIndex({ online: 1 }, { unique: false });
-          dbo.createCollection("users").createIndex({ nickname: 1 }, { unique: false });
-          dbo.createCollection("users").createIndex({ points: 1 }, { unique: false });
-          dbo.createCollection("users").createIndex({ profileUrl: 1 }, { unique: true });
-        }
-
-        dbo.collection("users").findOne({ email: user.email }, function(err, result) {
-          if (err) {
-            console.log("MyDatabase err2:" + err);
-            return null;
+    return new Promise((resolve) => {  
+      MongoClient.connect(
+        this.config.getDatabaseRoot,
+        { useNewUrlParser: true, useUnifiedTopology: true },
+        function(error, db) {
+          if (error) {
+            console.warn("MyDatabase : err1:" + error);
+            return;
           }
 
-          if (result === null) {
-            let uniqLocal = shared.generateToken();
+          const dbo = db.db(databaseName);
+          if (!dbo.collection("users")) {
+            dbo.createCollection("users").createIndex({ email: 1 }, { unique: true });
+            dbo.createCollection("users").createIndex({ password: 1 }, { unique: true });
+            dbo.createCollection("users").createIndex({ socketid: 1 }, { unique: true });
+            dbo.createCollection("users").createIndex({ confirmed: 1 }, { unique: true });
+            dbo.createCollection("users").createIndex({ token: 1 }, { unique: true });
+            dbo.createCollection("users").createIndex({ online: 1 }, { unique: false });
+            dbo.createCollection("users").createIndex({ nickname: 1 }, { unique: false });
+            dbo.createCollection("users").createIndex({ points: 1 }, { unique: false });
+            dbo.createCollection("users").createIndex({ profileUrl: 1 }, { unique: true });
+          }
 
-            console.log("MyDatabase >>>>>>>>>>" + callerInstance);
+          dbo.collection("users").findOne({ email: user.email }, function(err, result) {
+            if (err) {
+              console.warn("MyDatabase err in register:" + err);
+              resolve("SOMETHING_WRONG_WITH_REGISTRATION")
+              return null;
+            }
 
-            dbo.collection("users").insertOne(
-              {
-                email: user.email,
-                password: callerInstance.crypto.encrypt(user.password),
-                nickname: "no-nick-name" + shared.getDefaultNickName(),
-                confirmed: false,
-                token: uniqLocal,
-                socketid: user.socketId,
-                online: false,
-                points: 1000,
-                rank: "junior"
-              },
-              function(err, res) {
-                if (err) {
-                  console.log("MyDatabase err3:" + err);
+            if (result === null) {
+              let uniqLocal = shared.generateToken();
+              console.info("MyDatabase Register new user...");
+              dbo.collection("users").insertOne(
+                {
+                  email: user.email,
+                  password: callerInstance.crypto.encrypt(user.password),
+                  nickname: "no-nick-name" + shared.getDefaultNickName(),
+                  confirmed: false,
+                  token: uniqLocal,
+                  socketid: user.socketId,
+                  online: false,
+                  points: 1000,
+                  rank: "junior"
+                },
+                function(err, res) {
+                  if (err) {
+                    console.log("MyDatabase err3:" + err);
+                    db.close();
+                    return;
+                  }
+                  callerInstance.onRegisterResponse(
+                    "USER_REGISTERED",
+                    res.ops[0].email,
+                    res.ops[0].token,
+                    res.ops[0].socketid,
+                    callerInstance
+                  );
                   db.close();
-                  return;
+                  resolve("USER_REGISTERED");
                 }
-                callerInstance.onRegisterResponse(
-                  "USER_REGISTERED",
-                  res.ops[0].email,
-                  res.ops[0].token,
-                  res.ops[0].socketid,
-                  callerInstance
-                );
-               
-                db.close();
-                return new Promise((resolve) => { resolve(); /* "BLABAL USER_REGISTERED"*/ })
-              }
-            );
-          } else {
-            callerInstance.onRegisterResponse(
-              "USER_ALREADY_REGISTERED",
-              user.email,
-              null,
-              user.socketId,
-              callerInstance
-            );
-            db.close();
-            return new Promise((resolve) => { resolve(); /* "BLABAL USER_REGISTERED"*/ })
-          }
-        });
-      }
-    );
+              );
+            } else {
+              callerInstance.onRegisterResponse(
+                "USER_ALREADY_REGISTERED",
+                user.email,
+                null,
+                user.socketId,
+                callerInstance
+              );
+              db.close();
+              resolve("USER_ALREADY_REGISTERED");
+            }
+          });
+        }
+    ) });
   }
 
   regValidator(user, callerInstance) {
@@ -222,8 +221,6 @@ class MyDatabase {
   }
 
   getUserData(user, callerInstance) {
-    // test
-
     const databaseName = this.config.databaseName;
     MongoClient.connect(
       this.config.getDatabaseRoot,

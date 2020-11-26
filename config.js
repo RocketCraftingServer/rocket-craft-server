@@ -55,9 +55,6 @@ class ServerConfig {
     }
 
     console.log("-rtc masterServerKey", this.masterServerKey);
-    console.log("-rtc rtcServerPort", this.rtcServerPort);
-    console.log("-rtc rtc3/broadcaster is enabled", this.appUseBroadcaster);
-    console.log("-rtc rtc3ServerPort", this.rtc3ServerPort);
     console.log("-rtc connectorPort", this.connectorPort);
     console.log("-rtc protocol", this.protocol);
     console.log("-rtc appUseAccountsSystem", this.appUseAccountsSystem);
