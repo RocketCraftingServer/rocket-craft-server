@@ -8,10 +8,13 @@
       <md-button class="md-primary md-raised" md-menu-trigger>Router Tester for `Account Component`</md-button>
       <md-menu-content>
         <md-menu-item>
-           <md-button @click="showRegisterDialogClick()" class="md-primary md-raised" md-menu-trigger>register</md-button>
+           <md-button @click="showRegisterDialogClick()" class="md-primary md-raised" md-menu-trigger>Register</md-button>
         </md-menu-item>
         <md-menu-item>
-          <md-button @click="showLoginDialogClick()" class="md-primary md-raised" md-menu-trigger>login</md-button>
+          <md-button @click="showRegisterConfirmationDialogClick()" class="md-primary md-raised" md-menu-trigger>Confirmation</md-button>
+        </md-menu-item>
+        <md-menu-item>
+          <md-button @click="showLoginDialogClick()" class="md-primary md-raised" md-menu-trigger>Login</md-button>
         </md-menu-item>
       </md-menu-content>
     </md-menu>
@@ -154,8 +157,8 @@
               </md-button>
             </md-content>
               <md-content ref="responseContainer" v-bind:style="optionsStyle">
-                <ul id="example-1">
-                  <li v-for="item in registerResponse" :key="item.message">
+                <ul id="firstViewResponseDOM">
+                  <li v-for="item in confirmationResponse" :key="item.message">
                     {{ item }}
                   </li>
               </ul> 
@@ -186,6 +189,7 @@
   }
 
   .md-button {
+    min-width: 200px;
     font-weight: 400;
   }
 
@@ -242,6 +246,7 @@
     private showRegisterConfirmationDialog: boolean = false
 
     private registerResponse = {}
+    private confirmationResponse = {}
 
     public optionsStyle = {
       display: 'flex',
@@ -297,6 +302,26 @@
     
     async runApiConfirmation() {
 
+      let route = this.$props.domain
+      route = setupLocal(route)
+
+      const args = {
+        emailField: this.$data.defaults.userEmail.toString(),
+        passwordField: this.$data.defaults.userPassword.toString()
+      }
+
+      const rawResponse = await fetch(route+ this.$props.prefix + '/confirmation', {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(args)
+      });
+      const content = await rawResponse.json();
+      this.registerResponse = content
+      console.log(content);
+
     }
 
     googleApiLogin(): void {
@@ -313,6 +338,10 @@
 
     public showRegisterDialogClick() {
       this.showRegisterDialog = true
+    }
+
+    public showRegisterConfirmationDialogClick() {
+      this.showRegisterConfirmationDialog = true
     }
 
   }
