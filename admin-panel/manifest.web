@@ -1,11 +1,11 @@
 {
-  "name": "node-mongo-account",
-  "short_name": "connector",
-  "start_url": "https://maximumroulette.com:888",
+  "name": "rocket-server-admin-panel",
+  "short_name": "admin-panel",
+  "start_url": "https://maximumroulette.com:30100",
   "display": "standalone",
   "theme_color" : "orangered",
   "background_color": "black",
-  "description": "Node.js vs MongoDB project. Use simple rest api powered account feature. This is special because i will make connection with ue4 project based.",
+  "description": "Node.js vs MongoDB project. Use RestApi powered account system. Special development for ue4 projects.",
   "orientation": "any",
   "icons": [
     {

@@ -81,14 +81,14 @@ class ResponseHandler {
     };
 
     var responseFlag = await this.dataAction.regValidator(user, this)
-    console.log("/rocket/confirmation responseFlag ", responseFlag);
+    // console.log("/rocket/confirmation responseFlag ", responseFlag);
 
     if (responseFlag.result !== null) {
-      console.log("/rocket/confirmation passed ", responseFlag.email);
+      // console.log("/rocket/confirmation passed ", responseFlag.email);
       res.status(200).json({
         message: "Confirmation done.",
         rocketStatus: "USER_CONFIRMED",
-        accessToken: responseFlag.token // 
+        accessToken: responseFlag.token
       });
     } else {
       res.status(202).json({

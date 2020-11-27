@@ -95,13 +95,15 @@
               <md-button class="md-accent md-raised" 
                          @click="runApiCallByActionName('register')">
                     /rocket/register/
-                    <md-icon class="fa fa-bolt md-size-3x"></md-icon>
+                    <md-icon class="fa fa-bolt md-size-1x"></md-icon>
               </md-button>
             </md-content>
               <md-content ref="responseContainer" v-bind:style="optionsStyle">
                 <ul id="example-1">
                   <li v-for="item in registerResponse" :key="item.message">
-                    {{ item }}
+                    {{ item }} 
+                    <md-icon v-if="item == 'USER_ALREADY_REGISTERED'" 
+                             class="fa fa-exclamation-triangle md-accent" />
                   </li>
               </ul> 
               </md-content>   
@@ -256,8 +258,8 @@
       paddingBottom: '10px',
       itemsAlign: 'left',
       height: 'auto',
-      border: '4px solid gray',
-      borderRadius: '18px',
+      border: '1px solid gray',
+      borderRadius: '2px',
       padding : '10px',
       margin : '1px 1px 1px 1px',
     }

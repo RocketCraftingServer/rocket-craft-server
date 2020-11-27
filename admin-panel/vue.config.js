@@ -5,7 +5,7 @@ module.exports = {
     'index': {
       entry: './src/main.ts',
       template: 'public/index.html',
-      title: 'Welcome to my vue generator project. First feature is youtube alternative player with 3d context and NUI/Voice controls interface.',
+      title: 'Welcome to my vue generator project. Alternative NODEJS Htpp server powered by MongoDB.',
       chunks: ['chunk-vendors', 'chunk-common', 'index']
     },
     'bad': {
@@ -23,9 +23,9 @@ module.exports = {
     sourceMap: true
   },
   pwa: {
-    name: 'VULETUBE',
+    name: 'rocket-admin-panel',
     themeColor: '#000000',
-    msTileColor: '#ffffff',
+    msTileColor: 'orange',
     appleMobileWebAppCapable: 'yes',
     appleMobileWebAppStatusBarStyle: 'black',
   },

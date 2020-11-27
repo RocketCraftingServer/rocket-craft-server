@@ -18,19 +18,23 @@ First integration will be for UE rocket-craft projects.
 
 ├── database/ 
 ├── docs/  
-├── node_modules/     (auto generated)
-├── public/
-|   ├── dist/         (auto generated)
+├── node_modules/                  (auto generated)
+├── admin-panel/                   [Vue - admin app]
+|   ├── dist/                      (auto generated)
 |   ├── images/
 |   |   └── icons/
 |   |   |   └── svgs
 |   |   |   └── pngs
-|   ├── node_modules/ (auto generated)
+|   ├── node_modules/              (auto generated)
 |   ├── public/  
-|   ├── src/          [Vue - admin app]
-|   |   └── components/
+|   ├── src/                       [Vue - admin app]
+|   |   └── components/            
+|   |       └── administrator/
+|   |           └── accounts.vue
 |   |   └── local-storage/
 |   |   └── my-common/
+|   |       └── common-func.ts
+|   |       └── literal.ts
 |   |   └── styles/
 |   |   └── App.vue
 |   |   └── IApp.ts

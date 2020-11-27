@@ -66,7 +66,7 @@ class RocketRoute extends ResponseHandler {
      * @description
      * Almost any undefined case use admin page for now
      */
-    this.app.use(root.express.static(__dirname + "./../../www/dist"));
+    this.app.use(root.express.static(__dirname + "./../../admin-panel/dist"));
 
     console.log("RocketRoute loaded with success.");
   }
