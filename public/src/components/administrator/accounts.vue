@@ -6,7 +6,7 @@
 
     <md-menu>
       <md-button class="md-primary md-raised" md-menu-trigger>Router Tester for `Account Component`</md-button>
-      <md-menu-content>
+      <md-menu-content class="md-primary md-raised" >
         <md-menu-item>
            <md-button @click="showRegisterDialogClick()" class="md-primary md-raised" md-menu-trigger>Register</md-button>
         </md-menu-item>
@@ -133,7 +133,7 @@
               <md-field class="md-content-options">
                 <label class="labelText" >User email address:</label>
                 <md-input
-                        @keyup.enter="runApiCallByActionName('login')"
+                        @keyup.enter="runApiConfirmation()"
                         v-model="defaults.userEmail"
                         class="md-primary md-raised"
                         placeholder="Please enter your email"
@@ -143,16 +143,16 @@
               <md-field class="md-content-options">
                 <label class="labelText" >Password:</label>
                 <md-input
-                        @keyup.enter="runApiCallByActionName('login')"
-                        v-model="defaults.userPassword"
+                        @keyup.enter="runApiConfirmation()"
+                        v-model="defaults.userEmailConfirmation"
                         class="md-primary md-raised"
-                        placeholder="Default password:"
+                        placeholder="Access TOKEN:"
                         maxlength="200">
                 </md-input>
               </md-field>
               <md-button class="md-accent md-raised" 
                          @click="runApiConfirmation()">
-                    /rocket/register/
+                    /rocket/confirmation/
                     <md-icon class="fa fa-bolt md-size-3x"></md-icon>
               </md-button>
             </md-content>
@@ -171,7 +171,7 @@
             <img style="width:200px;margin: -5px -5px -5px -5px;" src="/assets/logo.png" />
             <h3> rocket-craft-server service-route register</h3>
             <p> `@param useremail` </p>
-            <p> `@param confirmatin code` </p>
+            <p> `@param confirmatin token` </p>
           </md-content>
         </md-tab>
       </md-tabs>
@@ -210,6 +210,7 @@
 
 <script lang="ts">
 
+  import { API } from "../../my-common/literal"
   import Vue from 'vue'
   import Component from 'vue-class-component'
   import { mdMenu,
@@ -270,7 +271,8 @@
         defaults: {
           userEmail: 'zlatnaspirala@gmail.com',
           userName: "nikola",
-          userPassword: "123123123"
+          userPassword: "123123123",
+          userEmailConfirmation: ""
         },
         
       }
@@ -288,16 +290,11 @@
 
       const rawResponse = await fetch(route+ this.$props.prefix + '/' +  apiCallFlag, {
         method: 'POST',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
-        },
+        headers: API.JSON_HEADER,
         body: JSON.stringify(args)
       });
-      const content = await rawResponse.json();
-      this.registerResponse = content
-      console.log(content);
-
+      this.registerResponse = await rawResponse.json();
+      
     }
     
     async runApiConfirmation() {
@@ -306,8 +303,8 @@
       route = setupLocal(route)
 
       const args = {
-        emailField: this.$data.defaults.userEmail.toString(),
-        passwordField: this.$data.defaults.userPassword.toString()
+        emailField: this.$data.defaults.userEmail,
+        tokenField: this.$data.defaults.userEmailConfirmation,
       }
 
       const rawResponse = await fetch(route+ this.$props.prefix + '/confirmation', {
@@ -319,7 +316,7 @@
         body: JSON.stringify(args)
       });
       const content = await rawResponse.json();
-      this.registerResponse = content
+      this.confirmationResponse = content
       console.log(content);
 
     }

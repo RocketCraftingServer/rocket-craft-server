@@ -141,8 +141,8 @@ class MyDatabase {
         }
 
         const dbo = db.db(databaseName);
-
-        dbo.collection("users").findOne({ email: user.email, token: user.token }, function(err, result) {
+        console.log(">>>> user.token>>>>>> ", user.token)
+        dbo.collection("users").findOne({ email: user.email , token: user.token }, function(err, result) {
           if (err) {
             console.log("MyDatabase.regValidator 2:" + err);
             return null;
@@ -156,8 +156,7 @@ class MyDatabase {
                   console.info("MyDatabase, user confirmed err :" + err);
                   var local = {
                     result: null,
-                    email: user.email,
-                    accessToken: user.accessToken
+                    email: user.email
                   };
                   resolve(local);
                   return;
@@ -166,7 +165,7 @@ class MyDatabase {
                 var local = {
                   result: result,
                   email: user.email,
-                  accessToken: user.accessToken
+                  accessToken: user.token
                 };
                 resolve(local);
               });

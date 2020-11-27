@@ -46,7 +46,7 @@ class ResponseHandler {
               res.status(200).json({
                 message: "Check email for conmfirmation key.",
                 rocketStatus: "USER_REGISTERED",
-                rocketToken: responseFlag.token
+                email: responseFlag.email
               });
               console.log("Email reg sended. Notify client.");
             }).catch((error) => {
@@ -75,8 +75,27 @@ class ResponseHandler {
 
   async onRegValidationResponse(req, res) {
 
+    var user = {
+      email: req.body.emailField,
+      token: req.body.tokenField
+    };
+
     var responseFlag = await this.dataAction.regValidator(user, this)
     console.log("/rocket/confirmation responseFlag ", responseFlag);
+
+    if (responseFlag.result !== null) {
+      console.log("/rocket/confirmation passed ", responseFlag.email);
+      res.status(200).json({
+        message: "Confirmation done.",
+        rocketStatus: "USER_CONFIRMED",
+        accessToken: responseFlag.token // 
+      });
+    } else {
+      res.status(202).json({
+        message: "Wrong confirmation code.",
+        rocketStatus: "USER_NOT_CONFIRMED"
+      });
+    }
 
   }
 }
