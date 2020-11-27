@@ -94,8 +94,8 @@ First integration will be for UE rocket-craft projects.
 | |                               |   |                              |  | 4.22 or use engine who was |  |
 | |   MACOS                       |   |  IOS                         |  | builded from source.       |  |
 | |                               |   |                              |  |                            |  |
-| |   LINUX                       |   |  etc                         |  |                            |  |
-| |                               |   |                              |  |                            |  |
+| |   LINUX                       |   |  etc                         |  | Also can be used by any    |  |
+| |                               |   |                              |  | web application            |  |
 | +-------------------------------+   +------------------------------+  +----------------------------+  |
 |                                    rocket Client builds                                               |
 +----------+----------+---------------------------------------------------------------------------------+
@@ -106,7 +106,7 @@ First integration will be for UE rocket-craft projects.
 |          |          |                                                                                 |
 |     +----+----------v-------+                                       +-----------------------------+   |
 |     |                       |                                       |                             |   |
-|     |     REST API          |                                       |  HTTP, HTTPS (1.1 or 2)      |   |
+|     |     REST API          |                                       |  HTTP, HTTPS (1.1 or 2)     |   |
 |     |                       |                                       |                             |   |
 |     |                       |                                       +-----------------------------+   |
 |     |                       |                                                                         |
@@ -121,5 +121,4 @@ First integration will be for UE rocket-craft projects.
 +-------------------------------------------------------------------------------------------------------+
 
 </pre>
-
 
