@@ -187,31 +187,33 @@ class MyDatabase {
   }
 
   loginUser(user, callerInstance) {
+
     const databaseName = this.config.databaseName;
-    MongoClient.connect(
+
+    return new Promise((resolve) => {  
+      MongoClient.connect(
       this.config.getDatabaseRoot,
       { useNewUrlParser: true,
         useUnifiedTopology: true },
       function(error, db) {
         if (error) {
-          console.warn("MyDatabase.login error:" + error);
+          console.warn("MyDatabase.login error: " + error);
           return;
         }
 
         const dbo = db.db(databaseName);
 
-        console.warn("MyDatabase.login log ...user ", user);
+        console.warn("MyDatabase.login user => ", user);
 
         dbo.collection("users").findOne({ email: user.email, confirmed: true }, {}, function(err, result) {
           if (err) {
-            console.log("MyDatabase.login :" + err);
-            return null;
+            console.log("MyDatabase.login error: " + err);
+            resolve("MyDatabase.login.error")
           }
 
-          console.warn("MyDatabase.login log ...result ", result);
+          // console.warn("MyDatabase.login result => ", result);
 
           if (result !== null) {
-            // "password.iv" : password.iv, "password.encryptedData": password.encryptedData
             // Secure
             const pass = callerInstance.crypto.decrypt(result.password);
             if (pass != user.password) {
@@ -233,15 +235,16 @@ class MyDatabase {
             dbo.collection("users").updateOne({ email: user.email }, { $set: { online: true } }, function(err, result) {
               if (err) {
                 console.log("BAD_EMAIL_OR_PASSWORD");
+                resolve("BAD_UPDATE_EMAIL_OR_PASSWORD")
                 return;
               }
               console.warn("ONLINE: ", userData.nickname);
-              callerInstance.onUserLogin(userData, callerInstance);
-            });
+              resolve(userData);
+            })
           }
-        });
-      }
-    );
+        })
+      })
+    })
   }
 
   getUserData(user, callerInstance) {

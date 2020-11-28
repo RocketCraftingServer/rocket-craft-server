@@ -30,21 +30,7 @@ class RocketRoute extends ResponseHandler {
 
     var root = this;
 
-    this.app.post("/rocket/login", (req, res) => {
-
-      if (req.secure) {
-        console.log("Good");
-      };
-    
-      console.log("/rocket/login ", req.body);
-      console.log("/rocket/login ", req.body.username);
-    
-      res.status(200).json({
-        message: "POST /rocket/login",
-        rocketStatus: "welcome"
-      });
-    
-    })
+    this.app.post("/rocket/login", this.onLoginResponse.bind(this));
     
     this.app.get("/rocket/user", (req, res) => {
     

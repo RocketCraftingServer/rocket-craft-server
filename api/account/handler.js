@@ -98,6 +98,38 @@ class ResponseHandler {
     }
 
   }
+
+  async onLoginResponse(req, res) {
+    
+    if (req.secure) {
+      console.log("S");
+    };
+  
+    console.log("/rocket/register ", req.body.emailField);    
+    if (typeof req.body.emailField !== 'undefined' & typeof req.body.passwordField !== 'undefined' ) {
+              
+      var user = {
+        email: req.body.emailField,
+        password: req.body.passwordField
+      };
+      
+      var responseFlag = await this.dataAction.loginUser(user, this)
+      console.log("/rocket/login responseFlag ", responseFlag);
+      if (responseFlag.status == "USER_LOGGED") {
+        res.status(200).json({
+          message: "User logged",
+          rocketStatus: responseFlag.status 
+        });
+      } else {
+        res.status(200).json({
+          message: "User logged FAKE",
+          rocketStatus: responseFlag.status 
+        });
+      }
+  }
+
+}
+
 }
 
 module.exports = ResponseHandler

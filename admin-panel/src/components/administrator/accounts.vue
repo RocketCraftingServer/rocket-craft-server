@@ -75,7 +75,7 @@
               <md-field class="md-content-options">
                 <label class="labelText" >User email address:</label>
                 <md-input
-                        @keyup.enter="runApiCallByActionName('login')"
+                        @keyup.enter="runApiCallByActionName('register')"
                         v-model="defaults.userEmail"
                         class="md-primary md-raised"
                         placeholder="Please enter your email"
@@ -85,7 +85,7 @@
               <md-field class="md-content-options">
                 <label class="labelText" >Password:</label>
                 <md-input
-                        @keyup.enter="runApiCallByActionName('login')"
+                        @keyup.enter="runApiCallByActionName('register')"
                         v-model="defaults.userPassword"
                         class="md-primary md-raised"
                         placeholder="Default password:"
@@ -295,7 +295,9 @@
         headers: API.JSON_HEADER,
         body: JSON.stringify(args)
       });
-      this.registerResponse = await rawResponse.json();
+
+      this[apiCallFlag + 'Response'] = await rawResponse.json();
+      // this.registerResponse = await rawResponse.json();
       
     }
     
@@ -323,12 +325,32 @@
 
     }
 
-    googleApiLogin(): void {
-       this.$root.$emit('googleApiLoginEvent', { start: 'start googleApiLoginEvent' })
+    async runApiLogin() {
+
+      let route = this.$props.domain
+      route = setupLocal(route)
+
+      const args = {
+        emailField: this.$data.defaults.userEmail,
+        passwordField: this.$data.defaults.user,
+      }
+
+      const rawResponse = await fetch(route+ this.$props.prefix + '/confirmation', {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(args)
+      });
+      const content = await rawResponse.json();
+      this.confirmationResponse = content
+      console.log(content);
+
     }
 
     mounted (): void {
-
+      console.log("Account created.")
     }
 
     public showLoginDialogClick() {
