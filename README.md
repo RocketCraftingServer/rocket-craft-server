@@ -13,6 +13,14 @@ First integration will be for UE rocket-craft projects.
 
  - First char in name `I` (for example IApp.ts) represent 
    current interface used for generating API documentation.
+ - Dont upload this project in www, htdocs, public folder
+   on you public domain mashine. Like any node.js app.
+ - Folder `admin-panel` is somekind of sandbox.
+   Dont import any file from root like congif.js.
+   Even admin access it is still posible for public access.
+ - Top secret list: 
+      - system email password
+      - public database password
 
 <pre>
 

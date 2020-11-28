@@ -2,6 +2,7 @@
  * This class use shared lib.
  */
 const shared = require("./../common/shared");
+const config = require("./../config");
 
 /**
  * @description Only objective for this class is

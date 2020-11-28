@@ -4,30 +4,31 @@
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <md-menu md-size="medium" md-align-trigger>
-      <md-button class="md-primary md-raised" md-menu-trigger>Start here</md-button>
+      <md-button class="md-primary md-raised" md-menu-trigger>Application</md-button>
       <md-menu-content>
         <md-menu-item>
-          <md-progress-spinner v-show='tyfetchVisibility'
-            :md-diameter="22"
-            :md-stroke="4"
-            md-mode="indeterminate">
-          </md-progress-spinner>
-          <md-button class="md-primary md-raised" v-show='loginBtnVisibility' @click="googleApiLogin">
+          <md-button class="md-primary md-raised" v-show='loginBtnVisibility' @click="visibilityAccountTestRoute">
             <md-icon class="fa fa-shield"></md-icon>
-            Login with Google
+            Account
           </md-button>
         </md-menu-item>
+        <md-menu-item>
+          <md-button class="md-primary md-raised" v-show='loginBtnVisibility' @click="visibilityEmailService">
+            <md-icon class="fa fa-shield"></md-icon>
+            Email Service`
+          </md-button>
+        </md-menu-item>
+      </md-menu-content>
+    </md-menu>
+    <md-menu>
+      <md-button class="md-primary md-raised" md-menu-trigger>MORE</md-button>
+      <md-menu-content>
         <md-menu-item>
           <md-button class="md-primary md-raised" ref="switchThemeBtn" @click="switchTheme">
             <md-icon>T</md-icon>
             Theme {{ switchThemeBtnLabel }}
           </md-button>
         </md-menu-item>
-      </md-menu-content>
-    </md-menu>
-    <md-menu>
-      <md-button class="md-primary md-raised" md-menu-trigger>GO TO</md-button>
-      <md-menu-content>
         <md-menu-item>
            <md-button @click="showAboutDialogClick()" class="md-primary md-raised" md-menu-trigger>Donate, About and Credits</md-button>
         </md-menu-item>
@@ -35,20 +36,16 @@
     </md-menu>
 
     <md-dialog :md-active.sync="showAboutDialog">
-      <md-dialog-title>Credits&About</md-dialog-title>
+      <md-dialog-title>Credits and About</md-dialog-title>
       <md-tabs md-dynamic-height>
-
         <md-tab md-label="Credits">
           <md-content class="md-scrollbar">
             <h3> Used in my project: </h3>
             <md-content v-bind:style="optionsStyle">
-
               <h4>Project structural/methodology </h4>
               <a target="_blank" href="https://vuejs.org/">https://vuejs.org/</a>
-
               <h4>JavaScript 3D library. </h4>
               <a target="_blank" href="https://threejs.org/">https://threejs.org/</a>
-
             </md-content>
           </md-content>
         </md-tab>
@@ -176,8 +173,12 @@
       this.$set(this, 'switchThemeBtnLabel', themeEnu)
     }
 
-    googleApiLogin(): void {
-       this.$root.$emit('googleApiLoginEvent', { start: 'start googleApiLoginEvent' })
+    visibilityEmailService(): void {
+       (this.$root.$children[0] as any).setEmailServiceVisibility()
+    }
+
+    visibilityAccountTestRoute(): void {
+       (this.$root.$children[0] as any).setAccountVisibility()
     }
 
     mounted (): void {

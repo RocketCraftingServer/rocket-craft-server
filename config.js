@@ -38,6 +38,14 @@ class ServerConfig {
     };
 
     /**
+     * @description
+     * Email Service
+     */
+    this.systemEmail = {
+      user: "greespiral@gmail.com",
+      pass: "********",
+    };
+    /**
      * @description Database name
      * @param databaseName
      * @param databaseRoot {

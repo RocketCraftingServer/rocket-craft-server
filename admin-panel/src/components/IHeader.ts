@@ -7,7 +7,6 @@
     data(): any;
     switchTheme();
     changeTheme (themeEnu: string);
-    googleApiLogin(): void;
     mounted (): void;
     createPayPalDonateButton();
     showAboutDialogClick(): void;

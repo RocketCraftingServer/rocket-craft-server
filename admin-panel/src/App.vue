@@ -8,14 +8,17 @@
         <md-progress-spinner md-mode="indeterminate"></md-progress-spinner>
       </div>
 
-      <md-button class="md-primary" @click="showDialog = false">SHOW</md-button>
+      <emailService v-show="visibility.emailServiceComponent"
+                    slogan="Gmail service used.">
+      </emailService>
+
       <rocketAccounts slogan="API admin/tester" 
-                   prefix="rocket"
-                   :domain="$props.AppDomainHost" >
+                      prefix="rocket"
+                      :domain="$props.AppDomainHost">
       </rocketAccounts>
 
     </div>
-    <myFooter textContent='https://maximumroulette.com:30100 RocketCraftServer 2021'></myFooter>
+    <myFooter textContent='https://maximumroulette.com:30100 Rocket-Craft-Server 2021'></myFooter>
   </div>
 </template>
 
@@ -32,6 +35,7 @@
   import VueMaterial from 'vue-material'
   import 'vue-material/dist/vue-material.min.css'
   import './styles/style.scss'
+  import EmailService from './components/administrator/email-service.vue'
   Vue.use(VueMaterial as any)
 
   /**
@@ -50,7 +54,8 @@
     components: {
       myHeader,
       myFooter,
-      RocketAccounts
+      RocketAccounts,
+      EmailService
     },
     computed: mapState([
       'permission'
@@ -68,6 +73,7 @@
      */
     $refs!: {
       myHeader: myHeader,
+      emailService: EmailService,
       mybodycontent: HTMLDivElement,
       loader: HTMLDivElement
     }
@@ -100,10 +106,6 @@
      */
     public options: Object = {}
     public currentRoute
-
-    public visibility: Object = {
-
-    }
 
     /**
      * @description Initial method construct.
@@ -163,6 +165,23 @@
 
       })
 
+    }
+
+    data() {
+      return {
+        visibility: {
+          account: true,
+          emailServiceComponent: true
+        }
+      }
+    }
+
+    public setEmailServiceVisibility() {
+      this.$data.visibility.emailServiceComponent = !this.$data.visibility.emailServiceComponent
+    }
+
+    public setAccountVisibility() {
+      this.$data.visibility.account = !this.$data.visibility.account
     }
 
     setupInstance = () => {

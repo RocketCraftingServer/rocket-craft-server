@@ -6,4 +6,8 @@ export namespace API {
     'Content-Type': 'application/json'
   }
 
+  export const constructDomain = () => {
+    return location.protocol + '//' + location.host + '/'
+  }
+
 }
