@@ -1,9 +1,8 @@
 {
-  "name": "vuletube-youtube-alternative",
-  "version": "0.1.0",
-  "private": true,
+  "name": "rocket-server-admin-panel",
+  "version": "0.0.1",
+  "private": false,
   "scripts": {
-    "app": "node server-connector.js",
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",

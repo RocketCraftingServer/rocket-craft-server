@@ -4,7 +4,7 @@
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
-    <md-menu>
+    <md-menu md-align-trigger>
       <md-button class="md-primary md-raised" md-menu-trigger>Router Tester for `Account Component`</md-button>
       <md-menu-content class="md-primary md-raised" >
         <md-menu-item>
