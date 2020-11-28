@@ -21,7 +21,7 @@
 
 Vue supported with typescrypt.
 
-Run on local mashine:
+#### Run on local mashine:
 ```js
   npm run dev 
   npm run serve
@@ -30,13 +30,18 @@ Run on local mashine:
 This is web part access:
 http://localhost:3000/
 
+But also you can access on:
+http://localhost:30100/
+ - In this case you need to run `npm run build`
+   to make update.
 
+#### Running server
 This is `npm run dev` output:
-```py
+```js
 > node server localhost nik
 
  --------------------------------------------
- -> Server running under dev configuration.
+ -> Server running under dev configuration
  -> domain dev: localhost
  -> masterServerKey: rocket-server-app-database
  -> connectorPort: 30100
