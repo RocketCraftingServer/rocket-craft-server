@@ -25,17 +25,18 @@ First integration will be for UE rocket-craft projects.
 <pre>
 
 ├── database/ 
-├── docs/  
-├── node_modules/                  (auto generated)
-├── admin-panel/                   [Vue - admin app]
-|   ├── dist/                      (auto generated)
+|   ├── data/                    (internal mongodb generated) 
+├── docs/                        (Output for documentation html)
+├── node_modules/                (auto generated)
+├── admin-panel/                 [Vue - admin app]
+|   ├── dist/                    (auto generated)
 |   ├── images/
 |   |   └── icons/
 |   |   |   └── svgs
 |   |   |   └── pngs
-|   ├── node_modules/              (auto generated)
-|   ├── public/  
-|   ├── src/                       [Vue - admin app]
+|   ├── node_modules/            (auto generated)
+|   ├── public/                  [Vue - Public]
+|   ├── src/                     [Vue - src]
 |   |   └── components/            
 |   |       └── administrator/
 |   |           └── accounts.vue
@@ -55,20 +56,20 @@ First integration will be for UE rocket-craft projects.
 |   ├── .gitignore
 |   ├── babel.config.js
 |   ├── index.html
-|   ├── manifest.web
+|   ├── manifest.web          [PWA - staff]
 |   ├── package.json
 |   ├── package-lock.json
-|   ├── typedoc.json
+|   ├── typedoc.json          [Documentation generator config]
 |   ├── tsconfig.ts
-|   ├── vue.config.js
-├── self-cert/
-├── .gitignore  
-├── config.js  
+|   ├── vue.config.js         [PWA - staff]
+├── self-cert/                [server side local cert]
+├── .gitignore        
+├── config.js                 [server side config]
 ├── LICENCE
 ├── README.md
-├── package.json
+├── package.json                
 ├── package-lock.json
-├── server.js
+├── server.js                   [Main Server]
 
 </pre>
 
@@ -95,10 +96,10 @@ First integration will be for UE rocket-craft projects.
 |  +-----------------------------------------------------+                                              |
 |                                                                                                       |
 |                                                                                                       |
-|      DESKTOPS                            MOBILE                           WEB                         |
+|      DESKTOPS                            MOBILE     GameConsoles          WEB                         |
 | +-------------------------------+   +------------------------------+  +----------------------------+  |
 | |                               |   |                              |  |                            |  |
-| |   WINDOWS                     |   |  ANDROID                     |  | Unreal export direct from  |  |
+| |   WINDOWS                     |   |  ANDROID       X-Box         |  | Unreal export direct from  |  |
 | |                               |   |                              |  | 4.22 or use engine who was |  |
 | |   MACOS                       |   |  IOS                         |  | builded from source.       |  |
 | |                               |   |                              |  |                            |  |

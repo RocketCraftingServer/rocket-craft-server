@@ -102,7 +102,7 @@ class ResponseHandler {
   async onLoginResponse(req, res) {
     
     if (req.secure) {
-      console.log("S");
+      console.log("Secured.");
     };
   
     console.log("/rocket/register ", req.body.emailField);    
@@ -114,17 +114,22 @@ class ResponseHandler {
       };
       
       var responseFlag = await this.dataAction.loginUser(user, this)
-      console.log("/rocket/login responseFlag ", responseFlag);
+      console.log("/rocket/login => ", responseFlag);
       if (responseFlag.status == "USER_LOGGED") {
+
         res.status(200).json({
           message: "User logged",
-          rocketStatus: responseFlag.status 
+          rocketStatus: responseFlag.status,
+          flag: responseFlag,
         });
+        
       } else {
-        res.status(200).json({
-          message: "User logged FAKE",
-          rocketStatus: responseFlag.status 
+
+        res.status(300).json({
+          message: "Wrong Password",
+          rocketStatus: "no-session"
         });
+
       }
   }
 

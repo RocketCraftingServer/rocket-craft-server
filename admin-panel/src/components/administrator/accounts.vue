@@ -31,7 +31,7 @@
                 <label class="labelText" >User email address:</label>
                 <md-input
                         @keyup.enter="runApiCallByActionName('login')"
-                        v-model="defaults.useremail"
+                        v-model="defaults.userEmail"
                         class="md-primary md-raised"
                         placeholder="Please enter your email"
                         maxlength="25">
@@ -41,7 +41,7 @@
                 <label class="labelText" >Password:</label>
                 <md-input
                         @keyup.enter="runApiCallByActionName('login')"
-                        v-model="defaults.password"
+                        v-model="defaults.userPassword"
                         class="md-primary md-raised"
                         placeholder="Default password:"
                         maxlength="200">
@@ -49,6 +49,15 @@
               </md-field>
               <md-button @click="runApiCallByActionName('login')"> /rocket/login/ </md-button>
             </md-content>
+              <md-content ref="responseLoginContainer" v-bind:style="optionsStyle">
+                <ul id="example-1">
+                  <li v-for="item in loginResponse" :key="item.message">
+                    {{ item }} 
+                    <md-icon v-if="item == 'USER_ALREADY_REGISTERED'" 
+                             class="fa fa-exclamation-triangle md-accent" />
+                  </li>
+                </ul> 
+              </md-content>   
           </md-content>
         </md-tab>
         <md-tab md-label="Route Info">
@@ -105,7 +114,7 @@
                     <md-icon v-if="item == 'USER_ALREADY_REGISTERED'" 
                              class="fa fa-exclamation-triangle md-accent" />
                   </li>
-              </ul> 
+                </ul> 
               </md-content>   
           </md-content>
         </md-tab>
@@ -250,6 +259,7 @@
 
     private registerResponse = {}
     private confirmationResponse = {}
+    private loginResponse = {}
 
     public optionsStyle = {
       display: 'flex',

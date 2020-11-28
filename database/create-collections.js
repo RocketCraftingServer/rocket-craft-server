@@ -15,6 +15,12 @@ class CreateDatabaseCollections {
     this.config = serverConfig;
   }
 
+  createCollections() {
+
+    const r1 = this.createUsersCollection();
+    return r1;
+  }
+
   /**
    * Method register is called on singup user action.
    * @param {object} user
@@ -22,7 +28,7 @@ class CreateDatabaseCollections {
    *  user.userRegData.password
    * @param {classInstance} callerInstance
    */
-  createCollections() {
+  createUsersCollection() {
 
     var root = this;
     const databaseName = this.config.databaseName;
@@ -59,6 +65,39 @@ class CreateDatabaseCollections {
         });
     });
   }
+
+  createAntiHackCollection() {
+
+    var root = this;
+    const databaseName = this.config.databaseName;
+
+    /**
+     * @description 
+     * Log critical requests to create 
+     * black list.
+     */
+    return new Promise((resolve) => {
+      MongoClient.connect(
+        this.config.getDatabaseRoot,
+        { useNewUrlParser: true, useUnifiedTopology: true },
+        function (error, db) {
+          if (error) {
+            console.warn("MyDatabase  error:" + error);
+            return;
+          }
+          const dbo = db.db(databaseName);
+          if (!dbo.collection("antihack")) {
+            dbo.createCollection("antihack").createIndex({ useragent: 1 }, { unique: true });
+            dbo.createCollection("antihack").createIndex({ description: 1 }, { unique: true });
+            resolve("Collections antihack created.")
+          } else {
+            resolve("Collections antihack already exist.")
+          }
+
+        });
+    });
+  }
+
 }
 
 module.exports = CreateDatabaseCollections;

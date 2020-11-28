@@ -17,6 +17,9 @@
                       :domain="$props.AppDomainHost">
       </rocketAccounts>
 
+      <country-selector>
+      </country-selector>
+
     </div>
     <myFooter textContent='https://maximumroulette.com:30100 Rocket-Craft-Server 2021'></myFooter>
   </div>
@@ -36,6 +39,7 @@
   import 'vue-material/dist/vue-material.min.css'
   import './styles/style.scss'
   import EmailService from './components/administrator/email-service.vue'
+  import CountrySelector from './components/countries-selector/countrySelector.vue'
   Vue.use(VueMaterial as any)
 
   /**
@@ -55,7 +59,8 @@
       myHeader,
       myFooter,
       RocketAccounts,
-      EmailService
+      EmailService,
+      CountrySelector
     },
     computed: mapState([
       'permission'

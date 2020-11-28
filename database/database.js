@@ -216,14 +216,19 @@ class MyDatabase {
           if (result !== null) {
             // Secure
             const pass = callerInstance.crypto.decrypt(result.password);
-            if (pass != user.password) {
-              console.warn("Session passed...");
+            if (pass == user.password) {
+              console.warn("Session passed.");
             } else {
               // handle bad cert
-              console.warn("Session : Bad cert");
+              console.warn("login.bad.password");
+              const userData = {
+                status: "WRONG_PASSWORD",
+              }
+              resolve(userData);
             }
             // Security staff
             const userData = {
+              status: "USER_LOGGED",
               email: result.email,
               nickname: result.nickname,
               points: result.points,
