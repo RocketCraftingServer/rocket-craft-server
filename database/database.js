@@ -61,18 +61,6 @@ class MyDatabase {
           }
 
           const dbo = db.db(databaseName);
-          if (!dbo.collection("users")) {
-            dbo.createCollection("users").createIndex({ email: 1 }, { unique: true });
-            dbo.createCollection("users").createIndex({ password: 1 }, { unique: true });
-            dbo.createCollection("users").createIndex({ socketid: 1 }, { unique: true });
-            dbo.createCollection("users").createIndex({ confirmed: 1 }, { unique: true });
-            dbo.createCollection("users").createIndex({ token: 1 }, { unique: true });
-            dbo.createCollection("users").createIndex({ online: 1 }, { unique: false });
-            dbo.createCollection("users").createIndex({ nickname: 1 }, { unique: false });
-            dbo.createCollection("users").createIndex({ points: 1 }, { unique: false });
-            dbo.createCollection("users").createIndex({ profileUrl: 1 }, { unique: true });
-          }
-
           dbo.collection("users").findOne({ email: user.email }, function(err, result) {
             if (err) {
               console.warn("MyDatabase err in register:" + err);
@@ -435,7 +423,9 @@ class MyDatabase {
 
   // UPGRADE
   getUsersList(user, callerInstance) {
+
     const databaseName = this.config.databaseName;
+    return new Promise((resolve) => {  
     MongoClient.connect(
       this.config.getDatabaseRoot,
       { useNewUrlParser: true,
@@ -443,6 +433,7 @@ class MyDatabase {
       function(error, db) {
         if (error) {
           console.warn("MyDatabase.getUsersList :" + error);
+          resolve({ status: 'error in MyDatabase getUsers'})
           return;
         }
 
@@ -453,9 +444,10 @@ class MyDatabase {
 
           if (err) {
             console.log("error in get user list.");
+            resolve({ status: 'error in getUsers'})
           } else {
 
-            var usersData = {};
+            var usersData = [];
             result.forEach(function(item, index) {
 
               var reduceName = "users-shared-data/no-image.jpg";
@@ -464,20 +456,23 @@ class MyDatabase {
               }
               // var reduceName = item.profileUrl.replace("public", "");
               // console.log("Append structure", index);
-              // `['user' + index]` local - not important like property
-              usersData["user" + index] = {};
-              usersData["user" + index].nickname = item.nickname;
-              usersData["user" + index].points = item.points;
-              usersData["user" + index].rank = item.rank;
-              usersData["user" + index].online = item.online;
-              usersData["user" + index].profileImage = reduceName;
+
+              var user = {};
+              user.nickname = item.nickname;
+              user.points = item.points;
+              user.rank = item.rank;
+              user.online = item.online;
+              user.profileImage = reduceName;
+
+              usersData.push(user);
+              
             });
 
-            callerInstance.onSteamPublicUsers(user, callerInstance, usersData);
+            resolve(usersData);
           }
         });
-      }
-    );
+      })
+    })
   }
 
   // UPGRADE

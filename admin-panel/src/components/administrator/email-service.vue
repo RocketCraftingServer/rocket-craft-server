@@ -2,11 +2,11 @@
   <div ref="emailService" class="myStyle">
 
     <md-menu>
-      <md-button class="md-primary md-raised" md-menu-trigger>MORE</md-button>
+      <md-button class="md-primary md-raised" md-menu-trigger>SYSTEM</md-button>
       <md-menu-content>
         <md-menu-item>
           <md-button class="md-primary md-raised" ref="switchThemeBtn" @click="visibility = !visibility">
-            <md-icon>e</md-icon>
+            <md-icon class="fa fa-email md-size-1x" ></md-icon>
             EmailService
           </md-button>
         </md-menu-item>
@@ -17,39 +17,35 @@
       <md-dialog-title>Email service</md-dialog-title>
       <md-tabs md-dynamic-height>
 
-        <md-tab md-label="Login">
+        <md-tab md-label="System Email Address">
           <md-content class="md-scrollbar">
             <md-content v-bind:style="optionsStyle">
-               <h3> GMail Service  </h3>
-              <md-field class="md-content-options">
-                <label class="labelText" >System email address:</label>
-                <md-input
-                        v-model="defaults.useremail"
-                        class="md-primary md-raised"
-                        placeholder="Please enter your email"
-                        maxlength="50">
-                </md-input>
-              </md-field>
-              <md-field class="md-content-options">
-                <label class="labelText" >Password:</label>
-                <md-input
-                        @keyup.enter="runApiCallByActionName('login')"
-                        v-model="defaults.password"
-                        class="md-primary md-raised"
-                        placeholder="Default password:"
-                        maxlength="200">
-                </md-input>
-              </md-field>
-              <md-button @click="testEmailService()"> Test service </md-button>
+               <h3> GMail Service </h3>
+              <md-button class="disabled" style="align-self: flex-start;" >
+                <label class="labelText text-align:left" >System email address: {{ this.$props.slogan }}</label>
+              </md-button>
+              <h3>
+              To edit this variable go to config.js [READONLY]
+              </h3>
             </md-content>
           </md-content>
         </md-tab>
-        <md-tab md-label="Route Info">
+        <md-tab md-label="Test email service">
           <md-content class="md-scrollbar" v-bind:style="optionsStyle">
-            <img style="width:200px;margin: -5px -5px -5px -5px;" src="/assets/vule-logo1.png" />
-            <h3> rocket-craft-server email service</h3>
-            <p> @params { systemEmail } </p>
-            <p> @params { systemPassword } </p>
+            <img style="width:200px;margin: -5px -5px -5px -5px;" src="/assets/logo.png" />
+                          <label>Send email to : </label>
+              <md-field class="md-content-options">
+                <label class="labelText" >address:</label>
+                <md-input
+                        class="md-primary md-raised"
+                        placeholder="Default email:"
+                        maxlength="100">
+                </md-input>
+              </md-field>
+            <md-field>
+              <md-textarea> TEXT TEXT </md-textarea>
+            </md-field>
+            <md-button class="md-primary md-raised" @click="testEmailService()"> Test service </md-button>
           </md-content>
         </md-tab>
       </md-tabs>

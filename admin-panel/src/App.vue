@@ -9,7 +9,7 @@
       </div>
 
       <emailService v-show="visibility.emailServiceComponent"
-                    slogan="Gmail service used.">
+                    :slogan="this.$store.state.system.emailAddress" >
       </emailService>
 
       <rocketAccounts slogan="API admin/tester" 
@@ -17,8 +17,8 @@
                       :domain="$props.AppDomainHost">
       </rocketAccounts>
 
-      <country-selector>
-      </country-selector>
+      <!--country-selector>
+      </country-selector-->
 
     </div>
     <myFooter textContent='https://maximumroulette.com:30100 Rocket-Craft-Server 2021'></myFooter>
