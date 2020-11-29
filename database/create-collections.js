@@ -57,6 +57,7 @@ class CreateDatabaseCollections {
             dbo.createCollection("users").createIndex({ nickname: 1 }, { unique: false });
             dbo.createCollection("users").createIndex({ points: 1 }, { unique: false });
             dbo.createCollection("users").createIndex({ profileUrl: 1 }, { unique: true });
+            dbo.createCollection("users").createIndex({ permission: 1 }, { unique: true });
             resolve("Collections users created.")
           } else {
             resolve("Collections users already exist.")

@@ -5,58 +5,33 @@ class ResponseHandler {
     this.crypto = crypto;
   }
 
-  async onRegisterResponse(req, res) {
+  async getUsersResponse(req, res) {
     
       if (req.secure) {
         // console.log("S");
       };
     
-      console.log("/rocket/getusers ", req.body.emailField);    
-      if (typeof req.body.emailField !== 'undefined' & typeof req.body.passwordField !== 'undefined' ) {
+      console.log("/rocket/users ", req.body);
+
+      if (typeof req.body.token !== 'undefined') {
                 
         var user = {
-          email: req.body.emailField,
-          password: req.body.passwordField
+          token: req.body.token,
         };
         
-        var responseFlag = await this.dataAction.register(user, this)
-        console.log("/rocket/register responseFlag ", responseFlag);
-        if (responseFlag.status == "USER_ALREADY_REGISTERED") {
+        var responseFlag = await this.dataAction.getUsersList(user, this)
+        console.log("/rocket/users ", responseFlag);
+
+        if (responseFlag.status == "AUTHORIZED") {
           res.status(200).json({
-            message: "maybe very bad request",
-            rocketStatus: responseFlag.status 
+            message: "get users response",
+            rocketStatus: responseFlag
           });
-        } else if (responseFlag.status == "USER_REGISTERED") {
-
-          let emailRegBody = require("../../email/templates/confirmation.html").getConfirmationEmail;
-          let contentRegBody = emailRegBody(responseFlag.token, responseFlag.email);
-          let emailConnection = null;
-
-          try {
-            emailConnection = require("../../email/mail-service")
-              (responseFlag.email, responseFlag.status, contentRegBody).SEND(responseFlag.email);
-          } catch (error) {
-
-            console.warn("Connector error in sending reg email!", error);
-            console.log("Email reg error. Notify client.");
-
-          } finally {
-
-            emailConnection.then((data) => {
-              res.status(200).json({
-                message: "Check email for conmfirmation key.",
-                rocketStatus: "USER_REGISTERED",
-                email: responseFlag.email
-              });
-              console.log("Email reg sended. Notify client.");
-            }).catch((error) => {
-              console.log("Error in sending email procedure: " + error);
-              res.status(201).json({
-                message: "Check email for conmfirmation key.",
-                rocketStatus: "USER_REGISTERED"
-              });
-            });
-          }
+        } else {
+          res.status(400).json({
+            message: "NO AUTHORIZED",
+            rocketStatus: "bad request"
+          });
         }
         
         

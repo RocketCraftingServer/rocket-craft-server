@@ -115,7 +115,7 @@ const CompProps = Vue.extend({
 @Component
 export default class EmailService extends CompProps {
 
-  private visibility = true
+  private visibility = false
   
   public optionsStyle = {
     display: 'flex',

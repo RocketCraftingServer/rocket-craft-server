@@ -81,7 +81,8 @@ class MyDatabase {
                   socketid: user.socketId,
                   online: false,
                   points: 1000,
-                  rank: "junior"
+                  rank: "junior",
+                  permission: "basic"
                 },
                 function(err, res) {
                   if (err) {
@@ -240,45 +241,47 @@ class MyDatabase {
     })
   }
 
-  getUserData(user, callerInstance) {
+  getUserData(user) {
     const databaseName = this.config.databaseName;
-    MongoClient.connect(
-      this.config.getDatabaseRoot,
-      { useNewUrlParser: true,
-        useUnifiedTopology: true },
-      function(error, db) {
-        if (error) {
-          console.warn("MyDatabase.login :" + error);
-          return;
-        }
+    return new Promise((resolve) => { 
+      MongoClient.connect(
+        this.config.getDatabaseRoot,
+        { useNewUrlParser: true,
+          useUnifiedTopology: true },
+        function(error, db) {
+          if (error) {
+            console.warn("MyDatabase.login :" + error);
+            resolve("error");
+            return;
+          }
 
-        const dbo = db.db(databaseName);
+          const dbo = db.db(databaseName);
+          dbo
+            .collection("users")
+            .findOne({ permission: "basic", online: true, confirmed: true }, function(err, result) {
+              if (err) {
+                console.log("MyDatabase.getUserData :" + err);
+                return null;
+              }
+              if (result !== null) {
+                // Security staff
+                const userData = {
+                  email: result.email,
+                  points: result.points,
+                  rank: result.rank,
+                  nickname: result.nickname,
+                  socketid: result.accessToken,
+                  token: result.token,
+                  profileImage: result.profileUrl
+                };
 
-        dbo
-          .collection("users")
-          .findOne({ socketid: user.data.accessToken, online: true, confirmed: true }, function(err, result) {
-            if (err) {
-              console.log("MyDatabase.getUserData :" + err);
-              return null;
-            }
-
-            if (result !== null) {
-              // Security staff
-              const userData = {
-                email: result.email,
-                points: result.points,
-                rank: result.rank,
-                nickname: result.nickname,
-                socketid: result.accessToken,
-                token: result.token,
-                profileImage: result.profileUrl
-              };
-
-              callerInstance.onUserData(userData, callerInstance);
+              resolve(userData);
+            } else {
+              resolve("NONO");
             }
           });
-      }
-    );
+      })
+    })
   }
 
   setNewNickname(user, callerInstance) {
@@ -438,34 +441,57 @@ class MyDatabase {
         }
 
         const dbo = db.db(databaseName);
-        var coll = dbo.collection("users");
 
+        dbo.collection("users").findOne({ email: user.email, confirmed: true }, {}, function(err, result) {
+          if (err) {
+            console.log("MyDatabase.login error: " + err);
+            resolve("MyDatabase.login.error")
+          }
+
+          // console.warn("MyDatabase.login result => ", result);
+
+          if (result !== null) {
+            // Secure
+            const pass = callerInstance.crypto.decrypt(result.password);
+            if (pass == user.password) {
+              console.warn("Session passed.");
+
+
+            } else {
+              // handle bad cert
+              console.warn("login.bad.password");
+              const userData = {
+                status: "WRONG_PASSWORD",
+              }
+              resolve(userData);
+            }
+          }
+        });
+
+        var coll = dbo.collection("users");
         coll.find({ confirmed: true }).toArray(function(err, result) {
 
           if (err) {
             console.log("error in get user list.");
             resolve({ status: 'error in getUsers'})
           } else {
-
-            var usersData = [];
+            var usersData = {
+              status: "AUTHORIZED",
+              users: []
+            };
             result.forEach(function(item, index) {
-
               var reduceName = "users-shared-data/no-image.jpg";
               if (typeof item.profileUrl !== 'undefined') {
                 reduceName = item.profileUrl.replace("public", "");
               }
-              // var reduceName = item.profileUrl.replace("public", "");
-              // console.log("Append structure", index);
-
               var user = {};
               user.nickname = item.nickname;
               user.points = item.points;
               user.rank = item.rank;
               user.online = item.online;
               user.profileImage = reduceName;
-
-              usersData.push(user);
-              
+              usersData.users.push(user);
+        
             });
 
             resolve(usersData);

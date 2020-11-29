@@ -35,4 +35,4 @@ class RocketRouteGetUsers extends ResponseHandler {
 
 }
 
-module.exports = (app, express, dataAction, crypto) => { return new RocketRoute(app, express, dataAction, crypto) }
+module.exports = (app, express, dataAction, crypto) => { return new RocketRouteGetUsers(app, express, dataAction, crypto) }

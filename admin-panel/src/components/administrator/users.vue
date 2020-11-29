@@ -4,7 +4,7 @@
     <md-menu>
       <md-button class="md-primary md-raised" ref="switchThemeBtn" @click="visibility = !visibility">
         <md-icon class="fa fa-email md-size-1x" ></md-icon>
-        EmailService
+        Users
       </md-button>
     </md-menu>
 
@@ -14,31 +14,36 @@
 
         <md-tab md-label="System Email Address">
           <md-content class="md-scrollbar">
-            <md-table v-model="searched" md-sort="name" md-sort-order="asc" md-card md-fixed-header>
+          <md-button class="md-primary md-raised" ref="getUserBtn" @click="runApiUsers('users')">
+            <md-icon class="fa fa-account md-size-1x" ></md-icon>
+            Users
+          </md-button>                     
+            <md-table v-model="table.searched" md-sort="name" md-sort-order="asc" md-card md-fixed-header>
               <md-table-toolbar>
                 <div class="md-toolbar-section-start">
                   <h1 class="md-title">Users</h1>
                 </div>
 
                 <md-field md-clearable class="md-toolbar-section-end">
-                  <md-input placeholder="Search by name..." v-model="search" @input="searchOnTable" />
+                  <md-input placeholder="Search by name..." v-model="table.search" @input="searchOnTable" />
                 </md-field>
               </md-table-toolbar>
 
               <md-table-empty-state
                 md-label="No users found"
-                :md-description="`No user found for this '${search}' query. Try a different search term or create a new user.`">
+                :md-description="`No user found for this '${table.search}' query. Try a different search term or create a new user.`">
                 <md-button class="md-primary md-raised" @click="newUser">Create New User</md-button>
               </md-table-empty-state>
 
               <md-table-row slot="md-table-row" slot-scope="{ item }">
-                <md-table-cell md-label="ID" md-sort-by="id" md-numeric>{{ item.id }}</md-table-cell>
+                <md-table-cell md-label="ID" md-sort-by="id" md-numeric>{{ item.points }}</md-table-cell>
                 <md-table-cell md-label="Name" md-sort-by="name">{{ item.name }}</md-table-cell>
                 <md-table-cell md-label="Email" md-sort-by="email">{{ item.email }}</md-table-cell>
-                <md-table-cell md-label="Gender" md-sort-by="gender">{{ item.gender }}</md-table-cell>
-                <md-table-cell md-label="Job Title" md-sort-by="title">{{ item.title }}</md-table-cell>
+                <md-table-cell md-label="Gender" md-sort-by="gender">{{ item.confirmed }}</md-table-cell>
+                <md-table-cell md-label="Job Title" md-sort-by="title">{{ item.nickname }}</md-table-cell>
               </md-table-row>
             </md-table>
+
           </md-content>
         </md-tab>
         <md-tab md-label="Test email service">
@@ -96,7 +101,8 @@ import IAccounts from './IAccounts'
 const CompProps = Vue.extend({
   props: {
     slogan: String,
-    prefix: String
+    prefix: String,
+    domain: String
   }
 });
 
@@ -135,9 +141,43 @@ export default class usersRocketTable extends CompProps {
   mounted(): void {
     console.log('Users Service.')
   }
- 
+
+  async runApiUsers(apiCallFlag) {
+
+    console.log("TTTTTTTTTTTT")
+    let route = this.$props.domain
+    route = setupLocal(route)
+
+    const args = {
+      email: this.$data.system.emailAddress,
+      // passwordField: this.$data.defaults.userPassword.toString()
+    }
+
+    const rawResponse = await fetch(route+ this.$props.prefix + '/' +  apiCallFlag, {
+      method: 'POST',
+      headers: API.JSON_HEADER,
+      body: JSON.stringify(args)
+    });
+
+    
+    var test =  await rawResponse.json();
+    console.log(test)
+    // this.$data.userResponsevar
+    // this.$data.userResponse = await rawResponse.json();
+
+    // this.registerResponse = await rawResponse.json();
+    
+  }
+
+  newUser(){
+
+  }
+
   data() {
     return {
+      system: {
+        emailAddress: 'zlatnaspirala@gmail.com'
+      },
       table: {
         search: null,
         searched: [],
@@ -153,6 +193,7 @@ export default class usersRocketTable extends CompProps {
   created () {
     this.$data.table.searched = this.$data.userResponse
   }
+
   /**
    * @description
    * Table sort
@@ -165,7 +206,6 @@ export default class usersRocketTable extends CompProps {
     if (term) {
       return items.filter(item => this.toLower(item.name).includes(this.toLower(term)))
     }
-
     return items
   }
 

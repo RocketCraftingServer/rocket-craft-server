@@ -17,6 +17,11 @@
                       :domain="$props.AppDomainHost">
       </rocketAccounts>
 
+      <users v-show="visibility.usersComponent"
+             prefix="rocket"
+             :domain="$props.AppDomainHost">
+      </users>
+
       <!--country-selector>
       </country-selector-->
 
@@ -40,6 +45,8 @@
   import './styles/style.scss'
   import EmailService from './components/administrator/email-service.vue'
   import CountrySelector from './components/countries-selector/country-selector.vue'
+  import Users from './components/administrator/users.vue'
+
   Vue.use(VueMaterial as any)
 
   /**
@@ -60,7 +67,8 @@
       myFooter,
       RocketAccounts,
       EmailService,
-      CountrySelector
+      CountrySelector,
+      Users
     },
     computed: mapState([
       'permission'
@@ -177,13 +185,18 @@
       return {
         visibility: {
           account: true,
-          emailServiceComponent: true
+          emailServiceComponent: true,
+          usersComponent: true
         }
       }
     }
 
     public setEmailServiceVisibility() {
       this.$data.visibility.emailServiceComponent = !this.$data.visibility.emailServiceComponent
+    }
+
+    public setUsersVisibility() {
+      this.$data.visibility.usersComponent = !this.$data.visibility.usersComponent
     }
 
     public setAccountVisibility() {

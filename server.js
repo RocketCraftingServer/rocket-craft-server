@@ -99,6 +99,7 @@ app.use(
 // app.use(cors());
 
 let routerRocket = new require('./api/account/account')(app, express, database, crypto);
+let routerUsers = new require('./api/users/users')(app, express, database, crypto);
 
 // Server configuration
 // app.use(express.static(__dirname + "/public"));

@@ -15,7 +15,13 @@
         <md-menu-item>
           <md-button class="md-primary md-raised" v-show='loginBtnVisibility' @click="visibilityEmailService">
             <md-icon class="fa fa-shield"></md-icon>
-            Email Service`
+            Email Service
+          </md-button>
+        </md-menu-item>
+        <md-menu-item>
+          <md-button class="md-primary md-raised" @click="visibilityUsersComponent">
+            <md-icon class="fa fa-shield"></md-icon>
+            Users Data Table
           </md-button>
         </md-menu-item>
       </md-menu-content>
@@ -171,6 +177,10 @@
 
     changeTheme (themeEnu: string) {
       this.$set(this, 'switchThemeBtnLabel', themeEnu)
+    }
+
+    visibilityUsersComponent(): void {
+      (this.$root.$children[0] as any).setUsersVisibility()
     }
 
     visibilityEmailService(): void {
