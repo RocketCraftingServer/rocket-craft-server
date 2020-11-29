@@ -79,6 +79,7 @@
     $refs!: {
       myHeader: myHeader,
       emailService: EmailService,
+      countrySelector: CountrySelector,
       mybodycontent: HTMLDivElement,
       loader: HTMLDivElement
     }
