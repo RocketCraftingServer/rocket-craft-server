@@ -39,7 +39,7 @@
   import 'vue-material/dist/vue-material.min.css'
   import './styles/style.scss'
   import EmailService from './components/administrator/email-service.vue'
-  import CountrySelector from './components/countries-selector/countrySelector.vue'
+  import CountrySelector from './components/countries-selector/country-selector.vue'
   Vue.use(VueMaterial as any)
 
   /**
