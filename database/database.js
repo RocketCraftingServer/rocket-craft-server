@@ -22,6 +22,13 @@ class MyDatabase {
     console.log("Database startup migrate -> ", r);
   }
 
+  async seedDatabase(numOfFakeUsers) {
+    const SeedDatabaseCollections = require("./seed-collections")
+    var databasePopulate = new SeedDatabaseCollections(this.config);
+    var r = await databasePopulate.seedUsersCollection(numOfFakeUsers);
+    console.log("Database seed finished -> ", r);
+  }
+
   /**
    * Method register is called on singup user action.
    * @param {object} user
@@ -427,74 +434,63 @@ class MyDatabase {
   // UPGRADE
   getUsersList(user, callerInstance) {
 
+    var root = this;
     const databaseName = this.config.databaseName;
+    
     return new Promise((resolve) => {  
-    MongoClient.connect(
-      this.config.getDatabaseRoot,
-      { useNewUrlParser: true,
-        useUnifiedTopology: true},
-      function(error, db) {
-        if (error) {
-          console.warn("MyDatabase.getUsersList :" + error);
-          resolve({ status: 'error in MyDatabase getUsers'})
-          return;
+      MongoClient.connect(
+      this.config.getDatabaseRoot, { useNewUrlParser: true, useUnifiedTopology: true },
+       function(error, db) {
+        if (error) { console.warn("MyDatabase.getUsersList :" + error);
+                     resolve({ status: 'error in MyDatabase getUsers'})
+                     return;
         }
-
         const dbo = db.db(databaseName);
-
-        dbo.collection("users").findOne({ email: user.email, confirmed: true }, {}, function(err, result) {
-          if (err) {
-            console.log("MyDatabase.login error: " + err);
-            resolve("MyDatabase.login.error")
+        dbo.collection("users").findOne({ token: user.token, confirmed: true }, {}, function(err, result) {
+          if (err) { console.log("MyDatabase.login error: " + err);
+                     resolve("MyDatabase.login.error")
           }
-
           // console.warn("MyDatabase.login result => ", result);
-
           if (result !== null) {
             // Secure
-            const pass = callerInstance.crypto.decrypt(result.password);
-            if (pass == user.password) {
+            // const pass = callerInstance.crypto.decrypt(result.password);
+            if (user.token) {
               console.warn("Session passed.");
+              var coll = dbo.collection("users");
+              // { confirmed: true }
+              coll.find().toArray(function(err, result) {
+      
+                if (err) { console.log("error in get user list.");
+                           resolve({ status: 'error in getUsers'})
+                } else {
 
+                  var usersData = {
+                    status: "AUTHORIZED",
+                    users: []
+                  };
+                  result.forEach(function(item, index) {
+                    var reduceName = "users-shared-data/no-image.jpg";
+                    if (typeof item.profileUrl !== 'undefined') {
+                      reduceName = item.profileUrl.replace("public", "");
+                    }
+                    var user = {};
+                    user.id = item._id;
+                    user.nickname = item.nickname;
+                    user.points = item.points;
+                    user.rank = item.rank;
+                    user.online = item.online;
+                    user.email = item.email;
+                    user.confirmed = item.confirmed;
+                    user.profileImage = reduceName;
+                    usersData.users.push(user);
+                  });
+                  resolve(usersData);
+                }
+              });
 
             } else {
-              // handle bad cert
-              console.warn("login.bad.password");
-              const userData = {
-                status: "WRONG_PASSWORD",
-              }
-              resolve(userData);
+              resolve({ status: "WRONG_PASSWORD" });
             }
-          }
-        });
-
-        var coll = dbo.collection("users");
-        coll.find({ confirmed: true }).toArray(function(err, result) {
-
-          if (err) {
-            console.log("error in get user list.");
-            resolve({ status: 'error in getUsers'})
-          } else {
-            var usersData = {
-              status: "AUTHORIZED",
-              users: []
-            };
-            result.forEach(function(item, index) {
-              var reduceName = "users-shared-data/no-image.jpg";
-              if (typeof item.profileUrl !== 'undefined') {
-                reduceName = item.profileUrl.replace("public", "");
-              }
-              var user = {};
-              user.nickname = item.nickname;
-              user.points = item.points;
-              user.rank = item.rank;
-              user.online = item.online;
-              user.profileImage = reduceName;
-              usersData.users.push(user);
-        
-            });
-
-            resolve(usersData);
           }
         });
       })
@@ -664,4 +660,5 @@ class MyDatabase {
     );
   }
 }
+
 module.exports = MyDatabase;

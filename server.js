@@ -19,6 +19,16 @@ let database = new MyDatabase(config);
  */
 database.populateDatabase();
 
+/**
+ * @description Seed fake users 
+ * all defined collections.
+ * No programibillity prevent double
+ * seed. Just comment line manually.
+ * @collections 
+ *  - users
+ */
+// database.seedDatabase(55);
+
 // Check launch arguments: must receive URL (localhost) and the secret
 if (process.argv.length != 4) {
   console.log("Usage: node " + __filename + " . ");

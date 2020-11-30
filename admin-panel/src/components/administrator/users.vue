@@ -3,32 +3,36 @@
 
     <md-menu>
       <md-button class="md-primary md-raised" ref="switchThemeBtn" @click="visibility = !visibility">
-        <md-icon class="fa fa-email md-size-1x" ></md-icon>
-        Users
+        <md-icon class="fa fa-user" ></md-icon>
+        Get Users
       </md-button>
     </md-menu>
 
     <md-dialog :md-active.sync="visibility">
       <md-dialog-title>Users Collections</md-dialog-title>
       <md-tabs md-dynamic-height>
-
-        <md-tab md-label="System Email Address">
+        <md-tab md-label="Get Users">
           <md-content class="md-scrollbar">
-          <md-button class="md-primary md-raised" ref="getUserBtn" @click="runApiUsers('users')">
-            <md-icon class="fa fa-account md-size-1x" ></md-icon>
-            Users
-          </md-button>                     
-            <md-table v-model="table.searched" md-sort="name" md-sort-order="asc" md-card md-fixed-header>
+            <div style="display: flex;">
+              <md-button class="md-primary md-raised" ref="getUserBtn" @click="runApiUsers('users')">
+                <md-icon class="fa fa-cog fa-spin" ></md-icon>
+                Users
+              </md-button>                     
+              <md-field style="width:50%;margin-left:5%;" >
+                <md-input placeholder="Enter you token." v-model="system.adminAccountToken" />
+              </md-field>
+            </div>
+          <!-- table.searched -->
+            <md-table v-model="this.$data.usersCurrentPage" md-sort="name" md-sort-order="asc" md-card md-fixed-header
+                       style="height: 450px" >
               <md-table-toolbar>
                 <div class="md-toolbar-section-start">
                   <h1 class="md-title">Users</h1>
                 </div>
-
-                <md-field md-clearable class="md-toolbar-section-end">
+                <md-field md-clearable class="md-toolbar-section-end" md-label="Token access paste here">
                   <md-input placeholder="Search by name..." v-model="table.search" @input="searchOnTable" />
                 </md-field>
               </md-table-toolbar>
-
               <md-table-empty-state
                 md-label="No users found"
                 :md-description="`No user found for this '${table.search}' query. Try a different search term or create a new user.`">
@@ -36,19 +40,14 @@
               </md-table-empty-state>
 
               <md-table-row slot="md-table-row" slot-scope="{ item }">
-                <md-table-cell md-label="ID" md-sort-by="id" md-numeric>{{ item.points }}</md-table-cell>
-                <md-table-cell md-label="Name" md-sort-by="name">{{ item.name }}</md-table-cell>
+                <md-table-cell md-label="Id" md-sort-by="id">{{ item.id }}</md-table-cell>
+                <md-table-cell md-label="Nickname" md-sort-by="nickname">{{ item.nickname }}</md-table-cell>
                 <md-table-cell md-label="Email" md-sort-by="email">{{ item.email }}</md-table-cell>
-                <md-table-cell md-label="Gender" md-sort-by="gender">{{ item.confirmed }}</md-table-cell>
-                <md-table-cell md-label="Job Title" md-sort-by="title">{{ item.nickname }}</md-table-cell>
+                <md-table-cell md-label="Confirmed" md-sort-by="confirmed">{{ item.confirmed }}</md-table-cell>
+                <md-table-cell md-label="Points" md-sort-by="points" md-numeric>{{ item.points }}</md-table-cell>
+                <md-table-cell md-label="Rank" md-sort-by="rank">{{ item.rank }}</md-table-cell>
               </md-table-row>
             </md-table>
-
-          </md-content>
-        </md-tab>
-        <md-tab md-label="Test email service">
-          <md-content class="md-scrollbar" v-bind:style="optionsStyle">
-
           </md-content>
         </md-tab>
       </md-tabs>
@@ -150,7 +149,7 @@ export default class usersRocketTable extends CompProps {
 
     const args = {
       email: this.$data.system.emailAddress,
-      // passwordField: this.$data.defaults.userPassword.toString()
+      token: this.$data.system.adminAccountToken
     }
 
     const rawResponse = await fetch(route+ this.$props.prefix + '/' +  apiCallFlag, {
@@ -160,12 +159,11 @@ export default class usersRocketTable extends CompProps {
     });
 
     
-    var test =  await rawResponse.json();
-    console.log(test)
-    // this.$data.userResponsevar
-    // this.$data.userResponse = await rawResponse.json();
-
-    // this.registerResponse = await rawResponse.json();
+    var r =  await rawResponse.json();
+    console.log(r)
+    this.$data.usersResponse = r.users
+    this.setUsersPage(1)
+    // this.$data.usersResponse = await rawResponse.json();
     
   }
 
@@ -176,22 +174,31 @@ export default class usersRocketTable extends CompProps {
   data() {
     return {
       system: {
-        emailAddress: 'zlatnaspirala@gmail.com'
+        emailAddress: 'zlatnaspirala@gmail.com',
+        adminAccountToken: ''
       },
       table: {
         search: null,
         searched: [],
       },
-      userResponse: []
+      usersResponse: [],
+      usersPaginatorIndex: 1,
+      usersCurrentPage: [],
+      usersPerPaginatorPage: 8
     }
+  }
+  
+  setUsersPage(currentPage) {
+    // currentPage
+    this.$data.usersCurrentPage = this.$data.usersResponse.slice(0,this.$data.usersPerPaginatorPage)
   }
 
   searchOnTable () {
-    this.$data.table.searched = this.searchByName(this.$data.userResponse , this.$data.table.search)
+    this.$data.table.searched = this.searchByName(this.$data.usersResponse , this.$data.table.search)
   }
 
   created () {
-    this.$data.table.searched = this.$data.userResponse
+    this.$data.table.searched = this.$data.usersResponse
   }
 
   /**

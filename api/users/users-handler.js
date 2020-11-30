@@ -17,15 +17,18 @@ class ResponseHandler {
                 
         var user = {
           token: req.body.token,
+          size: 200,
+          i: 1
         };
         
         var responseFlag = await this.dataAction.getUsersList(user, this)
-        console.log("/rocket/users ", responseFlag);
+        console.log("/rocket/users ", responseFlag.status);
 
         if (responseFlag.status == "AUTHORIZED") {
           res.status(200).json({
             message: "get users response",
-            rocketStatus: responseFlag
+            rocketStatus: responseFlag.status,
+            users: responseFlag.users
           });
         } else {
           res.status(400).json({
