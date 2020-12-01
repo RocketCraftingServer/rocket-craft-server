@@ -12,60 +12,6 @@ class ServerConfig {
     // enum : 'dev' or 'prod'
     this.serverMode = "dev";
 
-    this.networkDeepLogs = false;
-    this.connectorPort = 30100;
-
-    this.domain = {
-      dev: "localhost",
-      prod: "maximumroulette.com"
-    };
-
-    this.masterServerKey = "rocket-server-app-database";
-    this.protocol = "http";
-
-    // localhost
-    this.certPathSelf = {
-      pKeyPath: "./self-cert/privatekey.pem",
-      pCertPath: "./self-cert/certificate.pem",
-      pCBPath: "./self-cert/certificate.pem"
-    };
-
-    // production
-    this.certPathProd = {
-      pKeyPath: "/etc/httpd/conf/ssl/maximumroulette.com.key",
-      pCertPath: "/etc/httpd/conf/ssl/maximumroulette_com.crt",
-      pCBPath: "/etc/httpd/conf/ssl/maximumroulette.ca-bundle"
-    };
-
-    /**
-     * @description
-     * Email Service
-     */
-    this.systemEmail = {
-      user: "greespiral@gmail.com",
-      pass: "********",
-    };
-    /**
-     * @description Database name
-     * @param databaseName
-     * @param databaseRoot {
-     *   dev => LocalHost usage
-     *   prod => Public Domain with possible remote connection
-     *   secured => Public Domain with no possible remote connection
-     * }
-     */
-    this.databaseName = "rocket-master-base1";
-
-    this.databaseRoot = {
-      dev: "mongodb://localhost:27017",
-      prod: "mongodb://userAdmin:********@maximumroulette.com:27017/admin",
-      secured: "mongodb://userAdmin:********localhost:27017/admin",
-    };
-
-    this.specialRoute = {
-      default: "/var/www/html/applications/"
-    };
-
     console.info(" --------------------------------------------");
     console.info(" -> Server running under " + this.serverMode + " configuration.");
     if (this.serverMode == "dev") {
@@ -80,24 +26,108 @@ class ServerConfig {
     console.info(" --------------------------------------------");
   }
 
+  get specialRoute() {
+    return {
+      default: "/var/www/html/applications/"
+    };
+  };
+
+  get networkDeepLogs() {
+    return  false;
+  }
+
+  get domain() {
+    return  {
+      dev: "localhost",
+      prod: "maximumroulette.com"
+    };
+  };
+
+  get masterServerKey() {
+    return "rocket-server-app-database";
+  }
+
+  get protocol() { 
+    return "http"; 
+  }
+
+  // localhost
+  get certPathSelf() {
+    return {
+      pKeyPath: "./self-cert/privatekey.pem",
+      pCertPath: "./self-cert/certificate.pem",
+      pCBPath: "./self-cert/certificate.pem"
+    };
+  };
+
+  // production
+  get certPathProd() {
+    return {
+      pKeyPath: "/etc/httpd/conf/ssl/maximumroulette.com.key",
+      pCertPath: "/etc/httpd/conf/ssl/maximumroulette_com.crt",
+      pCBPath: "/etc/httpd/conf/ssl/maximumroulette.ca-bundle"
+    };
+  };
+
+  /**
+   * @description
+   * Email Service
+   */
+  get systemEmail() {
+    return {
+      user: "greespiral@gmail.com",
+      pass: "********"
+    };
+  };
+
+  get connectorPort() {
+    return 30100
+  } 
+
+      /**
+     * @description Database name
+     * @param databaseName
+     * @param databaseRoot {
+     *   dev => LocalHost usage
+     *   prod => Public Domain with possible remote connection
+     *   secured => Public Domain with no possible remote connection
+     * }
+     */ 
+    
+  get databaseName() {
+    return  "rocket-master-base1";
+  }
+
   get getDatabaseRoot() {
+
+    var databaseRoot = {
+      dev: "mongodb://localhost:27017",
+      prod: "mongodb://userAdmin:********@maximumroulette.com:27017/admin",
+      secured: "mongodb://userAdmin:********localhost:27017/admin",
+    };
+
     if (this.serverMode == "dev") {
-      return this.databaseRoot.dev;
+      return databaseRoot.dev;
     } else if (this.serverMode == "prod") {
-      return this.databaseRoot.prod;
+      return databaseRoot.prod;
+    } else if (this.serverMode == "secured") {
+      return databaseRoot.secured;
     }
   }
 
+  get getMasterServerKey() {
+    return this.masterServerKey;
+  }
+
+  /**
+   * @description Setters
+   */
   set setNetworkDeepLog(newState) {
     this.networkDeepLogs = newState;
   }
 
   get getNetworkDeepLog() {
     return this.networkDeepLogs;
-  }
-
-  get getMasterServerKey() {
-    return this.masterServerKey;
   }
 
 }

@@ -131,3 +131,10 @@ First integration will be for UE rocket-craft projects.
 
 </pre>
 
+### Features 
+ 
+ `- Admin Panel (Vue-ClassComponent-Typescript)`
+
+ `- Debugging proccess for server part with Visual-Code.
+    (Launch.json tested on windows)`
+
