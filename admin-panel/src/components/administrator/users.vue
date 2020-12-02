@@ -17,19 +17,19 @@
                 <md-icon class="fa fa-cog fa-spin" ></md-icon>
                 Users
               </md-button>                     
-              <md-field :class="system.adminAccountToken != '' ? 'md-primary' : null" style="width:50%;margin-left:5%;" >
-                <md-input placeholder="Enter you token." v-model="system.adminAccountToken" />
+              <md-field style="width:50%;margin-left:5%;" >
+                <md-input class="md-primary" placeholder="Enter you token." v-model="system.adminAccountToken" />
               </md-field>
             </div>
           <!-- table.searched -->
-            <md-table v-model="this.$data.usersCurrentPage" md-sort="name" md-sort-order="asc" md-card md-fixed-header
+            <md-table v-model="usersCurrentPage" md-sort="email" md-sort-order="asc" md-card md-fixed-header
                        style="height: 450px" >
               <md-table-toolbar>
                 <div class="md-toolbar-section-start">
                   <h1 class="md-title">Users</h1>
                 </div>
                 <md-field md-clearable class="md-toolbar-section-end" md-label="Token access paste here">
-                  <md-input placeholder="Search by name..." v-model="table.search" @input="searchOnTable" />
+                  <md-input placeholder="Search by email..." v-model="table.search" @input="searchOnTable" />
                 </md-field>
               </md-table-toolbar>
               <md-table-empty-state
@@ -199,12 +199,13 @@ export default class usersRocketTable extends CompProps {
         0 + (currentPage - 1) * this.$data.usersPerPaginatorPage,
         this.$data.usersPerPaginatorPage * currentPage
       )
-
     
   }
 
   searchOnTable () {
     this.$data.table.searched = this.searchByName(this.$data.usersResponse , this.$data.table.search)
+    this.$data.usersCurrentPage = this.$data.table.searched
+    // console.log("<<<<<2<<<<<<", this.$data.table.searched)
   }
 
   created () {
@@ -221,7 +222,7 @@ export default class usersRocketTable extends CompProps {
 
   searchByName = (items, term) => {
     if (term) {
-      return items.filter(item => this.toLower(item.name).includes(this.toLower(term)))
+      return items.filter(item => this.toLower(item.email).includes(this.toLower(term)))
     }
     return items
   }

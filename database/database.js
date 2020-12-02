@@ -4,15 +4,16 @@ const shared = require("./../common/shared");
 const fs = require("fs");
 
 /**
- * MyDatabase class
+ * @description MyDatabase class
  * MongoDB Database used in this project
  * version 4.4.2
- * JavaScript fullstack project
+ * JavaScript/NODE.JS fullstack project
  */
 class MyDatabase {
 
   constructor(serverConfig) {
     this.config = serverConfig;
+    this.sizeOfUsers = 0;
   }
 
   async populateDatabase() {
@@ -30,11 +31,12 @@ class MyDatabase {
   }
 
   async checkInitiallyDatabaseSize() {
-    var t = await this.checkInitiallyDatabaseSizeInternal()
-    console.log("Database size => ", t)
+    var t = await this.checkInitiallyDatabaseSizeInternal();
+    this.sizeOfUsers = t;
+    console.log("Database size => ", t);
   }
 
-  async checkInitiallyDatabaseSizeInternal() {
+  checkInitiallyDatabaseSizeInternal() {
     const databaseName = this.config.databaseName;
     return new Promise((resolve) => {  
       MongoClient.connect(
