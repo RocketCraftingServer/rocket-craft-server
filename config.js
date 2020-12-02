@@ -7,10 +7,18 @@
 
 class ServerConfig {
 
-  constructor() {
+  constructor(serverModeArg) {
   
-    // enum : 'dev' or 'prod'
-    this.serverMode = "dev";
+    if (typeof serverModeArg === 'undefined') {
+      this.serverMode = "dev";  
+    } else if (serverModeArg == 'prod' ||
+               serverModeArg == 'secured' ||
+               serverModeArg == 'dev') {
+      this.serverMode = serverModeArg;  
+    } else {
+      console.error("Something wrong with Config arg!")
+      return;
+    }
 
     console.info(" --------------------------------------------");
     console.info(" -> Server running under " + this.serverMode + " configuration.");

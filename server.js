@@ -18,6 +18,7 @@ let database = new MyDatabase(config);
  *  - users
  */
 database.populateDatabase();
+database.checkInitiallyDatabaseSize();
 
 /**
  * @description Seed fake users 

@@ -137,4 +137,5 @@ First integration will be for UE rocket-craft projects.
 
  `- Debugging proccess for server part with Visual-Code.
     (Launch.json tested on windows)`
+    create folder `.vscode` in root of workspace and copy `launch.json`.
 

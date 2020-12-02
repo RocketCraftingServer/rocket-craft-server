@@ -29,6 +29,29 @@ class MyDatabase {
     console.log("Database seed finished -> ", r);
   }
 
+  async checkInitiallyDatabaseSize() {
+    var t = await this.checkInitiallyDatabaseSizeInternal()
+    console.log("Database size => ", t)
+  }
+
+  async checkInitiallyDatabaseSizeInternal() {
+    const databaseName = this.config.databaseName;
+    return new Promise((resolve) => {  
+      MongoClient.connect(
+        this.config.getDatabaseRoot,
+        { useNewUrlParser: true, useUnifiedTopology: true },
+        function(error, db) {
+          if (error) {
+            console.warn("MyDatabase : err1:" + error);
+            resolve("SOMETHING_WRONG_WITH_REGISTRATION")
+            return;
+          }
+          const dbo = db.db(databaseName);
+          var test = dbo.collection("users").countDocuments({})
+          test.then((e) => { resolve(e) })                    
+      })
+    })
+  }
   /**
    * Method register is called on singup user action.
    * @param {object} user
@@ -458,7 +481,19 @@ class MyDatabase {
               console.warn("Session passed.");
               var coll = dbo.collection("users");
               // { confirmed: true }
-              coll.find().toArray(function(err, result) {
+
+              // 
+              var skipValue = 0;
+              var limitValue = 500;
+
+              if (user.criterium.description == 'list-all') {
+                // 
+                if (user.criterium.moreExploreUsers == 1) {
+                  skipValue += limitValue;
+                }
+                console.log("Good ")
+              }
+              coll.find().skip(skipValue).limit(limitValue).toArray(function(err, result) {
       
                 if (err) { console.log("error in get user list.");
                            resolve({ status: 'error in getUsers'})

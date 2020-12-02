@@ -18,7 +18,8 @@ class ResponseHandler {
         var user = {
           token: req.body.token,
           size: 200,
-          i: 1
+          i: 1,
+          criterium: req.body.criterium
         };
         
         var responseFlag = await this.dataAction.getUsersList(user, this)

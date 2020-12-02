@@ -1,13 +1,12 @@
+
 <template>
   <div ref="emailService" class="myStyle">
-
     <md-menu>
       <md-button class="md-primary md-raised" ref="switchThemeBtn" @click="visibility = !visibility">
         <md-icon class="fa fa-user" ></md-icon>
         Get Users
       </md-button>
     </md-menu>
-
     <md-dialog :md-active.sync="visibility">
       <md-dialog-title>Users Collections</md-dialog-title>
       <md-tabs md-dynamic-height>
@@ -18,7 +17,7 @@
                 <md-icon class="fa fa-cog fa-spin" ></md-icon>
                 Users
               </md-button>                     
-              <md-field style="width:50%;margin-left:5%;" >
+              <md-field :class="system.adminAccountToken != '' ? 'md-primary' : null" style="width:50%;margin-left:5%;" >
                 <md-input placeholder="Enter you token." v-model="system.adminAccountToken" />
               </md-field>
             </div>
@@ -38,7 +37,6 @@
                 :md-description="`No user found for this '${table.search}' query. Try a different search term or create a new user.`">
                 <md-button class="md-primary md-raised" @click="newUser">Create New User</md-button>
               </md-table-empty-state>
-
               <md-table-row slot="md-table-row" slot-scope="{ item }">
                 <md-table-cell md-label="Id" md-sort-by="id">{{ item.id }}</md-table-cell>
                 <md-table-cell md-label="Nickname" md-sort-by="nickname">{{ item.nickname }}</md-table-cell>
@@ -52,12 +50,12 @@
         </md-tab>
       </md-tabs>
       <md-dialog-actions>
-        <md-button color="md-primary" @click="visibility = false">HIDE</md-button>
+        <md-button color="md-primary" @click="setUsersPage('prev')">Prev Page</md-button>
+        <md-button color="md-primary" @click="setUsersPage('next')">Next Page</md-button>
       </md-dialog-actions>
     </md-dialog>
   </div>
 </template>
-
 
 <style lang="scss" scoped>
   .md-menu {
@@ -143,13 +141,16 @@ export default class usersRocketTable extends CompProps {
 
   async runApiUsers(apiCallFlag) {
 
-    console.log("TTTTTTTTTTTT")
     let route = this.$props.domain
     route = setupLocal(route)
 
     const args = {
       email: this.$data.system.emailAddress,
-      token: this.$data.system.adminAccountToken
+      token: this.$data.system.adminAccountToken,
+      criterium: {
+        description: 'list-all',
+        moreExploreUsers: this.$data.moreExploreUsers
+      }
     }
 
     const rawResponse = await fetch(route+ this.$props.prefix + '/' +  apiCallFlag, {
@@ -158,17 +159,14 @@ export default class usersRocketTable extends CompProps {
       body: JSON.stringify(args)
     });
 
-    
-    var r =  await rawResponse.json();
-    console.log(r)
+    var r =  await rawResponse.json();    
     this.$data.usersResponse = r.users
-    this.setUsersPage(1)
-    // this.$data.usersResponse = await rawResponse.json();
-    
+    this.setUsersPage()
+  
   }
 
-  newUser(){
-
+  newUser() {
+    console.log("test")
   }
 
   data() {
@@ -184,13 +182,25 @@ export default class usersRocketTable extends CompProps {
       usersResponse: [],
       usersPaginatorIndex: 1,
       usersCurrentPage: [],
-      usersPerPaginatorPage: 8
+      usersPerPaginatorPage: 8,
+
+      moreExploreUsers: 0
     }
   }
   
-  setUsersPage(currentPage) {
+  setUsersPage() {
+
+    this.$data.usersPaginatorIndex++
+    var currentPage = this.$data.usersPaginatorIndex
+
     // currentPage
-    this.$data.usersCurrentPage = this.$data.usersResponse.slice(0,this.$data.usersPerPaginatorPage)
+    this.$data.usersCurrentPage = 
+      this.$data.usersResponse.slice(
+        0 + (currentPage - 1) * this.$data.usersPerPaginatorPage,
+        this.$data.usersPerPaginatorPage * currentPage
+      )
+
+    
   }
 
   searchOnTable () {
