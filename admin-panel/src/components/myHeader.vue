@@ -4,7 +4,10 @@
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <md-menu md-size="medium" md-align-trigger>
-      <md-button class="md-primary md-raised" md-menu-trigger>Application</md-button>
+      <md-button class="md-primary md-raised" md-menu-trigger>
+        Application
+        <md-icon class="fa fa-rocket md-accent" />
+      </md-button>
       <md-menu-content>
         <md-menu-item>
           <md-button class="md-primary md-raised" v-show='loginBtnVisibility' @click="visibilityAccountTestRoute">

@@ -2,7 +2,7 @@
 <template>
   <div id="app">
     <myHeader slogan='Rocket-craft server - admin web application'></myHeader>
-    <div ref="mybodycontent" v-bind:style="styleObject">
+    <div ref="mybodycontent" class="myshadows" v-bind:style="styleObject">
 
       <div class="loader" ref="loader" style="display: block;">
         <md-progress-spinner md-mode="indeterminate"></md-progress-spinner>
@@ -129,11 +129,9 @@
       
       this.styleObject = {
         display: 'flex',
-        justifyContent: 'center',
-        textAlign: 'center',
-        itemsAlign: 'center',
+        flexDirection: 'column',
         height: '100%',
-        width: '100%'
+        width: '10%'
       }
 
       /**
@@ -250,6 +248,12 @@
     /* vertical-align: middle; */
     margin: 0;
     padding-top: 21%;
+  }
+
+    .myshadows {
+    -webkit-box-shadow: 1px 1px 3px 3px rgba(0,0,0,0.5);
+    -moz-box-shadow: 2px 2px 3px 3px rgba(0,0,0,0.5);
+    box-shadow: 2px 2px 3px 3px rgba(0,0,0,0.5);
   }
 
 </style>
