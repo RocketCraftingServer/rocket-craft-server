@@ -105,7 +105,7 @@ class ResponseHandler {
       console.log("Secured.");
     };
   
-    console.log("/rocket/register ", req.body.emailField);    
+    console.log("/rocket/login ", req.body.emailField);    
     if (typeof req.body.emailField !== 'undefined' & typeof req.body.passwordField !== 'undefined' ) {
               
       var user = {

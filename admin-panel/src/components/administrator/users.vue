@@ -25,13 +25,17 @@
             <md-table v-model="usersCurrentPage" md-sort="email" md-sort-order="asc" md-card md-fixed-header
                        style="height: 450px" >
               <md-table-toolbar>
-                <div class="md-toolbar-section-start">
-                  <h1 class="md-title">Users</h1>
+                <div class="md-toolbar-section-start" style="display:flex;flex-direction:row">
+                  <h1 class="md-title">Users {{ this.$data.usersPaginatorIndex }} </h1>
                 </div>
                 <md-field md-clearable class="md-toolbar-section-end" md-label="Token access paste here">
                   <md-input placeholder="Search by email..." v-model="table.search" @input="searchOnTable" />
                 </md-field>
+                <div class="md-toolbar-section-start" style="display:flex;flex-direction:row">
+                   <p v-if="this.$data.usersPaginatorIndex !== 0" class="md-small">page {{ this.$data.usersPaginatorIndex }} </p>
+                </div>
               </md-table-toolbar>
+        
               <md-table-empty-state
                 md-label="No users found"
                 :md-description="`No user found for this '${table.search}' query. Try a different search term or create a new user.`">
@@ -161,7 +165,7 @@ export default class usersRocketTable extends CompProps {
 
     var r =  await rawResponse.json();    
     this.$data.usersResponse = r.users
-    this.setUsersPage()
+    this.setUsersPage('new-buffer-data')
   
   }
 
@@ -173,14 +177,14 @@ export default class usersRocketTable extends CompProps {
     return {
       system: {
         emailAddress: 'zlatnaspirala@gmail.com',
-        adminAccountToken: ''
+        adminAccountToken: '9607qk05p3k0uncp3oe9fczdldlfzlg6mhtllchugueg'
       },
       table: {
         search: null,
         searched: [],
       },
       usersResponse: [],
-      usersPaginatorIndex: 1,
+      usersPaginatorIndex: 0,
       usersCurrentPage: [],
       usersPerPaginatorPage: 8,
 
@@ -188,10 +192,24 @@ export default class usersRocketTable extends CompProps {
     }
   }
   
-  setUsersPage() {
+  setUsersPage(arg: string) {
 
-    this.$data.usersPaginatorIndex++
-    var currentPage = this.$data.usersPaginatorIndex
+    if (!arg) {
+      console.error("You need to pass arg with type of `string` for Users.setUsersPage.")
+    }
+    console.log(" arg =>  ", arg)
+    var currentPage = 0
+    
+    if (arg === "next") {
+      this.$data.usersPaginatorIndex++         
+    } else if (arg === "prev") {
+      this.$data.usersPaginatorIndex--
+    } else if (arg === "new-buffer-data") {
+       this.$data.usersPaginatorIndex = 1;
+       
+    }
+    
+    currentPage = this.$data.usersPaginatorIndex
 
     // currentPage
     this.$data.usersCurrentPage = 

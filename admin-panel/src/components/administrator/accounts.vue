@@ -50,13 +50,24 @@
               <md-button @click="runApiCallByActionName('login')"> /rocket/login/ </md-button>
             </md-content>
               <md-content ref="responseLoginContainer" v-bind:style="optionsStyle">
-                <ul id="example-1">
-                  <li v-for="item in loginResponse" :key="item.message">
-                    {{ item }} 
+                  <div v-for="(item) in loginResponse" :key="item.message">
+                    <li v-if="typeof item === 'object'" 
+                                style="padding: 2px;margin: 5px;height:200px;display:flex;flex-direction:column;overflow:scroll;overflow-x:hidden;" >
+                      <ul  v-for="(subItem, name, index) in item" :key="subItem" style="display:flex;">
+                        <li v-if="index === 0" class="positive objectVarCode" style="width:120px;padding-top:-5px;"> {{ Object.keys(loginResponse)[Object.values(loginResponse).indexOf(item)] }} </li>
+                        <li class="positive objectVarCode" style="width:120px;"> {{ Object.keys(item)[Object.values(item).indexOf(subItem)] }} </li>
+                        <li class="positive objectVarKey" :onClick="copyToClipboard()">{{ subItem }}</li>
+                      </ul>
+                    </li>
+                    <li v-if="typeof item != 'object'"
+                          style="padding: 1px;margin: 3px;display:flex" class="level1">
+                          <div class="positive objectVarCode" style="width:120px;padding-top:-5px;"> {{ Object.keys(loginResponse)[Object.values(loginResponse).indexOf(item)] }} </div>
+                          <div class="positive objectVarKey" style="width:fit-content;"> {{ item }} </div>
+                    </li>
                     <md-icon v-if="item == 'USER_ALREADY_REGISTERED'" 
                              class="fa fa-exclamation-triangle md-accent" />
-                  </li>
-                </ul> 
+                  </div>
+                
               </md-content>   
           </md-content>
         </md-tab>
@@ -167,7 +178,7 @@
                     <md-icon class="fa fa-bolt md-size-3x"></md-icon>
               </md-button>
             </md-content>
-              <md-content ref="responseContainer" v-bind:style="optionsStyle">
+              <md-content ref="responseContainerConfirmation" v-bind:style="optionsStyle">
                 <ul id="firstViewResponseDOM">
                   <li v-for="item in confirmationResponse" :key="item.message">
                     {{ item }}
@@ -214,9 +225,27 @@
 
   .md-content {
     font-size: 110%;
-    height: 500px;
+    min-height: fit-content;
   }
 
+  .positive {
+    padding: 8px;
+    margin: 8px;
+    color: lime !important;
+    text-shadow: 0 0 1px #fffb12;
+    -webkit-border-radius: 3px 3px 3px 3px;
+    border-radius: 3px 3px 3px 3px;
+  }
+
+  .objectVarCode {
+    -webkit-box-shadow: 0 0 1px 1px #29FF21;
+    box-shadow: 0 0 1px 1px #29FF21;
+  }
+
+  .objectVarKey {
+    -webkit-box-shadow: 0 0 4px 2px #d3ff10;
+    box-shadow: 0 0 4px 2px #d3ff10;
+  }
 </style>
 
 <script lang="ts">
@@ -225,9 +254,11 @@
   import Vue from 'vue'
   import Component from 'vue-class-component'
   import { mdMenu,
+           MdList,
            mdButton,
            mdIcon,
            mdContent,
+           mdTextArea,
            mdProgressSpinner } from 'vue-material'
   import { setupLocal, switchTheme } from '../../my-common/common-func'
   import IAccounts from './IAccounts'
@@ -246,7 +277,9 @@
       mdMenu,
       mdIcon,
       mdProgressSpinner,
-      mdContent
+      mdContent,
+      MdList,
+      mdTextArea
     }
   })
 
@@ -288,6 +321,10 @@
         },
         
       }
+    }
+ 
+    copyToClipboard() {
+      console.log('bla bla')
     }
 
     async runApiCallByActionName(apiCallFlag) {
