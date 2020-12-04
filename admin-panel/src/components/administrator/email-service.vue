@@ -32,8 +32,8 @@
         </md-tab>
         <md-tab md-label="Test email service">
           <md-content class="md-scrollbar" v-bind:style="optionsStyle">
-            <img style="width:200px;margin: -5px -5px -5px -5px;" src="/assets/logo.png" />
-                          <label>Send email to : </label>
+            <img style="width:100px;margin: 5px 5px 5px 5px;" src="/assets/images/rocket-image-1.png" />
+              <label>Send email to : </label>
               <md-field class="md-content-options">
                 <label class="labelText" >address:</label>
                 <md-input
@@ -50,7 +50,7 @@
         </md-tab>
       </md-tabs>
       <md-dialog-actions>
-        <md-button color="md-primary" @click="visibility = false">HIDE</md-button>
+        <md-button color="md-primary md-raised" @click="visibility = false">HIDE</md-button>
       </md-dialog-actions>
     </md-dialog>
   </div>

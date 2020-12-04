@@ -32,7 +32,7 @@
                   <md-input placeholder="Search by email..." v-model="table.search" @input="searchOnTable" />
                 </md-field>
                 <div class="md-toolbar-section-start" style="display:flex;flex-direction:row">
-                   <p v-if="this.$data.usersPaginatorIndex !== 0" class="md-small">page {{ this.$data.usersPaginatorIndex }} </p>
+                   <p v-if="this.$data.usersPaginatorIndex !== 0" class="md-small">Page {{ this.$data.usersPaginatorIndex }} </p>
                 </div>
               </md-table-toolbar>
         
@@ -54,14 +54,15 @@
         </md-tab>
       </md-tabs>
       <md-dialog-actions>
-        <md-button color="md-primary" @click="setUsersPage('prev')">Prev Page</md-button>
-        <md-button color="md-primary" @click="setUsersPage('next')">Next Page</md-button>
+        <md-button class="md-primary md-raised" @click="setUsersPage('prev')">Prev Page</md-button>
+        <md-button class="md-primary md-raised" @click="setUsersPage('next')">Next Page</md-button>
       </md-dialog-actions>
     </md-dialog>
   </div>
 </template>
 
 <style lang="scss" scoped>
+
   .md-menu {
     margin: 1px;
   }
@@ -73,7 +74,7 @@
 
   .myStyle {
     width:100%;
-    height: 41px;
+    height: 100%;
     -webkit-box-shadow: 1px 1px 3px 3px rgba(0,0,0,0.5);
     -moz-box-shadow: 1px 1px 3px 3px rgba(0,0,0,0.5);
     box-shadow: 1px 1px 3px 3px rgba(0,0,0,0.5);
@@ -81,7 +82,7 @@
 
   .md-content {
     font-size: 110%;
-    height: 500px;
+    height: fit-content;
   }
 
 </style>
@@ -176,8 +177,8 @@ export default class usersRocketTable extends CompProps {
   data() {
     return {
       system: {
-        emailAddress: 'zlatnaspirala@gmail.com',
-        adminAccountToken: '9607qk05p3k0uncp3oe9fczdldlfzlg6mhtllchugueg'
+        emailAddress: this.$store.state.system.hardCodeAccount.getEmailAddress(),
+        adminAccountToken: this.$store.state.system.hardCodeAccount.adminAccountToken()
       },
       table: {
         search: null,
@@ -203,6 +204,9 @@ export default class usersRocketTable extends CompProps {
     if (arg === "next") {
       this.$data.usersPaginatorIndex++         
     } else if (arg === "prev") {
+      if (this.$data.usersPaginatorIndex == 1) {
+        return;
+      }
       this.$data.usersPaginatorIndex--
     } else if (arg === "new-buffer-data") {
        this.$data.usersPaginatorIndex = 1;

@@ -26,7 +26,18 @@ const state = {
     // write: "https://www.googleapis.com/auth/youtube.force-ssl"
   },
   system: {
-    emailAddress: 'greespiral@gmail.com'
+    getEmailAddress: () => 'greespiral@gmail.com',
+    hardCodeAccount: {
+      getEmailAddress: () => 'zlatnaspirala@gmail.com',
+      adminAccountToken: () => '9607qk05p3k0uncp3oe9fczdldlfzlg6mhtllchugueg'
+    }
+  },
+  appStyle: {
+    themes: () => [
+      'Dark',  'Orange', 'Light', 'Blue', 'Red', 'Pink', 'Purple', 'Deeppurple',
+      'Indigo', 'Lightblue', 'Teal', 'Green', 'Lightgreen', 'Lime', 'Yellow',
+      'Cyan', 'Deeporange', 'Brown', 'Black'
+    ]
   }
 }
 

@@ -84,11 +84,11 @@
         <md-button color="md-primary" @click="showAboutDialog = false">HIDE</md-button>
       </md-dialog-actions>
     </md-dialog>
-
   </div>
 </template>
 
 <style lang="scss" scoped>
+
   .md-menu {
     margin: 1px;
   }
@@ -172,7 +172,7 @@
         myData: "test",
         tyfetchVisibility: true,
         loginBtnVisibility: false,
-        switchThemeBtnLabel: 'myDark'
+        switchThemeBtnLabel: 'Dark'
       }
     }
 
@@ -196,10 +196,10 @@
 
     mounted (): void {
 
-      (this.$root as any).$material.theming.theme='myDark'
+      (this.$root as any).$material.theming.theme='Dark'
       this.$set(this, 'tyfetchVisibility', false)
       this.$set(this, 'loginBtnVisibility', true)
-      this.$set(this, 'switchThemeBtnLabel', 'myDark')
+      this.$set(this, 'switchThemeBtnLabel', 'Dark')
 
     }
 

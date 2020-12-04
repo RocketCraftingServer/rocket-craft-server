@@ -1,7 +1,7 @@
 
 <template>
   <div id="app">
-    <myHeader slogan='Rocket-craft server - admin web application'></myHeader>
+    <myHeader slogan='Rocket-craft server - Admin Panel web app'></myHeader>
     <div ref="mybodycontent" class="myshadows" v-bind:style="styleObject">
 
       <div class="loader" ref="loader" style="display: block;">
@@ -9,7 +9,7 @@
       </div>
 
       <emailService v-show="visibility.emailServiceComponent"
-                    :slogan="this.$store.state.system.emailAddress" >
+                    :slogan="this.$store.state.system.getEmailAddress()" >
       </emailService>
 
       <rocketAccounts slogan="API admin/tester" 

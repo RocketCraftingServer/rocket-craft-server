@@ -13,23 +13,19 @@ export function asyncLoad(path, callback ?) {
   }
 }
 
+// UPGRADE FOR VULETUBE APP ALSO
 export function switchTheme (this: any) {
-  try {
-    if ((this.$root as any).$material.theming.theme == 'myDark') {
-      (this.$root as any).$material.theming.theme='myLight'
-      this.changeTheme('myLight')
-    } else if ((this.$root as any).$material.theming.theme == 'myLight') {
-      (this.$root as any).$material.theming.theme='myOrange'
-      this.changeTheme('myOrange')
-    } else if ((this.$root as any).$material.theming.theme == 'myOrange') {
-      (this.$root as any).$material.theming.theme='myDark'
-      this.changeTheme('myDark')
-    } else {
-      console.log('(this.$root as any).$material.theming.theme=myDark' , (this.$root as any).$material.theming.theme='myDark')
-    }
-  }catch(err) {
-    console.warn('Error =>', err)
+  var themes = this.$store.state.appStyle.themes()
+
+  var nextThemeIndex = themes.indexOf((this.$root as any).$material.theming.theme) + 1;
+
+  if (nextThemeIndex == themes.lenght) {
+    nextThemeIndex = 0
+    console.log(">>>>>>>>> reset")
   }
+
+  (this.$root as any).$material.theming.theme = themes[nextThemeIndex]
+  this.changeTheme(themes[nextThemeIndex])
 }
 
 export function setupLocal(route) {
