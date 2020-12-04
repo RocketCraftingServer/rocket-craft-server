@@ -39,7 +39,7 @@
               <md-table-empty-state
                 md-label="No users found"
                 :md-description="`No user found for this '${table.search}' query. Try a different search term or create a new user.`">
-                <md-button class="md-primary md-raised" @click="newUser">Create New User</md-button>
+                <md-button class="md-primary md-raised" @click="newUser">No results</md-button>
               </md-table-empty-state>
               <md-table-row slot="md-table-row" slot-scope="{ item }">
                 <md-table-cell md-label="Id" md-sort-by="id">{{ item.id }}</md-table-cell>
