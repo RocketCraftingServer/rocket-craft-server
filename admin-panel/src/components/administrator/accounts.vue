@@ -59,7 +59,7 @@
                               {{ Object.keys(loginResponse)[Object.values(loginResponse).indexOf(item)] }} 
                               <md-icon class="fa fa-caret-right"></md-icon>
                             </md-button>
-                            <md-button class="md-primary md-raised"> {{ item }} </md-button>
+                            <md-button class="md-primary md-raised" v-on:click="copyToClipboard($event)" > {{ item }} </md-button>
                           </div>
                     </div>
 
@@ -77,7 +77,7 @@
                           {{ Object.keys(item)[Object.values(item).indexOf(subItem)] }}
                           <md-icon class="fa fa-caret-right"></md-icon>
                         </md-button>
-                        <md-button class="md-primary md-raised" :onClick="copyToClipboard()">{{ subItem }}</md-button>
+                        <md-button class="md-primary md-raised" v-on:click="copyToClipboard($event)">{{ subItem }}</md-button>
                       </div>
                     </div>
    
@@ -347,8 +347,15 @@
       }
     }
  
-    copyToClipboard() {
-      console.log('bla bla')
+    public copyToClipboard(e) {
+      console.log('copy to clipboard => ', e.target.innerText);
+      var text = e.target.innerText;
+      var dummy = document.createElement("textarea");
+      document.body.appendChild(dummy);
+      dummy.value = text;
+      dummy.select();
+      document.execCommand("copy");
+      document.body.removeChild(dummy);
     }
 
     async runApiCallByActionName(apiCallFlag) {
