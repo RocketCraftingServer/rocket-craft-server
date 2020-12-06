@@ -112,6 +112,9 @@ app.use(
 let routerRocket = new require('./api/account/account')(app, express, database, crypto);
 let routerUsers = new require('./api/users/users')(app, express, database, crypto);
 
+// Test
+let routerGeneric = new require('./api/generic/route')(app, express, database, crypto);
+
 // Server configuration
 // app.use(express.static(__dirname + "/public"));
 // app.use(compression({ filter: shouldCompress }));

@@ -1,5 +1,5 @@
 
-const structureDataGenerator = require("./col")
+const StructureDataGenerator = require("./handler")
 
 /**
  * @description Class RocketRoute
@@ -8,7 +8,7 @@ const structureDataGenerator = require("./col")
  * with one route api collections egg.
  * `api/account`.
  */
-class RocketRouteGenericStructureData extends structureDataGenerator {
+class RocketRouteGenericStructureData extends StructureDataGenerator {
 
   /**
    * @description 
@@ -24,14 +24,16 @@ class RocketRouteGenericStructureData extends structureDataGenerator {
 
     this.routeRegister();
     
+    console.log("RocketRouteGenericStructureData loaded with success.");
   }
 
   routeRegister() {
 
-    this.app.post("/rocket/global/generic/", this.onGeneratePostResponse.bind(this));
+    this.app.get("/rocket/global/generic/", this.onGeneratePostResponse.bind(this));
+    // this.app.post("/rocket/global/generic/", this.onGeneratePostResponse.bind(this));
  
   }
 
 }
 
-module.exports = (app, express, dataAction, crypto) => { return new RocketRoute(app, express, dataAction, crypto) }
+module.exports = (app, express, dataAction, crypto) => { return new RocketRouteGenericStructureData(app, express, dataAction, crypto) }

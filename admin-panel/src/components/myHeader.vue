@@ -27,6 +27,12 @@
             Users Data Table
           </md-button>
         </md-menu-item>
+        <md-menu-item>
+          <md-button class="md-primary md-raised" @click="visibilityGenericComponent">
+            <md-icon class="fa fa-shield"></md-icon>
+            Generic Rocket 
+          </md-button>
+        </md-menu-item>
       </md-menu-content>
     </md-menu>
     <md-menu>
@@ -187,11 +193,15 @@
     }
 
     visibilityEmailService(): void {
-       (this.$root.$children[0] as any).setEmailServiceVisibility()
+      (this.$root.$children[0] as any).setEmailServiceVisibility()
     }
 
     visibilityAccountTestRoute(): void {
-       (this.$root.$children[0] as any).setAccountVisibility()
+      (this.$root.$children[0] as any).setAccountVisibility()
+    }
+
+    visibilityGenericComponent(): void {
+      (this.$root.$children[0] as any).setGenericComponentVisibility()
     }
 
     mounted (): void {

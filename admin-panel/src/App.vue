@@ -12,7 +12,8 @@
                     :slogan="this.$store.state.system.getEmailAddress()" >
       </emailService>
 
-      <rocketAccounts slogan="API admin/tester" 
+      <rocketAccounts v-show="visibility.account"
+                      slogan="API admin/tester" 
                       prefix="rocket"
                       :domain="$props.AppDomainHost">
       </rocketAccounts>
@@ -21,6 +22,9 @@
              prefix="rocket"
              :domain="$props.AppDomainHost">
       </users>
+
+      <generic-component v-show="visibility.genericComponent">
+      </generic-component>
 
       <!--country-selector>
       </country-selector-->
@@ -46,6 +50,7 @@
   import EmailService from './components/administrator/email-service.vue'
   import CountrySelector from './components/countries-selector/country-selector.vue'
   import Users from './components/administrator/users.vue'
+  import GenericComponent from './components/generic/generic.vue'
 
   Vue.use(VueMaterial as any)
 
@@ -68,7 +73,8 @@
       RocketAccounts,
       EmailService,
       CountrySelector,
-      Users
+      Users,
+      GenericComponent
     },
     computed: mapState([
       'permission'
@@ -167,10 +173,10 @@
 
       }
 
-      this.$root.$on('gapiReady', (args: any) => {
+      this.$root.$on('global.copyclipboard', (args: any) => {
 
         try {
-          console.info("Event gapiReady => ", args)
+          console.info("Event global.copyclipboard => ", args)
         } catch(err) {
           console.warn(err)
         }
@@ -184,9 +190,14 @@
         visibility: {
           account: true,
           emailServiceComponent: true,
-          usersComponent: true
+          usersComponent: true,
+          genericComponent: false,
         }
       }
+    }
+
+    public setGenericComponentVisibility() {
+      this.$data.visibility.genericComponent = !this.$data.visibility.genericComponent
     }
 
     public setEmailServiceVisibility() {
@@ -216,6 +227,11 @@
     mounted (): void {
       this.setupInstance()
     }
+
+    created (): void {
+      console.log("App created.")
+    }
+    
 
   }
 </script>

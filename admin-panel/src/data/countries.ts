@@ -1,5 +1,5 @@
 
-export const countries = [
+export var countries = [
   { name: 'Afghanistan', code: 'AF' }, 
   { name: 'Åland Islands', code: 'AX' }, 
   { name: 'Albania', code: 'AL' }, 

@@ -356,6 +356,8 @@
       dummy.select();
       document.execCommand("copy");
       document.body.removeChild(dummy);
+
+      this.$root.$emit('global.copyclipboard', text)
     }
 
     async runApiCallByActionName(apiCallFlag) {

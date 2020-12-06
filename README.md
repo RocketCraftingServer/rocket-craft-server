@@ -5,7 +5,8 @@ Basic account session staff based on node.js and MongoDB.
 First integration will be for UE rocket-craft projects.
 
  - Node.js http1.1/http2 server
- - VueTypescript administrator panel project
+ - Basic session account support
+ - Vue-Typescript administrator panel project
 
 
 ### Project structure ###
@@ -121,6 +122,9 @@ First integration will be for UE rocket-craft projects.
 |     |                       |                                                                         |
 |     |                       |                                                                         |
 |     +-----------------------+                                                                         |
+|                                                                                                       |
+|  SOURCE : https://github.com/zlatnaspirala/rocket-craft-server                                        |
+|  +-----------------------------------------------------+                                              |
 |                                                                                                       |
 +-------------------------------------------------------------------------------------------------------+
 |                                            NODEJS CORE                                                |

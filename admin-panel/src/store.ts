@@ -8,7 +8,11 @@ interface ApplicationStateI {
     cookieAccept: boolean
   },
   system: {
-    readonly emailAddress: string
+    getEmailAddress: () => string,
+    hardCodeAccount: {
+      getEmailAddress: () => string,
+      adminAccountToken: () => string
+    }
   }
 }
 

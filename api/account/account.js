@@ -36,11 +36,11 @@ class RocketRoute extends ResponseHandler {
     
       if (req.secure) {
       };
-      console.log("Request req.headers.host = ", req.headers.host);
+      console.log("Request 123 req.headers.host = ", req.headers.host);
     
-      res.status(300).json({
+      res.status(200).json({
         message: "/rocket/user",
-        rocketStatus: "login"
+        rocketStatus: "get user"
       });
     
     });
