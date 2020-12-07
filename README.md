@@ -73,7 +73,7 @@ First integration will be for UE rocket-craft projects.
 
 </pre>
 
-#### Active Integrated Features List:
+#### Active RocketCraftServer integrated Features List:
 <pre>
  - MongoDB integrated      [DONE]
  - Switch theme (style)    [DONE]
@@ -88,6 +88,19 @@ First integration will be for UE rocket-craft projects.
  - Basic http/https server [DONE]
 </pre>
 
+#### Active RocketCraftClient integrated Features List:
+
+Client application (all platforms releases/builds) use communication
+with rocketCraftServer only on `API` level with https protocol.
+
+Only implications between client vs server is account session status
+(in database field online). Logged or not.
+<pre>
+ - Account routes
+    - register form        [DONE]
+    - reg/confirmaton form [DONE]
+    - login form           [DONE]
+</pre>
 
 <pre>
 +-------------------------------------------------------------------------------------------------------+
@@ -100,8 +113,10 @@ First integration will be for UE rocket-craft projects.
 | +-------------------------------+   +------------------------------+  +----------------------------+  |
 | |                               |   |                              |  |                            |  |
 | |   WINDOWS                     |   |  ANDROID       X-Box         |  | Unreal export direct from  |  |
-| |                               |   |                              |  | 4.22 or use engine who was |  |
-| |   MACOS                       |   |  IOS                         |  | builded from source.       |  |
+| |                               |   |                              |  | 4.22 or use engine 4.24    |  |
+| |   MACOS                       |   |  IOS                         |  | (build from source)        |  |
+| |                               |   |                              |  |                            |  |
+| |                               |   |                              |  | AdminPanel (THIS REPO)     |  |
 | |                               |   |                              |  |                            |  |
 | |   LINUX                       |   |  etc                         |  | Also can be used by any    |  |
 | |                               |   |                              |  | web application            |  |
@@ -113,15 +128,15 @@ First integration will be for UE rocket-craft projects.
            |          |
 +-------------------------------------------------------------------------------------------------------+
 |          |          |                                                                                 |
-|     +----+----------v-------+                                       +-----------------------------+   |
-|     |                       |                                       |                             |   |
-|     |     REST API          |                                       |  HTTP, HTTPS (1.1 or 2)     |   |
-|     |                       |                                       |                             |   |
-|     |                       |                                       +-----------------------------+   |
-|     |                       |                                                                         |
-|     |                       |                                                                         |
-|     |                       |                                                                         |
-|     +-----------------------+                                                                         |
+|     +----+----------v--------+                                      +-----------------------------+   |
+|     |                        |                                      |                             |   |
+|     |      REST API          |                                      |  HTTP, HTTPS (1.1 or 2)     |   |
+|     | [/rocket/register]     |                                      |                             |   |
+|     | [/rocket/confirmation] |                                      +-----------------------------+   |
+|     | [/rocket/register]     |                                                                        |
+|     | [/rocket/login]        |                                                                        |
+|     |                        |                                                                        |
+|     +------------------------+                                                                        |
 |                                                                                                       |
 |  SOURCE : https://github.com/zlatnaspirala/rocket-craft-server                                        |
 |  +-----------------------------------------------------+                                              |
