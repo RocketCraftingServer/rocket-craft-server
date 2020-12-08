@@ -1,6 +1,8 @@
 
 /**
- * PWA Powered REST API Server
+ * @description  RocketCraftServer
+ * REST API Server powered with
+ * PWA Admin Panel 
  * @author Nikola Lukic 
  * @email zlatnaspirala@gmail.com
  */
@@ -60,6 +62,8 @@ var bodyParser = require("body-parser");
 var app = express();
 var URL_ARG = process.argv[2];
 var options = null;
+
+app.use(bodyParser.json({ limit: config.maxRequestSize }))
 
 app.use(cors());
 
@@ -170,7 +174,7 @@ serverRunner.createServer(options, app).listen(config.connectorPort, error => {
     console.error(error);
     return process.exit(1);
   } else {
-    console.log("ROCKET LAUNCH ON PORT " + config.connectorPort + ". Good luck ...");
+    console.log("ROCKET LAUNCHED ON PORT " + config.connectorPort + ". Good luck ...");
   }
 });
 

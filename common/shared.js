@@ -7,22 +7,6 @@ module.exports = {
     return url.replace(/\//g, "\\");
   },
 
-  // Register list for user network response's.
-  serverHandlerRegister: function() {},
-  serverHandlerRegValidation: function() {},
-  serverHandlerLoginValidation: function() {},
-  serverHandlerGetUserData: function() {},
-  serverHandlerSetNewNickname: function() {},
-  serverHandlerFastLogin: function() {},
-  serverHandlerGamePlayStart: function() {},
-  serverHandlerSessionLogOut: function() {},
-  serverHandlerOutOfGame: function() {},
-
-  serverHandlerGetUsersList: function() {},
-  serverHandlerTryThisUser: function() {},
-  serverHandlerCallReject: function() {},
-  serverHandlerProfilePhoto: function() {},
-
   validateEmail: function(email) {
     // tslint:disable-next-line:max-line-length
     const regexp = new RegExp(
@@ -71,4 +55,5 @@ module.exports = {
   getDefaultNickName() {
     return Math.random() * 12 * Math.random();
   }
+  
 };

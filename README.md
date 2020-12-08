@@ -88,7 +88,7 @@ First integration will be for UE rocket-craft projects.
  - Basic http/https server [DONE]
 </pre>
 
-#### Active RocketCraftClient integrated Features List:
+#### Active RocketCraftClient engine 4.22 integrated Features List:
 
 Client application (all platforms releases/builds) use communication
 with rocketCraftServer only on `API` level with https protocol.

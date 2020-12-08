@@ -59,6 +59,10 @@ class ServerConfig {
     return "http"; 
   }
 
+  get maxRequestSize() {
+    return "1mb";
+  }
+
   // localhost
   get certPathSelf() {
     return {
