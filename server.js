@@ -116,8 +116,18 @@ app.use(
 let routerRocket = new require('./api/account/account')(app, express, database, crypto);
 let routerUsers = new require('./api/users/users')(app, express, database, crypto);
 
-// Test
+// Test - Not for production
 let routerGeneric = new require('./api/generic/route')(app, express, database, crypto);
+
+let routerProfile = new require('./api/profile/profile')(
+  app,
+  express,
+  { 
+    dbName: config.databaseName,
+    dbRoot: config.getDatabaseRoot
+  },
+  crypto
+);
 
 // Server configuration
 // app.use(express.static(__dirname + "/public"));

@@ -33,6 +33,12 @@
             Generic Rocket 
           </md-button>
         </md-menu-item>
+        <md-menu-item>
+          <md-button class="md-primary md-raised" @click="visibilityProfileComponent">
+            <md-icon class="fa fa-shield"></md-icon>
+            Rocket User Profile
+          </md-button>
+        </md-menu-item>
       </md-menu-content>
     </md-menu>
     <md-menu>
@@ -203,6 +209,11 @@
     visibilityGenericComponent(): void {
       (this.$root.$children[0] as any).setGenericComponentVisibility()
     }
+
+    visibilityProfileComponent(): void {
+      (this.$root.$children[0] as any).setUserProfileComponentVisibility()
+    }
+    
 
     mounted (): void {
 

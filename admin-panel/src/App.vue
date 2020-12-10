@@ -23,6 +23,11 @@
              :domain="$props.AppDomainHost">
       </users>
 
+      <userRocketProfile v-show="visibility.userProfileComponent"
+             prefix="rocket"
+             :domain="$props.AppDomainHost">
+      </userRocketProfile>
+
       <generic-component v-show="visibility.genericComponent">
       </generic-component>
 
@@ -50,6 +55,7 @@
   import EmailService from './components/administrator/email-service.vue'
   import CountrySelector from './components/countries-selector/country-selector.vue'
   import Users from './components/administrator/users.vue'
+  import userRocketProfile from './components/profile/profile.vue'
   import GenericComponent from './components/generic/generic.vue'
 
   Vue.use(VueMaterial as any)
@@ -74,7 +80,8 @@
       EmailService,
       CountrySelector,
       Users,
-      GenericComponent
+      GenericComponent,
+      userRocketProfile
     },
     computed: mapState([
       'permission'
@@ -192,10 +199,15 @@
           emailServiceComponent: true,
           usersComponent: true,
           genericComponent: false,
+          userProfileComponent: false
         }
       }
     }
 
+    public setUserProfileComponentVisibility() {
+      this.$data.visibility.userProfileComponent = !this.$data.visibility.userProfileComponent
+    }
+    
     public setGenericComponentVisibility() {
       this.$data.visibility.genericComponent = !this.$data.visibility.genericComponent
     }

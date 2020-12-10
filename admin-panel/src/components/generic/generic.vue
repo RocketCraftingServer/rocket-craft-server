@@ -142,12 +142,6 @@
 
     private triggerClickComponent(e): void {
       console.log(e)
-
-      this.containerRoutes.push( this.$createElement(
-        'div',   // tag name
-        ['i am dinamic ']
-      ))
-      
     }
 
     private setCMPosition(x, y) {

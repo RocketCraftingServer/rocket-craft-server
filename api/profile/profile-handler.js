@@ -1,54 +1,48 @@
+var action = require("./action");
 
 class ResponseHandler {
 
-  constructor(crypto) {
+  constructor(crypto, dataOptions) {
     this.crypto = crypto;
+    this.dataOptions = dataOptions;
   }
 
-  async getUsersResponse(req, res) {
-    
+  async getProfileResponse(req, res) {
+
       if (req.secure) {
         // console.log("S");
       };
     
-      console.log("/rocket/users ", req.body);
-
+      // console.log("/rocket/profile ", req.body);
       if (typeof req.body.token !== 'undefined') {
                 
         var user = {
           token: req.body.token,
-          size: 200,
-          i: 1,
-          criterium: req.body.criterium
+          email: req.body.email
         };
         
-        var responseFlag = await this.dataAction.getUsersList(user, this)
-        console.log("/rocket/users", responseFlag.status);
-
+        var responseFlag = await action.getUserProfile(user, this.dataOptions)
+        console.log("/rocket/profile", responseFlag.status);
         if (responseFlag.status == "AUTHORIZED") {
           res.status(200).json({
-            message: "get users response",
+            message: "Welcome to your progile dashboard",
             rocketStatus: responseFlag.status,
-            users: responseFlag.users
+            user: responseFlag.user
           });
         } else {
-          res.status(400).json({
+          res.status(401).json({
             message: "NO AUTHORIZED",
-            rocketStatus: "bad request"
+            rocketStatus: "very bad request"
           });
         }
         
-        
       } else {
-
         console.log("/rocket/register There is no exspected props in request body.");
-
         res.status(400).json({
           message: "There is no exspected props in request body.",
-          rocketStatus: "bad request"
+          rocketStatus: "Bad request"
         });
         return;
-
       }
   }
  

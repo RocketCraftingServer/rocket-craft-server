@@ -471,7 +471,7 @@ class MyDatabase {
                      return;
         }
         const dbo = db.db(databaseName);
-        dbo.collection("users").findOne({ token: user.token, confirmed: true }, {}, function(err, result) {
+        dbo.collection("users").findOne({ token: user.token, confirmed: true, online: true }, {}, function(err, result) {
           if (err) { console.log("MyDatabase.login error: " + err);
                      resolve("MyDatabase.login.error")
           }
@@ -488,6 +488,7 @@ class MyDatabase {
               var skipValue = 0;
               var limitValue = 500;
 
+              //  resolve({ status: "WRONG_" }); NEED FIX
               if (user.criterium.description == 'list-all') {
                 // 
                 if (user.criterium.moreExploreUsers == 1) {

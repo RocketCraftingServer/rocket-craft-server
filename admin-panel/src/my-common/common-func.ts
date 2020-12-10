@@ -36,3 +36,14 @@ export function setupLocal(route) {
   return location.port;
 }
 
+export function copyToClipboard(this: any, e) {
+  console.log('copy to clipboard => ', e.target.innerText);
+  var text = e.target.innerText;
+  var dummy = document.createElement("textarea");
+  document.body.appendChild(dummy);
+  dummy.value = text;
+  dummy.select();
+  document.execCommand("copy");
+  document.body.removeChild(dummy);
+  (this as any).$root.$emit('global.copyclipboard', text)
+}
