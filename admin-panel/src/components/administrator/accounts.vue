@@ -271,7 +271,7 @@
            mdContent,
            mdTextArea,
            mdProgressSpinner } from 'vue-material'
-  import { setupLocal, switchTheme } from '../../my-common/common-func'
+  import { copyToClipboard, setupLocal, switchTheme } from '../../my-common/common-func'
   import IAccounts from './IAccounts'
 
   const CompProps = Vue.extend({
@@ -331,8 +331,14 @@
       padding : '10px',
       margin : '1px 1px 1px 1px',
     }
+
+    public copyToClipboard;
+
     constructor() {
       super()
+
+      this.copyToClipboard = copyToClipboard.bind(this)
+      
     }
 
     data() {
@@ -345,19 +351,6 @@
         },
         
       }
-    }
- 
-    public copyToClipboard(e) {
-      console.log('copy to clipboard => ', e.target.innerText);
-      var text = e.target.innerText;
-      var dummy = document.createElement("textarea");
-      document.body.appendChild(dummy);
-      dummy.value = text;
-      dummy.select();
-      document.execCommand("copy");
-      document.body.removeChild(dummy);
-
-      this.$root.$emit('global.copyclipboard', text)
     }
 
     async runApiCallByActionName(apiCallFlag) {
