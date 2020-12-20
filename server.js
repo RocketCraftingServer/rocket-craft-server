@@ -8,7 +8,7 @@
  */
 
 const ConfigAccountSession = require("./config");
-const config = new ConfigAccountSession();
+const config = new ConfigAccountSession('secured');
 
 const MyDatabase = require("./database/database");
 let database = new MyDatabase(config);
@@ -30,7 +30,7 @@ database.checkInitiallyDatabaseSize();
  * @collections 
  *  - users
  */
-// database.seedDatabase(55);
+database.seedDatabase(55);
 
 // Check launch arguments: must receive URL (localhost) and the secret
 if (process.argv.length != 4) {
@@ -39,7 +39,7 @@ if (process.argv.length != 4) {
 }
 
 // For demo purposes we ignore self-signed certificate
-process.env.NODE_TLS_REJECT_UNAUTHORIZED = 0;
+// process.env.NODE_TLS_REJECT_UNAUTHORIZED = 0;
 
 // http2 protocol
 const spdy = require("spdy");

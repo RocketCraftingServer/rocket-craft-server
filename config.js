@@ -56,7 +56,7 @@ class ServerConfig {
   }
 
   get protocol() { 
-    return "http"; 
+    return "https"; 
   }
 
   get maxRequestSize() {
@@ -75,9 +75,9 @@ class ServerConfig {
   // production
   get certPathProd() {
     return {
-      pKeyPath: "/etc/httpd/conf/ssl/maximumroulette.com.key",
-      pCertPath: "/etc/httpd/conf/ssl/maximumroulette_com.crt",
-      pCBPath: "/etc/httpd/conf/ssl/maximumroulette.ca-bundle"
+      pKeyPath: "/etc/letsencrypt/live/maximumroulette.com/privkey.pem",
+      pCertPath: "/etc/letsencrypt/live/maximumroulette.com/cert.pem",
+      pCBPath: "/etc/letsencrypt/live/maximumroulette.com/fullchain.pem"
     };
   };
 
@@ -107,7 +107,7 @@ class ServerConfig {
      */ 
     
   get databaseName() {
-    return  "rocket-master-base1";
+    return  "rocket-1";
   }
 
   get getDatabaseRoot() {
@@ -115,7 +115,7 @@ class ServerConfig {
     var databaseRoot = {
       dev: "mongodb://localhost:27017",
       prod: "mongodb://userAdmin:********@maximumroulette.com:27017/admin",
-      secured: "mongodb://userAdmin:********localhost:27017/admin",
+      secured: "mongodb://userAdmin:********@localhost:27017/admin",
     };
 
     if (this.serverMode == "dev") {

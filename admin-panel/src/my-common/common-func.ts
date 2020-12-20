@@ -33,7 +33,7 @@ export function setupLocal(route) {
     var l = route.replace(":3000/", ":30100/")
     return l;
   }
-  return location.port;
+  return location.href;
 }
 
 export function copyToClipboard(this: any, e) {

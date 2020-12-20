@@ -1,7 +1,12 @@
 
-# Rocket Craft Server 
+# Rocket Crafting Servers
 ## for Rocket Craft (ue4 project) clients.
 ## General status : `underconstruct`
+
+Project original name : `Rocket Crafting Servers`
+to avoid misunderstandings with other randomly
+similar server names. Rocket is an alias for Unreal engine.
+
 
 Basic account session staff based on node.js and MongoDB.
 
@@ -184,3 +189,67 @@ Only implications between client vs server is account session status
  - Rocket server
    - Get active servers list
    - Open game session
+
+## Production 
+
+ - CentOS 8.3
+
+```mongo
+ use DB_NAME_ROCKET_ID
+ db.author.insert({"name":"Nikola Lukic 2021"})
+```
+
+```bash
+firewall-cmd --zone=public --permanent --add-port PORT/tcp
+```
+
+### Signaling Server host
+
+80 - for all HTTP requests coming from clients.
+To change this value, set the --httpPort parameter for the Signaling Server.
+
+443 - for all HTTPS requests coming from clients, when the Signaling Server is running in HTTPS mode.
+To change this value, set the --httpsPort parameter for the Signaling Server.
+
+8888 - for all incoming connection requests from the Unreal Engine application.
+To change this value, set both the --streamerPort parameter for the Signaling Server and the -PixelStreamingPort parameter for the UE4 application.
+
+#### Matchmaker Server host
+
+90 - for all HTTP requests coming from clients.
+To change this value, use the --httpPort parameter for the Matchmaker Server.
+
+9999 - for all messages sent by the Signaling Server.
+To change this value, set both the --matchmakerPort parameter for the Matchmaker Server and the --matchmakerPort parameter for the Signaling Server.
+
+
+## Multiplayer servers for support
+
+From ue4 engine recommended files
+- Turn server come from webRTC
+excellent feature for next update.
+
+Be sure:
+```js
+npm install -g npm
+```
+
+From official ue4 docs `Before you start your Signaling and Web Server,
+start the Matchmaker Server by running its run.bat file. By default,
+the server listens for HTTP connections from clients on port 90, and it
+listens for connections from Signaling and Web Servers on port 9999.
+You can override those settings by providing the following configuration
+parameters on the command line:`
+
+Parameter Description
+```js
+--httpPort
+```
+Defines the port the Matchmaker Server listens to for incoming HTTP connections from browsers.
+```js
+--matchmakerPort
+```
+
+Defines the port the Matchmaker Server listens to for incoming
+status messages from Signaling and Web Servers.
+
