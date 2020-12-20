@@ -67,6 +67,39 @@ class CreateDatabaseCollections {
     });
   }
 
+  /**
+   * @description Before start
+   * game play. We need to login.
+   */
+  createActiveSessions() {
+
+    var root = this;
+    const databaseName = this.config.databaseName;
+
+    return new Promise((resolve) => {
+      MongoClient.connect(
+        this.config.getDatabaseRoot,
+        { useNewUrlParser: true, useUnifiedTopology: true },
+        function (error, db) {
+          if (error) {
+            console.warn("MyDatabase  error:" + error);
+            return;
+          }
+          const dbo = db.db(databaseName);
+          if (!dbo.collection("activegames")) {
+            dbo.createCollection("activegames").createIndex({ userId: 1 }, { unique: true });
+            dbo.createCollection("activegames").createIndex({ gameDescription: 1 }, { unique: true });
+            dbo.createCollection("activegames").createIndex({ sessionMapName: 1 }, { unique: true });
+            dbo.createCollection("activegames").createIndex({ sessionHostIp: 1 }, { unique: true });
+            resolve("Collections activegames created.")
+          } else {
+            resolve("Collections antihack already exist.")
+          }
+
+        });
+    });
+  }
+
   createAntiHackCollection() {
 
     var root = this;
