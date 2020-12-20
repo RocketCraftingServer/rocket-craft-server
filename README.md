@@ -1,13 +1,15 @@
 
-# Rocket Craft Server
+# Rocket Craft Server 
+## for Rocket Craft (ue4 project) clients.
 
 Basic account session staff based on node.js and MongoDB.
-First integration will be for UE rocket-craft projects.
+
+ Integration done:
 
  - Node.js http1.1/http2 server
- - Basic session account support
+ - Basic session account support (mongoDB)
  - Vue-Typescript administrator panel project
-
+ - Test clients (rocket-craft repo)
 
 ### Project structure ###
 
@@ -18,14 +20,14 @@ First integration will be for UE rocket-craft projects.
  - Folder `admin-panel` is somekind of sandbox.
    Dont import any file from root like congif.js.
    Even admin access it is still posible for public access.
- - Top secret list: 
+ - Top secret list:
       - system email password
       - public database password
 
 <pre>
 
-├── database/ 
-|   ├── data/                    (internal mongodb generated) 
+├── database/
+|   ├── data/                    (internal mongodb generated)
 ├── docs/                        (Output for documentation html)
 ├── node_modules/                (auto generated)
 ├── admin-panel/                 [Vue - admin app]
@@ -63,6 +65,7 @@ First integration will be for UE rocket-craft projects.
 |   ├── tsconfig.ts
 |   ├── vue.config.js         [PWA - staff]
 ├── self-cert/                [server side local cert]
+├── mu;tiplayer/              (raw implementation - support servers)
 ├── .gitignore        
 ├── config.js                 [server side config]
 ├── LICENCE
@@ -74,24 +77,24 @@ First integration will be for UE rocket-craft projects.
 </pre>
 
 #### Active RocketCraftServer integrated Features List:
+
 <pre>
  - MongoDB integrated      [DONE]
  - Switch theme (style)    [DONE]
-    - Orange
-    - Light
-    - Dark
+   (whole palette ofo colors)
  - Test account route
-    - register             [DONE]
-    - register confirmaton [DONE]
-    - login                [WIP]
-    - user                 [WIP]
- - Basic http/https server [DONE]
+    - register              [DONE]
+    - register confirmaton  [DONE]
+    - login                 [DONE]
+    - user                  [DONE]
+    - test ue4 clients part [DONE]
+ - Basic http/https server  [DONE]
 </pre>
 
 #### Active RocketCraftClient engine 4.22 integrated Features List:
 
 Client application (all platforms releases/builds) use communication
-with rocketCraftServer only on `API` level with https protocol.
+with rocketCraftServer only on `API` level with http/https protocol.
 
 Only implications between client vs server is account session status
 (in database field online). Logged or not.
@@ -100,11 +103,13 @@ Only implications between client vs server is account session status
     - register form        [DONE]
     - reg/confirmaton form [DONE]
     - login form           [DONE]
+    - profile              [DONE]
 </pre>
 
 <pre>
 +-------------------------------------------------------------------------------------------------------+
 |                                                                                                       |
+|  +-----------------------------------------------------+                                              |
 |  SOURCE : https://github.com/zlatnaspirala/rocket-craft                                               |
 |  +-----------------------------------------------------+                                              |
 |                                                                                                       |
@@ -124,7 +129,11 @@ Only implications between client vs server is account session status
 |                                    rocket Client builds                                               |
 +----------+----------+---------------------------------------------------------------------------------+
            ^          |
+           |          |        MATCHMAKING
            |          |
+           |          |        SINGNALING SERVER
+           |          |
+           |          |        WEB SERVER
            |          |
 +-------------------------------------------------------------------------------------------------------+
 |          |          |                                                                                 |
@@ -135,11 +144,12 @@ Only implications between client vs server is account session status
 |     | [/rocket/confirmation] |                                      +-----------------------------+   |
 |     | [/rocket/register]     |                                                                        |
 |     | [/rocket/login]        |                                                                        |
-|     |                        |                                                                        |
+|     | [/rocket/profile]      |                                                                        |
 |     +------------------------+                                                                        |
 |                                                                                                       |
+|  +------------------------------------------------------------+                                       |
 |  SOURCE : https://github.com/zlatnaspirala/rocket-craft-server                                        |
-|  +-----------------------------------------------------+                                              |
+|  +------------------------------------------------------------+                                       |
 |                                                                                                       |
 +-------------------------------------------------------------------------------------------------------+
 |                                            NODEJS CORE                                                |
@@ -149,11 +159,12 @@ Only implications between client vs server is account session status
 
 </pre>
 
-### Features 
- 
+### Features in WIP status:
+
  `- Admin Panel (Vue-ClassComponent-Typescript)`
 
  `- Debugging proccess for server part with Visual-Code.
     (Launch.json tested on windows)`
     create folder `.vscode` in root of workspace and copy `launch.json`.
 
+ - Rocket server
