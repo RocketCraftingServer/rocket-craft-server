@@ -20,7 +20,7 @@ Basic account session staff based on node.js and MongoDB.
 
 ### From ue4 client 
     - First case is `Barbarian Road mashines` race game.
-![]()
+![](https://github.com/zlatnaspirala/rocket-craft-server/blob/main/non-project-files/tutorial-steps/profile-preview-in-ue-client-game-brm.png)
 
 
 ### Project structure ###
