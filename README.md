@@ -161,10 +161,14 @@ Only implications between client vs server is account session status
 
 ### Features in WIP status:
 
- `- Admin Panel (Vue-ClassComponent-Typescript)`
+  - Admin Panel (Vue-ClassComponent-Typescript)
 
- `- Debugging proccess for server part with Visual-Code.
+  - Debugging proccess for server part with Visual-Code.
     (Launch.json tested on windows)`
     create folder `.vscode` in root of workspace and copy `launch.json`.
 
+    Please use debugger and learn and feel node iterrator flow.
+
  - Rocket server
+   - Get active servers list
+   - Open game session

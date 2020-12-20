@@ -25,7 +25,7 @@ class ResponseHandler {
         console.log("/rocket/profile", responseFlag.status);
         if (responseFlag.status == "AUTHORIZED") {
           res.status(200).json({
-            message: "Welcome to your progile dashboard",
+            message: "Welcome to your profile dashboard",
             rocketStatus: responseFlag.status,
             user: responseFlag.user
           });
