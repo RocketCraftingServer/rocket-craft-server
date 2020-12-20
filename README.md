@@ -1,6 +1,7 @@
 
 # Rocket Craft Server 
 ## for Rocket Craft (ue4 project) clients.
+## General status : `underconstruct`
 
 Basic account session staff based on node.js and MongoDB.
 
@@ -10,6 +11,13 @@ Basic account session staff based on node.js and MongoDB.
  - Basic session account support (mongoDB)
  - Vue-Typescript administrator panel project
  - Test clients (rocket-craft repo)
+
+### Run rocketcraftingserver in local (dev):
+![](https://github.com/zlatnaspirala/rocket-craft-server/blob/main/non-project-files/tutorial-steps/local-run-rocket-crafting-server.gif)
+
+### Run Admin panel
+![](https://github.com/zlatnaspirala/rocket-craft-server/blob/main/non-project-files/tutorial-steps/local-run-rocket-crafting-admin-panel.gif)
+
 
 ### Project structure ###
 
