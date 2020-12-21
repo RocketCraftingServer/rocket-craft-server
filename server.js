@@ -117,7 +117,7 @@ let routerRocket = new require('./api/account/account')(app, express, database, 
 let routerUsers = new require('./api/users/users')(app, express, database, crypto);
 
 // Test - Not for production
-let routerGeneric = new require('./api/generic/route')(app, express, database, crypto);
+// let routerGeneric = new require('./api/generic/route')(app, express, database, crypto);
 
 let routerProfile = new require('./api/profile/profile')(
   app,
