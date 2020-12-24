@@ -70,6 +70,7 @@ class SeedDatabaseCollections {
           
             console.info("MyDatabase seed new fake users.");
             var fakeUsers = [];
+
             for (var x = 0; x < root.seedNumberOfUsers;x++) {
               let uniqLocal = shared.generateToken();
               fakeUsers.push({

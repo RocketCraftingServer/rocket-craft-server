@@ -1,0 +1,9 @@
+{
+	"UseFrontend": false,
+	"UseMatchmaker": true,
+	"UseHTTPS": false,
+	"UseAuthentication": false,
+	"LogToFile": true,
+	"HomepageFile": "player.htm",
+	"AdditionalRoutes": {}
+}

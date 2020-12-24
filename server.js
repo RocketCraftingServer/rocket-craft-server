@@ -8,7 +8,8 @@
  */
 
 const ConfigAccountSession = require("./config");
-const config = new ConfigAccountSession('secured');
+// const config = new ConfigAccountSession('secured');
+const config = new ConfigAccountSession();
 
 const MyDatabase = require("./database/database");
 let database = new MyDatabase(config);
@@ -30,7 +31,7 @@ database.checkInitiallyDatabaseSize();
  * @collections 
  *  - users
  */
-database.seedDatabase(55);
+database.seedDatabase(5);
 
 // Check launch arguments: must receive URL (localhost) and the secret
 if (process.argv.length != 4) {
@@ -129,6 +130,16 @@ let routerProfile = new require('./api/profile/profile')(
   crypto
 );
 
+let routerProfileWannaPlay = new require('./api/crafting/active-list')(
+  app,
+  express,
+  { 
+    dbName: config.databaseName,
+    dbRoot: config.getDatabaseRoot
+  },
+  crypto
+);
+
 // Server configuration
 // app.use(express.static(__dirname + "/public"));
 // app.use(compression({ filter: shouldCompress }));
@@ -188,4 +199,4 @@ serverRunner.createServer(options, app).listen(config.connectorPort, error => {
   }
 });
 
-
+ 

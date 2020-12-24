@@ -18,9 +18,9 @@ class CreateDatabaseCollections {
   createCollections() {
 
     const r1 = this.createUsersCollection();
+    const r2 = this.createActiveSessions();
 
-    const r2 = this.createActiveSessions()
-    return r1;
+    return r2;
   }
 
   /**
@@ -90,12 +90,14 @@ class CreateDatabaseCollections {
           const dbo = db.db(databaseName);
           if (!dbo.collection("activegames")) {
             dbo.createCollection("activegames").createIndex({ userId: 1 }, { unique: true });
+            dbo.createCollection("activegames").createIndex({ userNickname: 1 }, { unique: true });
             dbo.createCollection("activegames").createIndex({ gameDescription: 1 }, { unique: true });
-            dbo.createCollection("activegames").createIndex({ sessionMapName: 1 }, { unique: true });
+            dbo.createCollection("activegames").createIndex({ sessionMapName: 1 }, { unique: false });
             dbo.createCollection("activegames").createIndex({ sessionHostIp: 1 }, { unique: true });
+            dbo.createCollection("activegames").createIndex({ sessionPlatform: 1 }, { unique: false });
             resolve("Collections activegames created.")
           } else {
-            resolve("Collections antihack already exist.")
+            resolve("Collections activegames already exist.")
           }
 
         });

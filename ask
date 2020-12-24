@@ -1,0 +1,14 @@
+   
+   
+ First bug is crashing windows ue app if i setup :
+
+```
+"C:\Desktop\TEST_BUILDS\win\WindowsNoEditor\Brm.exe" -PixelStreamingIP=VPS_SERVER_PUBLIC_IP -PixelStreamingPort=8888
+```
+
+ Is it looks nice this log :
+```
+Listening to proxy connections on: 8888
+23:33:15.489 Http listening on *: 85
+23:33:15.491 Cirrus connected to Matchmaker 127.0.0.1:9999
+```

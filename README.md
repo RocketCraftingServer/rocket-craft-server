@@ -192,6 +192,8 @@ Only implications between client vs server is account session status
 
 ## Production 
 
+  Be aware of NAT and need to have opened port.
+  
  - CentOS 8.3
 
 ```mongo
@@ -199,9 +201,23 @@ Only implications between client vs server is account session status
  db.author.insert({"name":"Nikola Lukic 2021"})
 ```
 
+Format:
 ```bash
 firewall-cmd --zone=public --permanent --add-port PORT/tcp
 ```
+
+Examples for cent os 8:
+```
+sudo firewall-cmd --permanent --add-port=5349/tcp
+sudo firewall-cmd --permanent --add-port=5349/udp
+sudo firewall-cmd --permanent --add-port=63000-64535/udp
+sudo firewall-cmd --reload
+```
+
+### test 
+firewall-cmd --zone=public --permanent --add-port 85/tcp
+firewall-cmd --zone=public --permanent --add-port 8888/udp
+
 
 ### Signaling Server host
 

@@ -24,7 +24,7 @@ class ServerConfig {
     console.info(" -> Server running under " + this.serverMode + " configuration.");
     if (this.serverMode == "dev") {
       console.info(" -> domain dev:", this.domain.dev);
-    } else if (this.serverMode == "prod") {
+    } else if (this.serverMode == "prod" || this.serverMode == "secured" ) {
       console.info(" -> domain prod:", this.domain.prod);
     }
     console.info(" -> masterServerKey:", this.masterServerKey);
@@ -56,7 +56,7 @@ class ServerConfig {
   }
 
   get protocol() { 
-    return "https"; 
+    return "http"; 
   }
 
   get maxRequestSize() {

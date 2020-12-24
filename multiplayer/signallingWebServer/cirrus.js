@@ -41,17 +41,9 @@ var http = require("http").Server(app);
 
 if (config.UseHTTPS) {
 	//HTTPS certificate details
-	/**
-	 * 
-	    pKeyPath: "/etc/letsencrypt/live/maximumroulette.com/privkey.pem",
-      pCertPath: "/etc/letsencrypt/live/maximumroulette.com/cert.pem",
-      pCBPath: "/etc/letsencrypt/live/maximumroulette.com/fullchain.pem"
-	 */
   const options = {
     key: fs.readFileSync("/etc/letsencrypt/live/maximumroulette.com/privkey.pem"),
-    cert: fs.readFileSync(
-      path.join("/etc/letsencrypt/live/maximumroulette.com/cert.pem")
-    ),
+    cert: fs.readFileSync("/etc/letsencrypt/live/maximumroulette.com/cert.pem")
   };
 
   var https = require("https").Server(options, app);
@@ -94,11 +86,12 @@ if (config.UseFrontend) {
   const httpsClient = require("./modules/httpsClient.js");
   var webRequest = new httpsClient();
 } else {
-  var httpPort = 85;
-  var httpsPort = 4433;
+  console.log("INFO DATA PORT")
+  var httpPort = 80;
+  var httpsPort = 443;
 }
 
-var proxyPort = 8888; // port to listen to WebRTC proxy connections
+var proxyPort = 8889; // port to listen to WebRTC proxy connections
 var proxyBuffer = new Buffer(0);
 
 /**
@@ -115,7 +108,16 @@ var serverPublicIp;
 
 //Example of STUN server setting
 //let clientConfig = {peerConnectionOptions: { 'iceServers': [{'urls': ['stun:34.250.222.95:19302']}] }};
-var clientConfig = {peerConnectionOptions: {}};
+var clientConfig = {peerConnectionOptions: {
+	"iceServers": [
+		{
+		  "urls": [
+		    "turn:159.89.8.40:3478",
+		    "stun:159.89.8.40:3478"
+		  ]
+		}
+	]
+}};
 
 // Parse public server address from command line
 // --publicIp <public address>
