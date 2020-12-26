@@ -31,7 +31,7 @@ database.checkInitiallyDatabaseSize();
  * @collections 
  *  - users
  */
-database.seedDatabase(5);
+database.seedDatabase(3);
 
 // Check launch arguments: must receive URL (localhost) and the secret
 if (process.argv.length != 4) {
@@ -63,6 +63,9 @@ var bodyParser = require("body-parser");
 var app = express();
 var URL_ARG = process.argv[2];
 var options = null;
+
+var hostingHTTP = express();
+hostingHTTP.use(express.static("/var/www/html/testue/"));
 
 app.use(bodyParser.json({ limit: config.maxRequestSize }))
 
@@ -125,7 +128,8 @@ let routerProfile = new require('./api/profile/profile')(
   express,
   { 
     dbName: config.databaseName,
-    dbRoot: config.getDatabaseRoot
+    dbRoot: config.getDatabaseRoot,
+    database: database
   },
   crypto
 );
@@ -199,4 +203,14 @@ serverRunner.createServer(options, app).listen(config.connectorPort, error => {
   }
 });
 
- 
+http.createServer(options, hostingHTTP).listen(config.ownHttpHostPort, error => {
+  if (error) {
+    console.warn("Something wrong with rocket-craft own host server.")
+    console.error(error);
+    return process.exit(1);
+  } else {
+    console.log("ROCKET HTTP HOST WWW LAUNCHED ON PORT " + config.ownHttpHostPort + ".");
+  }
+});
+
+

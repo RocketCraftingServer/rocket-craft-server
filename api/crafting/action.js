@@ -36,14 +36,23 @@ module.exports = {
                   resolve({ status: "WRONG DB QUERY" });
                 }
                 if (aresult !== null) {
-                  resolve({ 
-                    status: "DB_QUERY_ACTIVE_LIST_PASSED",
-                    activelist: aresult
-                  });
+
+                  if (aresult.length == 0) {
+
+                    resolve({ 
+                      status: "ACTIVE_LIST_PASSED_EMPTY",
+                    });
+                    
+                  } else {
+                    resolve({ 
+                      status: "DB_QUERY_ACTIVE_LIST_PASSED",
+                      activelist: aresult
+                    });
+                  }
+                  
                 } else {
                   var usersData = {
-                    status: "RESULT_NULL",
-                    activelist: ['as1', 'as2'] 
+                    status: "RESULT_NULL"
                   };
                   resolve(usersData);
                 }

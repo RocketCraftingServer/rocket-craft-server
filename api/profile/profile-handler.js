@@ -7,12 +7,43 @@ class ResponseHandler {
     this.dataOptions = dataOptions;
   }
 
+  async profileNewNickname(req, res) {
+
+    if (typeof req.body.token !== 'undefined') {
+                
+      var user = {
+        token: req.body.token,
+        email: req.body.email,
+        newNickname: req.body.newNickname
+      };
+      
+      var responseFlag = await this.dataOptions.database.setNewNickname(user)
+      console.log("/rocket/profile/newNickname", responseFlag.status);
+      if (responseFlag.status == "NICKNAME_CHANGED") {
+        res.status(200).json({
+          message: "new nickname !",
+          rocketStatus: responseFlag.status,
+        });
+      } else {
+        res.status(401).json({
+          message: "NO AUTHORIZED nickname",
+          rocketStatus: "Very bad request nickname"
+        });
+      }
+      
+    } else {
+      console.log("/rocket/profile/newNickname There is no exspected props in request body.");
+      res.status(400).json({
+        message: "There is no exspected props in request body.",
+        rocketStatus: "Bad request"
+      });
+      return;
+    }
+
+  }
+
   async getProfileResponse(req, res) {
 
-      if (req.secure) {
-        // console.log("S");
-      };
-    
       // console.log("/rocket/profile ", req.body);
       if (typeof req.body.token !== 'undefined') {
                 

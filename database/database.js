@@ -107,7 +107,7 @@ class MyDatabase {
                 {
                   email: user.email,
                   password: callerInstance.crypto.encrypt(user.password),
-                  nickname: "no-nick-name" + shared.getDefaultNickName(),
+                  nickname: "no" + shared.getDefaultNickName(),
                   confirmed: false,
                   token: uniqLocal,
                   socketid: user.socketId,
@@ -316,48 +316,46 @@ class MyDatabase {
     })
   }
 
-  setNewNickname(user, callerInstance) {
+  setNewNickname(user) {
+
     const databaseName = this.config.databaseName;
-    MongoClient.connect(
-      this.config.getDatabaseRoot,
-      { useNewUrlParser: true,
-        useUnifiedTopology: true},
-      function(error, db) {
-        if (error) {
-          console.warn("MyDatabase.login :" + error);
-          return;
-        }
 
-        const dbo = db.db(databaseName);
+    return new Promise((resolve) => {
 
-        dbo
-          .collection("users")
-          .findOne({ socketid: user.data.accessToken, online: true, confirmed: true }, function(err, result) {
-            if (err) {
-              console.log("MyDatabase.setNewNickname (user socket id not found):" + err);
-              return null;
-            }
-
-            if (result !== null) {
-              const userData = {
-                accessToken: user.data.accessToken,
-                newNickname: user.data.newNickname,
-                email: user.data.email
-              };
-
-              dbo
-                .collection("users")
-                .updateOne({ email: user.data.email }, { $set: { nickname: user.data.newNickname } }, function(err, result2) {
-                  if (err) {
-                    console.log("MyDatabase.setNewNickname (error in update):", err);
-                    return;
-                  }
-                  callerInstance.onUserNewNickname(userData, callerInstance);
+      MongoClient.connect(
+        this.config.getDatabaseRoot,
+        { useNewUrlParser: true, useUnifiedTopology: true },
+        function (error, db) {
+          if (error) {
+            console.warn("MyDatabase.login err: " + error);
+            return;
+          }
+          const dbo = db.db(databaseName);
+          dbo.collection("users")
+            .findOne({ email: user.email, online: true, confirmed: true, token: user.token },
+             function (err, result) {
+              if (err) {
+                console.log("MyDatabase.setNewNickname err: " + err);
+                return null;
+              }
+              if (result !== null) {
+                const userData = {
+                  status: "NICKNAME_CHANGED"
+                };
+                dbo.collection("users").updateOne(
+                  { email: user.email }, { $set: { nickname: user.newNickname } },
+                  function (err, result2) {
+                    if (err) {
+                      console.log("MyDatabase.setNewNickname (error in update):", err);
+                      resolve({ status: "ERROR IN NEW NICK NAME" });
+                      return;
+                    }
+                    resolve(userData);
                 });
-            }
-          });
-      }
-    );
+              }
+            });
+      });
+    })
   }
 
   fastLogin(user, callerInstance) {

@@ -53,7 +53,7 @@ module.exports = {
   },
 
   getDefaultNickName() {
-    return Math.random() * 12 * Math.random();
+    return Math.random().toFixed(0);
   }
   
 };

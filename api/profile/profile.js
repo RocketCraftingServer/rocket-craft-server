@@ -28,7 +28,8 @@ class RocketRouteProfile extends ResponseHandler {
 
   routeRegister() {
 
-    this.app.post("/rocket/profile", this.getProfileResponse.bind(this));    
+    this.app.post("/rocket/profile", this.getProfileResponse.bind(this));
+    this.app.post("/rocket/profile/newNickname", this.profileNewNickname.bind(this));
     console.log("getProfileResponse loaded with success.");
 
   }
