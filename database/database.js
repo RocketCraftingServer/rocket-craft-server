@@ -101,7 +101,7 @@ class MyDatabase {
             }
 
             if (result === null) {
-              let uniqLocal = shared.generateToken();
+              let uniqLocal = shared.generateToken(5);
               console.info("MyDatabase Register new user...");
               dbo.collection("users").insertOne(
                 {

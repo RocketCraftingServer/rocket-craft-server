@@ -72,7 +72,7 @@ class SeedDatabaseCollections {
             var fakeUsers = [];
 
             for (var x = 0; x < root.seedNumberOfUsers;x++) {
-              let uniqLocal = shared.generateToken();
+              let uniqLocal = shared.generateToken(5);
               fakeUsers.push({
                   email: root.emailConstructor(),
                   password: root.crypto.encrypt(root.mPassword),
