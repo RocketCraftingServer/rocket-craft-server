@@ -138,7 +138,8 @@ Only implications between client vs server is account session status
 
 <pre>
 +-------------------------------------------------------------------------------------------------------+
-|                                                                                                       |
+|    Active project use 4.22 ue version - Project name : Barbarian Road Mashines                        |
+|    Server use 4.22 ue version fro source                                                              |
 |  +-----------------------------------------------------+                                              |
 |  SOURCE : https://github.com/zlatnaspirala/rocket-craft                                               |
 |  +-----------------------------------------------------+                                              |
@@ -151,17 +152,20 @@ Only implications between client vs server is account session status
 | |                               |   |                              |  | 4.22 or use engine 4.24    |  |
 | |   MACOS                       |   |  IOS                         |  | (build from source)        |  |
 | |                               |   |                              |  |                            |  |
-| |                               |   |                              |  | AdminPanel (THIS REPO)     |  |
+| |                               |   |                              |  | AdminPanel (ONE PART OF    |  |
+| |                               |   |                              |  |             THIS REPO)     |  |
 | |                               |   |                              |  |                            |  |
-| |   LINUX                       |   |  etc                         |  | Also can be used by any    |  |
-| |                               |   |                              |  | web application            |  |
+| |   LINUX  (dedicated server)   |   |  etc                         |  | Also can be used by any    |  |
+| |  no implication with account  |   |                              |  | web application fetch call |  |
+| |  session http server.         |   |                              |  | (API JSON Based content)   |  |
 | +-------------------------------+   +------------------------------+  +----------------------------+  |
 |                                    rocket Client builds                                               |
+|                                    rocket Server builds                                               |
 +----------+----------+---------------------------------------------------------------------------------+
            ^          |
-           |          |        MATCHMAKING
+           |          |        MATCHMAKING  [OPTIMAL]
            |          |
-           |          |        SINGNALING SERVER
+           |          |        SINGNALING SERVER [OPTIMAL]
            |          |
            |          |        WEB SERVER
            |          |
@@ -234,15 +238,21 @@ sudo firewall-cmd --reload
 
 ### Server Builds
 
-   not teste !
-   ```
-   call "D:\Epic Games\4.10\Engine\Build\BatchFiles\RunUAT.bat" -nop4 BuildCookRun -project=D:\MyGame\MyGame.uproject -platform=Win64 -clientconfig=Development -serverconfig=Development -server -servertarget=MyGameServer -build -cook -allmaps -stage -archive -archivedirectory=D:\MyGameBuilds\
-   pause
-   ```
-
-
+   Must be game engine builded from source.
+   Generate visual studio source files.
+   Build on right click -> first ue4 instance than build game instance.
+   Use Development or Shipping - Editor 
+   If you wanna dedicated server build Development-Server or Shipping-Server build 
+   configuration in visual studio.
+   For package run also game engine from source and simple package selected platform.
    For all platforms
 
+   4.22 is not reason for easy export from Game editor for all possible targets.
+   Main reason is devices with opengles < 3.0 support.
+
+   This is `Tradicional way`.
+   On finish whole this staff i will add future `modern way` brach ( 4.26 - 4.29 )
+   with last ue updated.
 
 ### Signaling Server host [optimal]
 
