@@ -7,15 +7,18 @@ Project original name : `Rocket Crafting Servers`
 to avoid misunderstandings with other randomly
 similar server names. Rocket is an alias for Unreal engine.
 
+ => Migrate to ue4 builded from source.
+ => Only active for now is 4.22 , i will wait until finish
+    barbarian road mashines basic demo with one game play map.
+
 
 Basic account session staff based on node.js and MongoDB.
-
  Integration done:
-
  - Node.js http1.1/http2 server
  - Basic session account support (mongoDB)
  - Vue-Typescript administrator panel project
  - Test clients (rocket-craft repo)
+ - Rocket-craft client (4.22) exchange IP for opened dedicated users server run.
 
 ### Run rocketcraftingserver in local (dev):
 ![](https://github.com/zlatnaspirala/rocket-craft-server/blob/main/non-project-files/tutorial-steps/local-run-rocket-crafting-server.gif)
@@ -82,7 +85,13 @@ Basic account session staff based on node.js and MongoDB.
 |   ├── tsconfig.ts
 |   ├── vue.config.js         [PWA - staff]
 ├── self-cert/                [server side local cert]
-├── mu;tiplayer/              (raw implementation - support servers)
+├── multiplayer/              (raw implementation - support servers)
+|   ├──matchmaker             [optimal]
+|   ├──signalling-webserver   [optimal]
+|   ├──server-builds          [optimal]
+|   |  ├──windows             [for win host plan]
+|   |  ├──macos               [for macos host plan]
+|   |  ├──linux               [for linux host plan]
 ├── .gitignore        
 ├── config.js                 [server side config]
 ├── LICENCE
@@ -105,7 +114,11 @@ Basic account session staff based on node.js and MongoDB.
     - login                 [DONE]
     - user                  [DONE]
     - test ue4 clients part [DONE]
- - Basic http/https server  [DONE]
+    - clients profile data  [DONE]
+ - Basic web app hosting
+    - http server           [DONE]
+    - https server          [WIP]
+
 </pre>
 
 #### Active RocketCraftClient engine 4.22 integrated Features List:
@@ -206,20 +219,32 @@ Format:
 firewall-cmd --zone=public --permanent --add-port PORT/tcp
 ```
 
-Examples for cent os 8:
-```
+Examples for cent os 8 in case of signaling server useage:
+
+```bash
 sudo firewall-cmd --permanent --add-port=5349/tcp
 sudo firewall-cmd --permanent --add-port=5349/udp
 sudo firewall-cmd --permanent --add-port=63000-64535/udp
-sudo firewall-cmd --reload
-```
 
-### test 
 firewall-cmd --zone=public --permanent --add-port 85/tcp
 firewall-cmd --zone=public --permanent --add-port 8888/udp
+sudo firewall-cmd --reload
+
+```
+
+### Server Builds
+
+   not teste !
+   ```
+   call "D:\Epic Games\4.10\Engine\Build\BatchFiles\RunUAT.bat" -nop4 BuildCookRun -project=D:\MyGame\MyGame.uproject -platform=Win64 -clientconfig=Development -serverconfig=Development -server -servertarget=MyGameServer -build -cook -allmaps -stage -archive -archivedirectory=D:\MyGameBuilds\
+   pause
+   ```
 
 
-### Signaling Server host
+   For all platforms
+
+
+### Signaling Server host [optimal]
 
 80 - for all HTTP requests coming from clients.
 To change this value, set the --httpPort parameter for the Signaling Server.
@@ -230,7 +255,7 @@ To change this value, set the --httpsPort parameter for the Signaling Server.
 8888 - for all incoming connection requests from the Unreal Engine application.
 To change this value, set both the --streamerPort parameter for the Signaling Server and the -PixelStreamingPort parameter for the UE4 application.
 
-#### Matchmaker Server host
+#### Matchmaker Server host [optimal]
 
 90 - for all HTTP requests coming from clients.
 To change this value, use the --httpPort parameter for the Matchmaker Server.
@@ -239,7 +264,7 @@ To change this value, use the --httpPort parameter for the Matchmaker Server.
 To change this value, set both the --matchmakerPort parameter for the Matchmaker Server and the --matchmakerPort parameter for the Signaling Server.
 
 
-## Multiplayer servers for support
+## Multiplayer proxy servers for support [optimal]
 
 From ue4 engine recommended files
 - Turn server come from webRTC
