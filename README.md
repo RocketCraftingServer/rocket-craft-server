@@ -8,9 +8,12 @@ to avoid misunderstandings with other randomly
 similar server names. Rocket is an alias for Unreal engine.
 
  => Migrate to ue4 builded from source.
- => Only active for now is 4.22 , i will wait until finish
-    barbarian road mashines basic demo with one game play map.
+ => Only active for now is 4.24.3 , i will wait until finish
+    `Barbarian Road Mashines` basic demo with one game play map.
 
+### Get server account part:
+  https://github.com/RocketCraftingServer/rocket-craft-server
+  
 
 Basic account session staff based on node.js and MongoDB.
  Integration done:
@@ -109,24 +112,24 @@ Basic account session staff based on node.js and MongoDB.
  - Switch theme (style)    [DONE]
    (whole palette ofo colors)
  - Test account route
-    - register              [DONE]
-    - register confirmaton  [DONE]
-    - login                 [DONE]
-    - user                  [DONE]
-    - test ue4 clients part [DONE]
-    - clients profile data  [DONE]
+    - register                 [DONE]
+    - register confirmaton     [DONE]
+    - login                    [DONE]
+    - user                     [DONE]
+    - test ue4 clients part    [DONE]
+    - clients profile data     [DONE]
  - Basic web app hosting
-    - http server           [DONE]
-    - https server          [WIP]
+    - http server               [DONE]
+    - https server + ue clients [WIP]
 
 </pre>
 
-#### Active RocketCraftClient engine 4.22 integrated Features List:
+#### Active RocketCraftClient engine 4.24.3 integrated Features List:
 
 Client application (all platforms releases/builds) use communication
 with rocketCraftServer only on `API` level with http/https protocol.
 
-Only implications between client vs server is account session status
+Only implications between ue client vs server.js is account session status
 (in database field online). Logged or not.
 <pre>
  - Account routes
@@ -138,8 +141,8 @@ Only implications between client vs server is account session status
 
 <pre>
 +-------------------------------------------------------------------------------------------------------+
-|    Active project use 4.22 ue version - Project name : Barbarian Road Mashines                        |
-|    Server use 4.22 ue version fro source                                                              |
+|    Active project use 4.24 ue version - Project name : Barbarian Road Mashines                        |
+|    Server use 4.24 ue version fro source                                                              |
 |  +-----------------------------------------------------+                                              |
 |  SOURCE : https://github.com/zlatnaspirala/rocket-craft                                               |
 |  +-----------------------------------------------------+                                              |
@@ -149,15 +152,16 @@ Only implications between client vs server is account session status
 | +-------------------------------+   +------------------------------+  +----------------------------+  |
 | |                               |   |                              |  |                            |  |
 | |   WINDOWS                     |   |  ANDROID       X-Box         |  | Unreal export direct from  |  |
-| |                               |   |                              |  | 4.22 or use engine 4.24    |  |
+| |  (dedicated server) [DONE]    |   |                              |  | 4.22 or use engine 4.24    |  |
+| |                               |   |                              |  |                            |  |
 | |   MACOS                       |   |  IOS                         |  | (build from source)        |  |
 | |                               |   |                              |  |                            |  |
 | |                               |   |                              |  | AdminPanel (ONE PART OF    |  |
-| |                               |   |                              |  |             THIS REPO)     |  |
+| |                               |   |  Sony Playstation            |  |             THIS REPO)     |  |
 | |                               |   |                              |  |                            |  |
 | |   LINUX  (dedicated server)   |   |  etc                         |  | Also can be used by any    |  |
 | |  no implication with account  |   |                              |  | web application fetch call |  |
-| |  session http server.         |   |                              |  | (API JSON Based content)   |  |
+| |  session http server. [DONE]  |   |                              |  | (API JSON Based content)   |  |
 | +-------------------------------+   +------------------------------+  +----------------------------+  |
 |                                    rocket Client builds                                               |
 |                                    rocket Server builds                                               |
@@ -167,7 +171,7 @@ Only implications between client vs server is account session status
            |          |
            |          |        SINGNALING SERVER [OPTIMAL]
            |          |
-           |          |        WEB SERVER
+           |          |        WEB SERVER [For hosting ue html5 clients also for rocketcraft session]
            |          |
 +-------------------------------------------------------------------------------------------------------+
 |          |          |                                                                                 |
@@ -247,11 +251,11 @@ sudo firewall-cmd --reload
    For package run also game engine from source and simple package selected platform.
    For all platforms
 
-   4.22 is not reason for easy export from Game editor for all possible targets.
-   Main reason is devices with opengles < 3.0 support.
+   4.24.3 Main reason is devices with opengles < 3.0 support plus Linux supported 
+   websocket experimental net driver.
 
    This is `Tradicional way`.
-   On finish whole this staff i will add future `modern way` brach ( 4.26 - 4.29 )
+   On finish whole this staff i will add future `modern way` brach ( 4.26 > )
    with last ue updated.
 
 ### Signaling Server host [optimal]
@@ -278,7 +282,7 @@ To change this value, set both the --matchmakerPort parameter for the Matchmaker
 
 From ue4 engine recommended files
 - Turn server come from webRTC
-excellent feature for next update.
+  excellent feature for next update.
 
 Be sure:
 ```js
