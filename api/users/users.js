@@ -28,7 +28,7 @@ class RocketRouteGetUsers extends ResponseHandler {
 
   routeRegister() {
 
-    this.app.post("/rocket/users", this.getUsersResponse.bind(this));    
+    this.app.post("/rocket/users", this.getUsersResponse.bind(this));
     console.log("RocketRouteGetUsers loaded with success.");
 
   }

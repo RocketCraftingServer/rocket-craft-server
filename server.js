@@ -67,6 +67,30 @@ var options = null;
 var hostingHTTP = express();
 hostingHTTP.use(express.static("/var/www/html/testue/"));
 
+// Compress all HTTP responses
+hostingHTTP.use(compression());
+
+
+hostingHTTP.use(function (req, res, next) {
+
+  res.setHeader('Content-Encoding', 'gzip');
+  
+  // Website you wish to allow to connect
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  // Request methods you wish to allow
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+  // Request headers you wish to allow
+  res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+  // Set to true if you need the website to include cookies in the requests sent
+  // to the API (e.g. in case you use sessions)
+  res.setHeader('Access-Control-Allow-Credentials', false);
+  // Pass to next layer of middleware
+
+  
+
+  next();
+});
+
 app.use(bodyParser.json({ limit: config.maxRequestSize }))
 
 app.use(cors());
@@ -144,6 +168,9 @@ let routerProfileWannaPlay = new require('./api/crafting/active-list')(
   crypto
 );
 
+
+
+
 // Server configuration
 // app.use(express.static(__dirname + "/public"));
 // app.use(compression({ filter: shouldCompress }));
@@ -203,6 +230,7 @@ serverRunner.createServer(options, app).listen(config.connectorPort, error => {
   }
 });
 
+/*
 http.createServer(options, hostingHTTP).listen(config.ownHttpHostPort, error => {
   if (error) {
     console.warn("Something wrong with rocket-craft own host server.")
@@ -212,5 +240,4 @@ http.createServer(options, hostingHTTP).listen(config.ownHttpHostPort, error => 
     console.log("ROCKET HTTP HOST WWW LAUNCHED ON PORT " + config.ownHttpHostPort + ".");
   }
 });
-
-
+*/

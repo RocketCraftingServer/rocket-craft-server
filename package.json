@@ -1,7 +1,7 @@
 {
-  "name": "kure-server",
+  "name": "rocket-crafting-server",
   "version": "1.0.0",
-  "description": "Based on openvidu-recording-node 2.2.0. Integrated session staff lib from visual ts game engine.",
+  "description": "Admin page for Rocket Crafting server. Version 2021 `Their Law`. Use minimal dependencies and be professional. This server handle auth session for my platform `rocket-craft` also handle leaderboard. Part of this project is also admin page.  ",
   "main": "server.js",
   "scripts": {
     "app": "node server maximumroulette.com nik",
@@ -9,14 +9,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/OpenVidu/openvidu-tutorials.git"
+    "url": "https://github.com/RocketCraftingServer/rocket-craft-server"
   },
   "author": "zlatnaspirala@gmail.com",
-  "license": "Apache-2.0",
+  "license": "GPL-3.0 License",
   "bugs": {
-    "url": "https://github.com/OpenVidu/openvidu-tutorials/issues"
+    "url": "https://github.com/RocketCraftingServer/rocket-craft-server/issues"
   },
-  "homepage": "https://github.com/OpenVidu/openvidu-tutorials#readme",
+  "homepage": "maximumroulette.com",
   "dependencies": {
     "body-parser": "1.18.2",
     "compression": "^1.7.4",

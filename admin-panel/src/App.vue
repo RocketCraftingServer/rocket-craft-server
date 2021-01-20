@@ -31,6 +31,10 @@
       <generic-component v-show="visibility.genericComponent">
       </generic-component>
 
+      <leaderboard  v-show="true"
+             prefix="rocket"
+             :domain="$props.AppDomainHost">
+      </leaderboard>
       <!--country-selector>
       </country-selector-->
 
@@ -58,6 +62,8 @@
   import userRocketProfile from './components/profile/profile.vue'
   import GenericComponent from './components/generic/generic.vue'
 
+  import Leaderboard from './components/administrator/leaderboard.vue'
+
   Vue.use(VueMaterial as any)
 
   /**
@@ -81,7 +87,8 @@
       CountrySelector,
       Users,
       GenericComponent,
-      userRocketProfile
+      userRocketProfile,
+      Leaderboard
     },
     computed: mapState([
       'permission'
