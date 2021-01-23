@@ -148,7 +148,7 @@ module.exports = {
   updateProfilePoints(user, dataOptions) {
 
     const databaseName = dataOptions.dbName;
-    
+
     return new Promise((resolve) => {  
       var root = this;
       MongoClient.connect(
@@ -177,21 +177,22 @@ module.exports = {
               var usersData = {
                 status: "RESULT NULL",
               };
-              dbo.collection("users").updateOne({ email: user.email }, { $set:  { points: (result.points + 333) } }, function(err, aresult) {
+              var newResult = result.points + 10;
+              dbo.collection("users").updateOne({ email: user.email }, { $set:  { points: newResult } }, function(err, aresult) {
                 if (err) { 
                   console.warn("Profile actions pointplus10 error :" + err);
                   resolve({ status: "WRONG DB QUERY" });
                 }
                 if (aresult !== null) {
-                  resolve({ status: "POINTS_ACTION_POINTPLUS" });
-                  console.log("POINTS_ACTION")
+                  resolve({ status: "POINTS_ACTION_POINTPLUS", userPoints: newResult });
+                  console.log("POINTS_ACTION_POINTPLUS")
                 } else if (aresult == null) {
                   resolve(usersData);
                 }
               })
 
             } else {
-              resolve({ status: "WRONG_PASS_ACTIVELIST" });
+              resolve({ status: "WRONG_PASS_POINTPLUS" });
             }
           }
         });

@@ -104,8 +104,7 @@ class ResponseHandler {
   }
 
   async getResponsePointPlus10(req, res) {
-    
-    console.log("/rocket/point-plus10", req.body);
+
     if (typeof req.body.token !== 'undefined') {
       var user = {
         token: req.body.token,
@@ -114,36 +113,27 @@ class ResponseHandler {
         myIp: req.connection.remoteAddress
       };
       var responseFlag = await action.updateProfilePoints(user, this.dataOptions)
-      console.log("/rocket/point-plus10", responseFlag.status);
-      if (responseFlag.status == "ACTIVE_LIST_PASSED") {
-      
-        res.status(200).json({
-          message: "You are added to active server list.",
-          rocketStatus: responseFlag.status,
-          user: responseFlag.user
-        });
-
-      } else if (responseFlag.status == "ALREADY_IN_ACTIVE_LIST") {
+      // console.log("/rocket/point-plus10", responseFlag.status);
+      if (responseFlag.status == "POINTS_ACTION_POINTPLUS") {
 
         res.status(200).json({
-          message: "Hi there, you are already in the active game list.",
+          message: "Excellent man.",
           rocketStatus: responseFlag.status,
-          user: responseFlag.user
+          userPoints: responseFlag.userPoints
         });
 
       } else {
 
-         console.log("GOOOODDDD responseFlag.status ", responseFlag.status)
-        res.status(401).json({
-          message: "NO AUTHORIZED",
+        console.log("Error warn: responseFlag.status ", responseFlag.status)
+        res.status(406).json({
+          message: "UNKNOWN_ERROR",
           rocketStatus: "Very Bad Request"
         });
-
 
       }
       
     } else {
-      console.log("/rocket/register There is no exspected props in request body.");
+      console.log("/rocket/point-plus10 There is no exspected props in request body.");
       res.status(400).json({
         message: "There is no exspected props in request body.",
         rocketStatus: "Bad request"
@@ -182,18 +172,15 @@ class ResponseHandler {
 
       } else {
 
-         console.log("GOOOODDDD responseFlag.status ", responseFlag.status)
-         // leaderboard
         res.status(401).json({
           message: "NO AUTHORIZED",
           rocketStatus: "Very Bad Request"
         });
 
-
       }
       
     } else {
-      console.log("/rocket/register There is no exspected props in request body.");
+      console.log("/rocket/leaderboard There is no exspected props in request body.");
       res.status(400).json({
         message: "There is no exspected props in request body.",
         rocketStatus: "Bad request"
