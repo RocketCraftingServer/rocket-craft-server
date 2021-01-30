@@ -76,7 +76,7 @@ module.exports = {
    * to the active server list if not exist already.
    * @param {*} user 
    * @param {*} dataOptions 
-   */
+   */  
   getProfileID(user, dataOptions) {
 
     const databaseName = dataOptions.dbName;
@@ -104,21 +104,33 @@ module.exports = {
           }
           if (result !== null) {
             if (result.token) {
-              console.warn("Session passed <BASIC> w is myIp " , user.myIp);
+              // console.warn("Session passed:" , user.myIp);
               user.myIp = user.myIp.replace("::ffff:", "")
               var usersData = {
                 status: "ACTIVE_LIST_PASSED",
               };
-              dbo.collection("activegames").findOne({
-              }, {}, function(err, aresult) {
+              dbo.collection("activegames").find({}, {}).toArray(function(err, aresult) {
                 if (err) { 
-                  console.warn("Profile actions profile error :" + err);
+                  console.warn("Profile actions profile error:" + err);
                   resolve({ status: "WRONG DB QUERY" });
                 }
                 if (aresult !== null) {
-                  resolve({ status: "ALREADY_IN_ACTIVE_LIST" });
-                  console.log("ALREADY_IN_ACTIVE_LIST")
-                } else if (aresult == null) {
+
+                  var localCheck = true;
+
+                  aresult.forEach((item => {
+
+                    if (item.userNickname === result.nickname) {
+                      console.log("ALREADY_IN_ACTIVE_LIST", item)
+                      localCheck = false;
+                    }
+
+                  }));
+
+                  if (localCheck === false) {
+                    return resolve({ status: "ALREADY_IN_ACTIVE_LIST" });
+                  }
+                  console.log("TEST TEST ")
 
                   console.log("No in active list , add in active list")
                   dbo.collection("activegames").insertOne({
@@ -133,7 +145,12 @@ module.exports = {
                     console.log(test)
                     resolve(usersData);
                   });
-                }
+                
+
+                
+
+                }  
+              
               })
 
             } else {

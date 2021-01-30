@@ -77,7 +77,16 @@ class ResponseHandler {
           activeList: responseFlag.activelist
         });
 
-      } else if (responseFlag.status == "RESULT_NULL") {
+      } else if (responseFlag.status == "ACTIVE_LIST_PASSED_EMPTY") {
+
+        res.status(201).json({
+          message: "Rocket crafting server -  RESULT_NULL",
+          rocketStatus: responseFlag.status,
+          activeList: null
+        });
+        
+      }
+       else if (responseFlag.status == "RESULT_NULL") {
 
         res.status(201).json({
           message: "Rocket crafting server -  RESULT_NULL",
