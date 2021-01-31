@@ -130,7 +130,6 @@ module.exports = {
                   if (localCheck === false) {
                     return resolve({ status: "ALREADY_IN_ACTIVE_LIST" });
                   }
-                  console.log("TEST TEST ")
 
                   console.log("No in active list , add in active list")
                   dbo.collection("activegames").insertOne({
@@ -145,12 +144,8 @@ module.exports = {
                     console.log(test)
                     resolve(usersData);
                   });
-                
+                }
 
-                
-
-                }  
-              
               })
 
             } else {
@@ -283,6 +278,86 @@ module.exports = {
       })
     })
 
-  }
+  },
+
+  removeFromActiveList(user, dataOptions) {
+
+    const databaseName = dataOptions.dbName;
+
+    return new Promise((resolve) => {  
+      var root = this;
+      MongoClient.connect(
+       dataOptions.dbRoot, { useNewUrlParser: true, useUnifiedTopology: true },
+       function(error, db) {
+        if (error) { 
+          console.warn("Profile actions profile error :" + error);
+          resolve({ status: 'error in MyDatabase getUsers'})
+          return;
+        }
+        const dbo = db.db(databaseName);
+        dbo.collection("users").findOne({
+            token: user.token,
+            confirmed: true,
+            online: true,
+            email: user.email
+        }, {}, function(err, result) {
+          if (err) { 
+            console.warn("Profile actions profile error :" + err);
+            resolve({ status: "WRONG DB QUERY" });
+          }
+          if (result !== null) {
+            if (result.token) {
+              console.warn("Session passed <BASIC> FIND ALL");
+
+              dbo.collection("activegames").find({userNickname: result.nickname}, {}).toArray(function(err, aresult) {
+                if (err) {
+                  console.warn("Remove from server list actions error: " + err);
+                  resolve({ status: "WRONG DB QUERY" });
+                }
+                if (aresult !== null) {
+                  if (aresult.length == 0) {
+                    resolve({ 
+                      status: "NOT_IN_ACTIVE_SERVER_LIST",
+                    });
+                  } else {
+
+                    dbo.collection("activegames").deleteOne({userNickname: result.nickname}, {}, function (err, oresult) {
+                      if (err) {
+                        console.warn("Remove from server list actions error: " + err);
+                        resolve({ status: "WRONG DB QUERY IN REMOVE PROCEDURE." });
+                      }
+
+                      // console.log(" TEST ", oresult.deletedCount);
+                      if (oresult.deletedCount == 1) {
+                        resolve({
+                          status: "REMOVE_FROM_ACTIVE_LIST_PASSED",
+                          activelist: aresult
+                        });
+                      } else {
+                        resolve({
+                          status: "REMOVE_FROM_ACTIVE_LIST_PASSED",
+                          errorStatus: "UNKNOW_ERROR",
+                          activelist: aresult
+                        });
+                      }
+
+                    });
+
+                  }
+                } else {
+                  var usersData = {
+                    status: "RESULT_NULL"
+                  };
+                  resolve(usersData);
+                }
+              })
+            } else {
+              resolve({ status: "WRONG_PASSWORD" });
+            }
+          }
+        });
+      })
+    })
+  },
 
 }

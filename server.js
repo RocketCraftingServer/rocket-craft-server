@@ -168,9 +168,6 @@ let routerProfileWannaPlay = new require('./api/crafting/active-list')(
   crypto
 );
 
-
-
-
 // Server configuration
 // app.use(express.static(__dirname + "/public"));
 // app.use(compression({ filter: shouldCompress }));
