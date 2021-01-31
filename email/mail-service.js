@@ -23,7 +23,7 @@ class Sender {
 
     let arg = {
       user: "greespiral@gmail.com",
-      pass: "********",
+      pass: config.systemEmail().pass,
       to: this.to,
       subject: this.subject,
       html: this.content
