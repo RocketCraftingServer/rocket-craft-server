@@ -67,7 +67,6 @@ class SeedDatabaseCollections {
           const dbo = db.db(databaseName);
           if (dbo.collection("users")) {
 
-          
             console.info("MyDatabase seed new fake users.");
             var fakeUsers = [];
 
@@ -91,9 +90,12 @@ class SeedDatabaseCollections {
               fakeUsers,
               function(err, res) {
                 if (err) {
-                  console.log("MyDatabase err3:" + err);
+                  console.log("MyDatabase err[4]:" + err);
                   db.close();
                   return;
+                }
+                if (res) {
+                  resolve("Collections users seeded.")
                 }
                 var responseFromDatabaseEngine = {
                   status: "USER_REGISTERED"
@@ -103,9 +105,10 @@ class SeedDatabaseCollections {
             )
         
             
-            resolve("Collections users seeded.")
+            
           } else {
             resolve("Collections users already exist.")
+            db.close();
           }
 
         });

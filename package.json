@@ -5,7 +5,7 @@
   "main": "server.js",
   "scripts": {
     "app": "node server maximumroulette.com nik",
-    "dev": "node server localhost nik"
+    "dev": "node --trace-warnings server localhost nik"
   },
   "repository": {
     "type": "git",
