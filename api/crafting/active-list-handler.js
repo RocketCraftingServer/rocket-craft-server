@@ -8,17 +8,17 @@ class ResponseHandler {
   }
 
   async getResponse(req, res) {
-    
+
       // console.log("/rocket/profile ", req.body);
       if (typeof req.body.token !== 'undefined') {
-                
+
         var user = {
           token: req.body.token,
           email: req.body.email,
           mapName: req.body.mapName,
           myIp: req.connection.remoteAddress
         };
-        
+
         var responseFlag = await action.getProfileID(user, this.dataOptions)
         console.log("/rocket/wanna-play", responseFlag.status);
         if (responseFlag.status == "ACTIVE_LIST_PASSED") {
@@ -55,24 +55,23 @@ class ResponseHandler {
   }
  
   async getServerListResponse(req, res) {
-  
-    console.log("active-games/ ", req.body);
+
+    // console.log("active-games/ ", req.body);
     if (typeof req.body.token !== 'undefined') {
-              
+
       var user = {
         token: req.body.token,
         email: req.body.email,
         myIp: req.connection.remoteAddress
       };
-    
-      console.log( "WHAT R F >>", req.connection.remoteAddress)
-      
+
+      // console.info( "req.connection.remoteAddress: ", req.connection.remoteAddress)
       var responseFlag = await action.getActiveList(user, this.dataOptions)
-      console.log("/rocket/active-games/", responseFlag.status);
-      if (responseFlag.status == "DB_QUERY_ACTIVE_LIST_PASSED") {
+      console.info("/rocket/active-games/", responseFlag.status);
+      if (responseFlag.status == "ACTIVE_LIST_PASSED") {
       
         res.status(200).json({
-          message: "Rocket crafting server - active games list [] ",
+          message: "Active server games list.",
           rocketStatus: responseFlag.status,
           activeList: responseFlag.activelist
         });
@@ -80,20 +79,11 @@ class ResponseHandler {
       } else if (responseFlag.status == "ACTIVE_LIST_PASSED_EMPTY") {
 
         res.status(201).json({
-          message: "Rocket crafting server -  RESULT_NULL",
+          message: "Server list is empty.",
           rocketStatus: responseFlag.status,
           activeList: null
         });
         
-      }
-       else if (responseFlag.status == "RESULT_NULL") {
-
-        res.status(201).json({
-          message: "Rocket crafting server -  RESULT_NULL",
-          rocketStatus: responseFlag.status,
-          activeList: null
-        });
-
       } else {
         res.status(401).json({
           message: "NO AUTHORIZED",
@@ -112,7 +102,6 @@ class ResponseHandler {
     }
   }
 
-   // NIKOLA
   async getResponseRemoveFromServerList(req, res) {
   
     console.log("/rocket/remove-from-server-list ", req.body);

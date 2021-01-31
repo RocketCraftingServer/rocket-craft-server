@@ -45,14 +45,14 @@ module.exports = {
                     
                   } else {
                     resolve({ 
-                      status: "DB_QUERY_ACTIVE_LIST_PASSED",
+                      status: "ACTIVE_LIST_PASSED",
                       activelist: aresult
                     });
                   }
                   
                 } else {
                   var usersData = {
-                    status: "RESULT_NULL"
+                    status: "ACTIVE_LIST_PASSED_EMPTY"
                   };
                   resolve(usersData);
                 }

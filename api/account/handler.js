@@ -23,7 +23,7 @@ class ResponseHandler {
         console.log("/rocket/register responseFlag ", responseFlag);
         if (responseFlag.status == "USER_ALREADY_REGISTERED") {
           res.status(200).json({
-            message: "maybe very bad request",
+            message: "You are already registred.",
             rocketStatus: responseFlag.status 
           });
         } else if (responseFlag.status == "USER_REGISTERED") {
