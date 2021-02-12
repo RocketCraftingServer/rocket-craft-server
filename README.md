@@ -213,8 +213,21 @@ Only implications between ue client vs server.js is account session status
 
 ## Production 
 
-  Be aware of NAT and need to have opened port.
-  
+Basic data:
+  - Dedicated Server CentOS 8.3
+  - Build shipping version at the end.
+
+Security:
+  - Use non standard port it si small but good secury feature.
+  - If you have mongo on same mashine use bind localhost not domain name.
+
+It is easy to use distribution platform with more servers host mashines.
+
+```js
+  mongo --host IP-ADDRESS-OF-MONGODB-SERVER --port PORT_NUMBER
+```
+
+  Be aware of NAT and need to have opened port if you have firewall active on your server.
  - CentOS 8.3
 
 ```mongo

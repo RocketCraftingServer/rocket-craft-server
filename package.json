@@ -4,8 +4,8 @@
   "description": "Admin page for Rocket Crafting server. Version 2021 `Their Law`. Use minimal dependencies and be professional. This server handle auth session for my platform `rocket-craft` also handle leaderboard. Part of this project is also admin page.  ",
   "main": "server.js",
   "scripts": {
-    "app": "node server maximumroulette.com nik",
-    "dev": "node --trace-warnings server localhost nik"
+    "app": "node server maximumroulette.com secured",
+    "dev": "node --trace-warnings server localhost dev"
   },
   "repository": {
     "type": "git",

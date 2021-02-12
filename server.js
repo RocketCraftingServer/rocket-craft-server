@@ -7,9 +7,11 @@
  * @email zlatnaspirala@gmail.com
  */
 
+ console.log("START ", process.argv[3]);
+
 const ConfigAccountSession = require("./config");
-// const config = new ConfigAccountSession('secured');
-const config = new ConfigAccountSession();
+const config = new ConfigAccountSession(process.argv[3]);
+// const config = new ConfigAccountSession();
 
 const MyDatabase = require("./database/database");
 let database = new MyDatabase(config);
@@ -74,7 +76,6 @@ hostingHTTP.use(compression());
 hostingHTTP.use(function (req, res, next) {
 
   res.setHeader('Content-Encoding', 'gzip');
-  
   // Website you wish to allow to connect
   res.setHeader('Access-Control-Allow-Origin', '*');
   // Request methods you wish to allow
@@ -85,9 +86,6 @@ hostingHTTP.use(function (req, res, next) {
   // to the API (e.g. in case you use sessions)
   res.setHeader('Access-Control-Allow-Credentials', false);
   // Pass to next layer of middleware
-
-  
-
   next();
 });
 

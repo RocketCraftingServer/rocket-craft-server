@@ -11,7 +11,7 @@ const ResponseHandler = require("./handler")
 class RocketRoute extends ResponseHandler {
 
   /**
-   * @description 
+   * @description
    * Keep it simple.
    */
   constructor(app, express, dataAction, crypto) {
@@ -28,19 +28,12 @@ class RocketRoute extends ResponseHandler {
 
   routeRegister() {
 
-    var root = this;
-
     this.app.post("/rocket/login", this.onLoginResponse.bind(this));
     this.app.post("/rocket/register", this.onRegisterResponse.bind(this));
     this.app.post("/rocket/confirmation", this.onRegValidationResponse.bind(this));
-    
-    /**
-     * @description
-     * Almost any undefined case use admin page for now
-     */
-    this.app.use(root.express.static(__dirname + "./../../admin-panel/dist"));
 
-    console.log("RocketRoute loaded with success.");
+    console.log("RocketRoute for account loaded with success.");
+
   }
 
 }
