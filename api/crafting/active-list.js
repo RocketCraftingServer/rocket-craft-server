@@ -34,6 +34,8 @@ class RocketRouteActiveList extends ResponseHandler {
     this.app.post("/rocket/leaderboard", this.getResponseLeaderboard.bind(this));
     this.app.post("/rocket/point-plus10", this.getResponsePointPlus10.bind(this));
 
+    this.app.post("/rocket/dead", this.getResponseDead.bind(this));
+
     console.log("wanna play route reg. loaded with success.");
 
   }

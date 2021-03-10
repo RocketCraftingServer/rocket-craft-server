@@ -246,6 +246,45 @@ class ResponseHandler {
     }
   }
 
+  async getResponseDead(req, res) {
+
+    if (typeof req.body.token !== 'undefined') {
+      var user = {
+        token: req.body.token,
+        email: req.body.email,
+        mapName: req.body.mapName,
+        myIp: req.connection.remoteAddress
+      };
+      var responseFlag = await action.updateProfilePointsAfterDead(user, this.dataOptions)
+      // console.log("/rocket/point-plus10", responseFlag.status);
+      if (responseFlag.status == "POINTS_ACTION_ONDEAD") {
+
+        res.status(200).json({
+          message: "Dead in barbarian area cost 30 points.",
+          rocketStatus: responseFlag.status,
+          userPoints: responseFlag.userPoints
+        });
+
+      } else {
+
+        console.log("Error warn: responseFlag.status ", responseFlag.status)
+        res.status(406).json({
+          message: "UNKNOWN_ERROR",
+          rocketStatus: "Very Bad Request"
+        });
+
+      }
+      
+    } else {
+      console.log("/rocket/point-plus10 There is no exspected props in request body.");
+      res.status(400).json({
+        message: "There is no exspected props in request body.",
+        rocketStatus: "Bad request"
+      });
+      return;
+    }
+  }
+
 }
 
 module.exports = ResponseHandler

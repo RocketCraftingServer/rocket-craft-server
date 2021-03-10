@@ -66,13 +66,19 @@ var app = express();
 var URL_ARG = process.argv[2];
 var options = null;
 
+/**
+ * @description
+ * Almost any undefined case use admin page for now
+ * 
+ */
+// this.app.use(root.express.static(__dirname + "./../../admin-panel/dist"));
+
 var hostingHTTP = express();
 hostingHTTP.use(express.static("/var/www/html/testue/"));
 
 // Compress all HTTP responses
 hostingHTTP.use(compression());
-
-
+hostingHTTP.use(cors());
 hostingHTTP.use(function (req, res, next) {
 
   res.setHeader('Content-Encoding', 'gzip');
@@ -88,6 +94,7 @@ hostingHTTP.use(function (req, res, next) {
   // Pass to next layer of middleware
   next();
 });
+
 
 app.use(bodyParser.json({ limit: config.maxRequestSize }))
 
@@ -190,10 +197,12 @@ if (URL_ARG.indexOf("localhost") !== -1) {
     cert: fs.readFileSync(__dirname + "/self-cert/certificate.pem")
   };
 } else {
+
   options = {
-    key: fs.readFileSync("/etc/httpd/conf/ssl/maximumroulette.com.key"),
-    cert: fs.readFileSync("/etc/httpd/conf/ssl/maximumroulette_com.crt")
+    key: fs.readFileSync("/etc/letsencrypt/live/maximumroulette.com/privkey.pem"),
+    cert: fs.readFileSync("/etc/letsencrypt/live/maximumroulette.com/fullchain.pem")
   };
+
 }
 
 /**
@@ -214,6 +223,15 @@ if (config.protocol == 'http') {
  * @description serverRunner
  * Run web server.
  */
+if (config.hostSpecialRoute.active) {
+
+  app.use(express.static(config.hostSpecialRoute.route)); 
+  console.log(
+    "Rocket activate " +
+    config.hostSpecialRoute.webAppName + " application host." +
+    " Application www folder is `" + config.hostSpecialRoute.route)
+
+}
 
 serverRunner.createServer(options, app).listen(config.connectorPort, error => {
   if (error) {
@@ -221,18 +239,26 @@ serverRunner.createServer(options, app).listen(config.connectorPort, error => {
     console.error(error);
     return process.exit(1);
   } else {
-    console.log("ROCKET LAUNCHED ON PORT " + config.connectorPort + ". Good luck ...");
+    console.log("Rocket started at " + config.connectorPort + " port.");
   }
 });
 
-/*
-http.createServer(options, hostingHTTP).listen(config.ownHttpHostPort, error => {
-  if (error) {
-    console.warn("Something wrong with rocket-craft own host server.")
-    console.error(error);
-    return process.exit(1);
-  } else {
-    console.log("ROCKET HTTP HOST WWW LAUNCHED ON PORT " + config.ownHttpHostPort + ".");
-  }
-});
-*/
+
+/**
+ * @description 
+ * If yuo need bonus unsecured web host in some reasons
+ * Then activate from config
+ */
+if (config.ownHttp) {
+
+  http.createServer(options, hostingHTTP).listen(config.ownHttpHostPort, error => {
+    if (error) {
+      console.warn("Something wrong with rocket-craft own host server.")
+      console.error(error);
+      return process.exit(1);
+    } else {
+      console.log("Rocket helper unsecured host started at " + config.ownHttpHostPort + " port.");
+    }
+  });
+
+}

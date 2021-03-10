@@ -5,6 +5,7 @@
   "main": "server.js",
   "scripts": {
     "app": "node server maximumroulette.com secured",
+    "sameDomain": "node server IP_ADDESS secured",
     "dev": "node --trace-warnings server localhost dev"
   },
   "repository": {

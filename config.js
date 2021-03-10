@@ -34,11 +34,32 @@ class ServerConfig {
     console.info(" --------------------------------------------");
   }
 
-  get specialRoute() {
+  get hostAdminPanel() {
+    return false;
+  }
+
+  /**
+   * @description 
+   * If you want to use api host also for 
+   * hosting any web folders contents.
+   */
+  get hostSpecialRoute() {
     return {
-      default: "/var/www/html/applications/"
-    };
-  };
+      active: true,
+      route: "/var/www/html/testue",
+      webAppName: "BarbarianRoadMashines",
+      type: "Race Game",
+      unsecured: true,
+    }
+  }
+
+  get ownHttp() {
+    return false;
+  }
+
+  get ownHttpHostPort() {
+    return 6001;
+  }
 
   get networkDeepLogs() {
     return  false;
@@ -88,7 +109,7 @@ class ServerConfig {
   get systemEmail() {
     return {
       user: "greespiral@gmail.com",
-      pass: "********"
+      pass: "**************"
     };
   };
 
@@ -111,11 +132,11 @@ class ServerConfig {
   }
 
   get getDatabaseRoot() {
-
+  
     var databaseRoot = {
       dev: "mongodb://localhost:27017",
-      prod: "mongodb://userAdmin:********@maximumroulette.com:27017/admin",
-      secured: "mongodb://userAdmin:********@localhost:27017/admin",
+      prod: "mongodb://userAdmin:*************@x.x.x.x:xxxx/admin",
+      secured: "mongodb://userAdmin:*************@x.x.x.x:xxxx/admin",
     };
 
     if (this.serverMode == "dev") {

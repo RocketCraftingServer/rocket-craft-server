@@ -360,4 +360,59 @@ module.exports = {
     })
   },
 
+  updateProfilePointsAfterDead(user, dataOptions) {
+
+    const databaseName = dataOptions.dbName;
+
+    return new Promise((resolve) => {  
+      var root = this;
+      MongoClient.connect(
+       dataOptions.dbRoot, { useNewUrlParser: true, useUnifiedTopology: true },
+       function(error, db) {
+        if (error) { 
+          console.warn("Profile actions profile error :" + error);
+          resolve({ status: 'error in MyDatabase getUsers'})
+          return;
+        }
+        const dbo = db.db(databaseName);
+        dbo.collection("users").findOne({
+            token: user.token,
+            confirmed: true,
+            online: true,
+            email: user.email
+        }, {}, function(err, result) {
+          if (err) { 
+            console.warn("Profile actions profile error :" + err);
+            resolve({ status: "WRONG DB QUERY" });
+          }
+          if (result !== null) {
+            if (result.token) {
+              // console.warn("Session passed <BASIC> w is myIp " , user.myIp);
+              user.myIp = user.myIp.replace("::ffff:", "")
+              var usersData = {
+                status: "RESULT NULL",
+              };
+              var newResult = result.points - 30;
+              dbo.collection("users").updateOne({ email: user.email }, { $set:  { points: newResult } }, function(err, aresult) {
+                if (err) { 
+                  console.warn("Profile actions pointplus10 error :" + err);
+                  resolve({ status: "WRONG DB QUERY" });
+                }
+                if (aresult !== null) {
+                  resolve({ status: "POINTS_ACTION_ONDEAD", userPoints: newResult });
+                  console.log("POINTS_ACTION_ONDEAD")
+                } else if (aresult == null) {
+                  resolve(usersData);
+                }
+              })
+
+            } else {
+              resolve({ status: "WRONG_PASS_POINTPLUS" });
+            }
+          }
+        });
+      })
+    })
+  },
+
 }
