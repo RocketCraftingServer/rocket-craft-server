@@ -62,6 +62,7 @@ var http = require('http');
 
 // Pull information from HTML POST (express4)
 var bodyParser = require("body-parser"); 
+const { endianness } = require( "os" );
 var app = express();
 var URL_ARG = process.argv[2];
 var options = null;
@@ -74,12 +75,42 @@ var options = null;
 // this.app.use(root.express.static(__dirname + "./../../admin-panel/dist"));
 
 var hostingHTTP = express();
-hostingHTTP.use(express.static("/var/www/html/testue/"));
+
+vhost = require('vhost')
+routerSub = express.Router()
+routerSub.use(express.static('/var/www/html/apps/ultimate-roulette/'));
+
+routerSub2 = express.Router()
+routerSub2.use(express.static('/var/www/html/apps/barbarian-road-mashines/beta/'));
+
+routerSub3 = express.Router()
+routerSub3.use(express.static('/var/www/html/apps/ai/'));
+app.use(vhost('ai.maximumroulette.com', routerSub3));
+
+app.use(vhost('rocketcraft.maximumroulette.com', routerSub2));
+
+hostingHTTP.get('*', function(req, res, next) {
+  // console.log(">> HOST SEVRER FORM ROCKET>>>>>>" , req.hostname)
+  if (req.hostname == "roulette.maximumroulette.com") {
+    // console.log(" REDIRECT NOW " )
+    // req.location = "/apps/ultimate-roulette/"
+    // res.sendFile("/apps/ultimate-roulette/index.html")
+    // res.end()
+  }
+  next()
+});
+
+hostingHTTP.use(vhost('roulette.maximumroulette.com', routerSub));
+hostingHTTP.use(vhost('rocketcraft.maximumroulette.com', routerSub2));
+
+hostingHTTP.use(express.static("/var/www/html/"));
 
 // Compress all HTTP responses
 hostingHTTP.use(compression());
 hostingHTTP.use(cors());
 hostingHTTP.use(function (req, res, next) {
+
+  // res.setHeader("Content-Type", "text/html")
 
   res.setHeader('Content-Encoding', 'gzip');
   // Website you wish to allow to connect
@@ -94,6 +125,8 @@ hostingHTTP.use(function (req, res, next) {
   // Pass to next layer of middleware
   next();
 });
+
+
 
 
 app.use(bodyParser.json({ limit: config.maxRequestSize }))
@@ -114,6 +147,8 @@ app.use(cors());
  * Add headers
  */
 app.use(function (req, res, next) {
+
+  console.log("HOSTING SERVER RECEIVE +++")
   // Website you wish to allow to connect
   res.setHeader('Access-Control-Allow-Origin', '*');
   // Request methods you wish to allow
@@ -126,6 +161,8 @@ app.use(function (req, res, next) {
   // Pass to next layer of middleware
   next();
 });
+
+
 
 // Parse application/x-www-form-urlencoded
 app.use(
@@ -251,7 +288,7 @@ serverRunner.createServer(options, app).listen(config.connectorPort, error => {
  */
 if (config.ownHttp) {
 
-  http.createServer(options, hostingHTTP).listen(config.ownHttpHostPort, error => {
+  https.createServer(options, hostingHTTP).listen(config.ownHttpHostPort, error => {
     if (error) {
       console.warn("Something wrong with rocket-craft own host server.")
       console.error(error);
