@@ -85,17 +85,17 @@ routerSub2.use(express.static('/var/www/html/apps/barbarian-road-mashines/beta/'
 
 routerSub3 = express.Router()
 routerSub3.use(express.static('/var/www/html/apps/ai/'));
-app.use(vhost('ai.maximumroulette.com', routerSub3));
+hostingHTTP.use(vhost('ai.maximumroulette.com', routerSub3));
 
 app.use(vhost('rocketcraft.maximumroulette.com', routerSub2));
 
 hostingHTTP.get('*', function(req, res, next) {
-  // console.log(">> HOST SEVRER FORM ROCKET>>>>>>" , req.hostname)
-  if (req.hostname == "roulette.maximumroulette.com") {
-    // console.log(" REDIRECT NOW " )
-    // req.location = "/apps/ultimate-roulette/"
-    // res.sendFile("/apps/ultimate-roulette/index.html")
-    // res.end()
+  console.log(">> HOST FORM ROCKET >> " , req.hostname)
+  if (req.hostname == "ai.maximumroulette.com") {
+    //console.log(" REDIRECT NOW " )
+    //req.location = "/apps/ai/";
+    //res.sendFile("/apps/ai/index.html");
+    //res.end();
   }
   next()
 });

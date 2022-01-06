@@ -302,22 +302,15 @@ Be sure:
 npm install -g npm
 ```
 
-From official ue4 docs `Before you start your Signaling and Web Server,
-start the Matchmaker Server by running its run.bat file. By default,
-the server listens for HTTP connections from clients on port 90, and it
-listens for connections from Signaling and Web Servers on port 9999.
-You can override those settings by providing the following configuration
-parameters on the command line:`
+## Test from browser console
 
-Parameter Description
+  From http://maximumroulette.com/ or from your own server.
+  -  Login:
 ```js
---httpPort
+  fetch("/rocket/login/", { method: 'POST', headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },  body: JSON.stringify( { emailField: "zlatnaspirala@gmail.com", passwordField: '123123123'})  } ).then(response => response.json())
+  .then(data => console.log(data));
 ```
-Defines the port the Matchmaker Server listens to for incoming HTTP connections from browsers.
-```js
---matchmakerPort
-```
-
-Defines the port the Matchmaker Server listens to for incoming
-status messages from Signaling and Web Servers.
 

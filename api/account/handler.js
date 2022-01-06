@@ -105,7 +105,7 @@ class ResponseHandler {
       console.log("Secured.");
     };
   
-    console.log("/rocket/login ", req.body.emailField);    
+    console.log("/rocket/login ", req.body);
     if (typeof req.body.emailField !== 'undefined' & typeof req.body.passwordField !== 'undefined' ) {
               
       var user = {
@@ -131,7 +131,12 @@ class ResponseHandler {
         });
 
       }
-  }
+    } else {
+      res.status(404).json({
+        message: "Waoou vauu",
+        rocketStatus: "no-session"
+      });
+    }
 
 }
 
