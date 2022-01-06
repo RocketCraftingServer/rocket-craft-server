@@ -6,7 +6,7 @@ class StructureDataGenerator {
   }
 
   async onGeneratePostResponse(req, res) {
-    console.log("/rocket/ssssssssssssssssssss " )
+    console.log("/rocket/gen");
     // var responseFlag = await this.dataAction.register(user, this)
     console.log("/rocket/generic/");
       res.status(200).json({
