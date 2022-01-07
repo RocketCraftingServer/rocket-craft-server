@@ -92,7 +92,7 @@ import { mdMenu,
           mdIcon,
           mdContent,
           mdProgressSpinner } from 'vue-material'
-import { setupLocal, switchTheme } from '../../my-common/common-func'
+import { switchTheme } from '../../my-common/common-func'
 import IAccounts from './IAccounts'
 
 const CompProps = Vue.extend({

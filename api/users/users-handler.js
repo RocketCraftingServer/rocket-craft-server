@@ -22,6 +22,8 @@ class ResponseHandler {
           criterium: req.body.criterium
         };
         
+        console.log("/rocket/users ENTER ", req.body);
+
         var responseFlag = await this.dataAction.getUsersList(user, this)
         console.log("/rocket/users", responseFlag.status);
 

@@ -10,4 +10,8 @@ export namespace API {
     return location.protocol + '//' + location.host + '/'
   }
 
+  export const constructMaximumroulette = () => {
+    return 'http://maximumroulette.com/'
+  }
+
 }

@@ -8,9 +8,12 @@ Vue.prototype.window = window
 /**
  * @description for Application main instance.
  * 
- * @property AppPropVersion @default '0.1.0',
+ * @property AppPropVersion @default '0.1.1',
  * @property AppDomainHost  @default 'https://localhost:30100/'
- * 
+ *
+ * API.constructMaximumroulette() Hardcoded for my own server
+ * API.constructDomain() create domain by client current protocol and hostname.
+ *
  * In Application i defined AppDomainHost property
  * For testing proporse we can use vue serve on
  * http://localhost:3000/ address but also we can
@@ -22,8 +25,9 @@ var Application = new Vue({
   store,
   render: h => h(App, {
     props: {
-      AppPropVersion: '0.1.0',
+      AppPropVersion: '0.1.1',
       AppDomainHost: API.constructDomain()
+      // API.constructMaximumroulette()
     }
   }),
 }).$mount('#app')

@@ -271,7 +271,7 @@
            mdContent,
            mdTextArea,
            mdProgressSpinner } from 'vue-material'
-  import { copyToClipboard, setupLocal, switchTheme } from '../../my-common/common-func'
+  import { copyToClipboard, switchTheme } from '../../my-common/common-func'
   import IAccounts from './IAccounts'
 
   const CompProps = Vue.extend({
@@ -356,13 +356,16 @@
     async runApiCallByActionName(apiCallFlag) {
   
       let route = this.$props.domain
-      route = setupLocal(route)
 
       const args = {
         emailField: this.$data.defaults.userEmail.toString(),
         passwordField: this.$data.defaults.userPassword.toString()
       }
 
+      //
+      console.log("TEST >route> ", route); 
+      console.log("TEST >this.$props.prefix> ", this.$props.prefix);
+      // console.log("TEST >route> ", route);
       const rawResponse = await fetch(route+ this.$props.prefix + '/' +  apiCallFlag, {
         method: 'POST',
         headers: API.JSON_HEADER,
@@ -377,7 +380,6 @@
     async runApiConfirmation() {
 
       let route = this.$props.domain
-      route = setupLocal(route)
 
       const args = {
         emailField: this.$data.defaults.userEmail,
@@ -401,7 +403,6 @@
     async runApiLogin() {
 
       let route = this.$props.domain
-      route = setupLocal(route)
 
       const args = {
         emailField: this.$data.defaults.userEmail,

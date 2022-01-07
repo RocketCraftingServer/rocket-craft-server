@@ -17,7 +17,7 @@ module.exports = {
 
   },
   devServer: {
-    port: 1777
+    port: 3000
   },
   css: {
     sourceMap: true

@@ -5,9 +5,9 @@
 
 ### Style
 
-  - Use inline 
+  - Use inline
   - CSS
-  - SCSS 
+  - SCSS
 
   With `scoped` atrribute for components.
 
@@ -23,7 +23,7 @@ Vue supported with typescrypt.
 
 #### Run on local mashine:
 ```js
-  npm run dev 
+  npm run dev
   npm run serve
 ```
 

@@ -94,7 +94,7 @@ import { mdMenu,
           mdIcon,
           mdContent,
           mdProgressSpinner } from 'vue-material'
-import { setupLocal, switchTheme } from '../../my-common/common-func'
+import { switchTheme } from '../../my-common/common-func'
 import IAccounts from './IAccounts'
 
 const CompProps = Vue.extend({
@@ -144,7 +144,6 @@ export default class leaderboardRocketTable extends CompProps {
   async runApiUsers(apiCallFlag) {
 
     let route = this.$props.domain
-    route = setupLocal(route)
 
     const args = {
       email: this.$data.system.emailAddress,

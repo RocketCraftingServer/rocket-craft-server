@@ -2,16 +2,16 @@
 /**
  * @description  RocketCraftServer
  * REST API Server powered with
- * PWA Admin Panel 
- * @author Nikola Lukic 
+ * PWA Admin Panel.
+ * @version 2022 VICTORY
+ * @author Nikola Lukic
  * @email zlatnaspirala@gmail.com
  */
 
- console.log("START ", process.argv[3]);
+console.log("Initial params [3] => ", process.argv[3]);
 
 const ConfigAccountSession = require("./config");
 const config = new ConfigAccountSession(process.argv[3]);
-// const config = new ConfigAccountSession();
 
 const MyDatabase = require("./database/database");
 let database = new MyDatabase(config);
@@ -61,7 +61,7 @@ var https = require('https');
 var http = require('http');
 
 // Pull information from HTML POST (express4)
-var bodyParser = require("body-parser"); 
+var bodyParser = require("body-parser");
 const { endianness } = require( "os" );
 var app = express();
 var URL_ARG = process.argv[2];
@@ -90,28 +90,27 @@ hostingHTTP.use(vhost('ai.maximumroulette.com', routerSub3));
 app.use(vhost('rocketcraft.maximumroulette.com', routerSub2));
 
 hostingHTTP.get('*', function(req, res, next) {
-  console.log(">> HOST FORM ROCKET >> " , req.hostname)
-  if (req.hostname == "ai.maximumroulette.com") {
+  // console.log(">>" , req.hostname);
+  /* if (req.hostname == "ai.maximumroulette.com") {
     //console.log(" REDIRECT NOW " )
     //req.location = "/apps/ai/";
     //res.sendFile("/apps/ai/index.html");
     //res.end();
-  }
-  next()
+  } */
+  next();
 });
 
 hostingHTTP.use(vhost('roulette.maximumroulette.com', routerSub));
 hostingHTTP.use(vhost('rocketcraft.maximumroulette.com', routerSub2));
 
+// I use simple my root page
 hostingHTTP.use(express.static("/var/www/html/"));
 
 // Compress all HTTP responses
 hostingHTTP.use(compression());
 hostingHTTP.use(cors());
 hostingHTTP.use(function (req, res, next) {
-
   // res.setHeader("Content-Type", "text/html")
-
   res.setHeader('Content-Encoding', 'gzip');
   // Website you wish to allow to connect
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -126,11 +125,7 @@ hostingHTTP.use(function (req, res, next) {
   next();
 });
 
-
-
-
 app.use(bodyParser.json({ limit: config.maxRequestSize }))
-
 app.use(cors());
 
 /**
@@ -147,8 +142,7 @@ app.use(cors());
  * Add headers
  */
 app.use(function (req, res, next) {
-
-  console.log("HOSTING SERVER RECEIVE +++")
+  // console.log("HOSTING SERVER PREVENT OTHER DOMAINS+")
   // Website you wish to allow to connect
   res.setHeader('Access-Control-Allow-Origin', '*');
   // Request methods you wish to allow
@@ -162,8 +156,6 @@ app.use(function (req, res, next) {
   next();
 });
 
-
-
 // Parse application/x-www-form-urlencoded
 app.use(
   bodyParser.urlencoded({
@@ -172,7 +164,7 @@ app.use(
 );
 
 // Parse application/json
-app.use(bodyParser.json()); 
+app.use(bodyParser.json());
 
 app.use(
   bodyParser.json({
@@ -181,7 +173,6 @@ app.use(
 );
 
 // Parse application/vnd.api+json as json
-// app.use(cors());
 
 let routerRocket = new require('./api/account/account')(app, express, database, crypto);
 let routerUsers = new require('./api/users/users')(app, express, database, crypto);
@@ -210,7 +201,8 @@ let routerProfileWannaPlay = new require('./api/crafting/active-list')(
   crypto
 );
 
-// Server configuration
+// Server configuration - compression.
+// At the moment conflicted with client webworker cache feature.
 // app.use(express.static(__dirname + "/public"));
 // app.use(compression({ filter: shouldCompress }));
 function shouldCompress(req, res) {
@@ -218,7 +210,6 @@ function shouldCompress(req, res) {
     // don't compress responses with this request header
     return false;
   }
-
   // fallback to standard filter function
   return compression.filter(req, res);
 }
@@ -226,20 +217,18 @@ function shouldCompress(req, res) {
 /**
  * @description 
  * Forsed https for now.
+ * For local pass arg `localhost`
  */
-
 if (URL_ARG.indexOf("localhost") !== -1) {
   options = {
     key: fs.readFileSync(__dirname + "/self-cert/privatekey.pem"),
     cert: fs.readFileSync(__dirname + "/self-cert/certificate.pem")
   };
 } else {
-
   options = {
     key: fs.readFileSync("/etc/letsencrypt/live/maximumroulette.com/privkey.pem"),
     cert: fs.readFileSync("/etc/letsencrypt/live/maximumroulette.com/fullchain.pem")
   };
-
 }
 
 /**
@@ -257,22 +246,24 @@ if (config.protocol == 'http') {
 }
 
 /**
- * @description serverRunner
- * Run web server.
+ * @description
+ * You can add samo special route for any proporse.
  */
 if (config.hostSpecialRoute.active) {
-
   app.use(express.static(config.hostSpecialRoute.route)); 
   console.log(
     "Rocket activate " +
     config.hostSpecialRoute.webAppName + " application host." +
     " Application www folder is `" + config.hostSpecialRoute.route)
-
 }
 
+/**
+ * @description serverRunner
+ * Run `rocket-crafting-server` web server.
+ */
 serverRunner.createServer(options, app).listen(config.connectorPort, error => {
   if (error) {
-    console.warn("Something wrong with rocket-craft server.")
+    console.warn("Something wrong with rocket-crafting server.");
     console.error(error);
     return process.exit(1);
   } else {
@@ -280,21 +271,20 @@ serverRunner.createServer(options, app).listen(config.connectorPort, error => {
   }
 });
 
-
 /**
- * @description 
+ * @description
  * If yuo need bonus unsecured web host in some reasons
- * Then activate from config
+ * then simple activate from config [ownHttp].
  */
 if (config.ownHttp) {
 
   https.createServer(options, hostingHTTP).listen(config.ownHttpHostPort, error => {
     if (error) {
-      console.warn("Something wrong with rocket-craft own host server.")
+      console.warn("Something wrong with rocket-craft own host server.");
       console.error(error);
       return process.exit(1);
     } else {
-      console.log("Rocket helper unsecured host started at " + config.ownHttpHostPort + " port.");
+      console.info("Rocket helper unsecured host started at " + config.ownHttpHostPort + " port.");
     }
   });
 

@@ -1,5 +1,5 @@
 
-export function asyncLoad(path, callback ?) {
+export function asyncLoad(path, callback?) {
 
   if (typeof callback === "undefined") {
     callback = function () { };
@@ -8,7 +8,7 @@ export function asyncLoad(path, callback ?) {
   var nuiScript = document.createElement("script")
   nuiScript.src = path
   document.head.appendChild(nuiScript)
-  nuiScript.onload = function () {
+  nuiScript.onload = function() {
     callback()
   }
 }
@@ -20,20 +20,11 @@ export function switchTheme (this: any) {
   var nextThemeIndex = themes.indexOf((this.$root as any).$material.theming.theme) + 1;
 
   if (nextThemeIndex == themes.lenght) {
-    nextThemeIndex = 0
-    console.log(">>>>>>>>> reset")
+    nextThemeIndex = 0;
   }
 
   (this.$root as any).$material.theming.theme = themes[nextThemeIndex]
   this.changeTheme(themes[nextThemeIndex])
-}
-
-export function setupLocal(route) {
-  if (location.port == "3000") {
-    var l = route.replace(":3000/", ":30100/")
-    return l;
-  }
-  return location.href;
 }
 
 export function copyToClipboard(this: any, e) {
