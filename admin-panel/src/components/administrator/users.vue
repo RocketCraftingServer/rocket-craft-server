@@ -16,14 +16,14 @@
               <md-button class="md-primary md-raised" ref="getUserBtn" @click="runApiUsers('users')">
                 <md-icon class="fa fa-cog fa-spin" ></md-icon>
                 Users
-              </md-button>                     
-              <md-field style="width:50%;margin-left:5%;" >
+              </md-button>
+              <md-field style="width:50%;margin-left:5%;">
                 <md-input class="md-primary" placeholder="Enter you token." v-model="system.adminAccountToken" />
               </md-field>
             </div>
           <!-- table.searched -->
             <md-table v-model="usersCurrentPage" md-sort="email" md-sort-order="asc" md-card md-fixed-header
-                       style="height: 450px" >
+                       style="height: 450px">
               <md-table-toolbar>
                 <div class="md-toolbar-section-start" style="display:flex;flex-direction:row">
                   <h1 class="md-title">Users {{ this.$data.usersPaginatorIndex }} </h1>

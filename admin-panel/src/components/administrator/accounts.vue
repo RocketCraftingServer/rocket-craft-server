@@ -89,13 +89,43 @@
           </md-content>
         </md-tab>
         <md-tab md-label="Route Info">
-          <md-content class="md-scrollbar" v-bind:style="flexImgStyle">
-            <md-content class="md-scrollbar backgroundRocketLand" v-bind:style="optionsStyle">
-              <img style="width:200px;margin: -5px -5px -5px -5px;" src="/assets/images/rocket-image-land.jpg" />
-            </md-content>
-            <md-content class="md-scrollbar" v-bind:style="optionsStyle">
-              <h3> Project name: rocket-craft-server service</h3>
-              <p> @params { useremail } </p>
+          <md-content class="md-scrollbar">
+            <img style="width:200px;margin: -5px -5px -5px -5px;" src="assets/logo.png" />
+            <md-content class="md-scrollbar myscroll" v-bind:style="optionsStyle">
+              <h2>Fetch[js]</h2>
+              <p class="mycode">
+                fetch("http://maximumroulette.com/rocket/login", { <br>
+                  "headers": {<br>
+                    "accept": "application/json",<br>
+                    "accept-language": "en-US,en;q=0.9,ru;q=0.8",<br>
+                    "cache-control": "no-cache",<br>
+                    "content-type": "application/json",<br>
+                    "pragma": "no-cache"<br>
+                  },<br>
+                  "referrer": "http://maximumroulette.com/apps/my-admin/",<br>
+                  "referrerPolicy": "strict-origin-when-cross-origin",<br>
+                  "body": "{\"emailField\":\"zlatnaspirala@gmail.com\",\"passwordField\":\"123123123\"}",<br>
+                  "method": "POST",<br>
+                  "mode": "cors",<br>
+                  "credentials": "omit"<br>
+                });
+               </p>
+               <h2>CURL</h2>
+               <p class="mycode">
+                 curl 'http://maximumroulette.com/rocket/login' \ <br>
+                  -H 'Connection: keep-alive' \ <br>
+                  -H 'Pragma: no-cache' \ <br>
+                  -H 'Cache-Control: no-cache' \ <br>
+                  -H 'Accept: application/json' \ <br>
+                  -H 'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.110 Safari/537.36' \ <br>
+                  -H 'Content-Type: application/json' \ <br>
+                  -H 'Origin: http://maximumroulette.com' \ <br>
+                  -H 'Referer: http://maximumroulette.com/apps/my-admin/' \ <br>
+                  -H 'Accept-Language: en-US,en;q=0.9,ru;q=0.8' \ <br>
+                  --data-raw '{"emailField":"zlatnaspirala@gmail.com","passwordField":"123123123"}' \ <br>
+                  --compressed \ <br>
+                  --insecure <br>
+               </p>
             </md-content>
           </md-content>
         </md-tab>
@@ -227,6 +257,16 @@
 </template>
 
 <style lang="scss" scoped>
+
+  .myscroll {
+    height: calc(50vh);
+    overflow: auto;
+  }
+
+  .mycode {
+    white-space: pre-line;
+  }
+
   .md-menu {
     margin: 1px;
   }
@@ -316,12 +356,13 @@
       borderRadius: '2px',
       padding : '10px',
       margin : '1px 1px 1px 1px',
+      overflow: 'auto'
     }
 
     public flexImgStyle = {
       display: 'flex',
       flexDirection: 'row',
-      backgroundImage: 'url("/assets/images/rocket-image-land.jpg")',
+      backgroundImage: 'url("assets/logo.png")',
       width: '100%',
       paddingBottom: '10px',
       itemsAlign: 'left',
@@ -362,10 +403,6 @@
         passwordField: this.$data.defaults.userPassword.toString()
       }
 
-      //
-      console.log("TEST >route> ", route); 
-      console.log("TEST >this.$props.prefix> ", this.$props.prefix);
-      // console.log("TEST >route> ", route);
       const rawResponse = await fetch(route+ this.$props.prefix + '/' +  apiCallFlag, {
         method: 'POST',
         headers: API.JSON_HEADER,

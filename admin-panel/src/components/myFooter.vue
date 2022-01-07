@@ -211,56 +211,54 @@
 </style>
 
 <script lang="ts">
+/*global IFooter*/
+import Vue from 'vue'
+import Component from 'vue-class-component'
+import {
+  mdTabs,
+  mdTab,
+  mdButton,
+  mdDialogActions,
+  mdContent
+  }  from 'vue-material'
 
-  /*global IFooter*/
 
-  import Vue from 'vue'
-  import Component from 'vue-class-component'
-  import {
+// eslint-disable-line no-unused-vars
+import IFooter from './IFooter';
+
+const CompProps = Vue.extend({
+  props: {
+    textContent: String
+  }
+});
+
+// Register for components
+@Component({
+  components: {
+    mdButton,
     mdTabs,
     mdTab,
-    mdButton,
     mdDialogActions,
     mdContent
-   }  from 'vue-material'
-
-
-  // eslint-disable-line no-unused-vars
-  import IFooter from './IFooter';
-
-  const CompProps = Vue.extend({
-    props: {
-      textContent: String
-    }
-  });
-
-  // Register for components
-  @Component({
-    components: {
-      mdButton,
-      mdTabs,
-      mdTab,
-      mdDialogActions,
-      mdContent
-    }
-  })
-
-  @Component
-  export default class myFooter extends CompProps implements IFooter {
-
-    showDialog = false
-
-    styleObject: Partial<CSSStyleDeclaration> | any = {
-      position: 'absolute',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      bottom: '0',
-      textAlign: 'center',
-      itemsAlign: 'center',
-      height: '40px',
-      width: '100%'
-    }
-
   }
+})
+
+@Component
+export default class myFooter extends CompProps implements IFooter {
+
+  showDialog = false
+
+  styleObject: Partial<CSSStyleDeclaration> | any = {
+    position: 'absolute',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    bottom: '0',
+    textAlign: 'center',
+    itemsAlign: 'center',
+    height: '40px',
+    width: '100%'
+  }
+
+}
 </script>

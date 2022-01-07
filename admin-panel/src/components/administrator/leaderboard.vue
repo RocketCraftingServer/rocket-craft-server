@@ -118,7 +118,7 @@ const CompProps = Vue.extend({
 @Component
 export default class leaderboardRocketTable extends CompProps {
 
-  private visibility = true
+  private visibility = false
   
   public optionsStyle = {
     display: 'flex',

@@ -310,7 +310,9 @@ npm install -g npm
   fetch("/rocket/login/", { method: 'POST', headers: {
       'Accept': 'application/json',
       'Content-Type': 'application/json'
-    },  body: JSON.stringify( { emailField: "zlatnaspirala@gmail.com", passwordField: '123123123'})  } ).then(response => response.json())
-  .then(data => console.log(data));
+    },  body: JSON.stringify( { emailField: "zlatnaspirala@gmail.com",
+                                passwordField: '123123123'})  } ).
+   then(response => response.json()).
+   then(data => console.log(data));
 ```
 

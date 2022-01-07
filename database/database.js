@@ -17,14 +17,14 @@ class MyDatabase {
   }
 
   async populateDatabase() {
-    const CreateDatabaseCollections = require("./create-collections")
+    const CreateDatabaseCollections = require("./create-collections");
     var databasePopulate = new CreateDatabaseCollections(this.config);
     var r = await databasePopulate.createCollections();
     console.log("Database startup migrate -> ", r);
   }
 
   async seedDatabase(numOfFakeUsers) {
-    const SeedDatabaseCollections = require("./seed-collections")
+    const SeedDatabaseCollections = require("./seed-collections");
     var databasePopulate = new SeedDatabaseCollections(this.config);
     var r = await databasePopulate.seedUsersCollection(numOfFakeUsers);
     console.log("Database seed finished -> ", r);
@@ -44,8 +44,8 @@ class MyDatabase {
         {useNewUrlParser: true, useUnifiedTopology: true},
         function(error, db) {
           if(error) {
-            console.warn("MyDatabase : err1:" + error);
-            resolve("SOMETHING_WRONG_WITH_REGISTRATION")
+            console.warn("MyDatabase: err1:" + error);
+            resolve("SOMETHING_WRONG_WITH_REGISTRATION");
             return;
           }
           const dbo = db.db(databaseName);
@@ -160,7 +160,7 @@ class MyDatabase {
         function(error, db) {
           if(error) {
             console.warn("MyDatabase error:" + error);
-            resolve("SOMETHING_WRONG_MyDatabase_ACCESS")
+            resolve("SOMETHING_WRONG_MyDatabase_ACCESS");
             return;
           }
 
@@ -237,7 +237,7 @@ class MyDatabase {
               resolve("MyDatabase.login.error")
             }
 
-            // console.warn("MyDatabase.login result => ", result);
+            console.warn("MyDatabase.login result => ", result);
 
             if(result !== null) {
               // Secure
@@ -467,9 +467,6 @@ class MyDatabase {
 
   // UPGRADE
   getUsersList(user, callerInstance) {
-
-    console.warn("MyDatabase.getUsersList  ENTER");
-
     var root = this;
     const databaseName = this.config.databaseName;
 
