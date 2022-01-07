@@ -91,7 +91,7 @@
         <md-tab md-label="Route Info">
           <md-content class="md-scrollbar">
             <img style="width:200px;margin: -5px -5px -5px -5px;" src="assets/logo.png" />
-            <md-content class="md-scrollbar myscroll" v-bind:style="optionsStyle">
+            <md-content class="md-scrollbar myscroll">
               <h2>Fetch[js]</h2>
               <p class="mycode">
                 fetch("http://maximumroulette.com/rocket/login", { <br>
