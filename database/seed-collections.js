@@ -82,7 +82,9 @@ class SeedDatabaseCollections {
                   online: false,
                   points: 1000,
                   rank: "junior",
-                  permission: "basic"
+                  permission: "basic",
+                  age: "any",
+                  country: "any"
               })
             }
 

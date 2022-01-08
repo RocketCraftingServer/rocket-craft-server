@@ -200,9 +200,7 @@ export default class usersRocketTable extends CompProps {
   public copyToClipboard;
 
   public setNewToken(t) {
-
     store.commit("setNewToken", { token: this.$data.system.adminAccountToken })
-    // (this.$root.$children[0] as any).setNewToken(t)
   }
 
   constructor() {

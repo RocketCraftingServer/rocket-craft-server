@@ -419,6 +419,7 @@
            mdProgressSpinner } from 'vue-material'
   import { copyToClipboard, switchTheme } from '../../my-common/common-func'
   import IAccounts from './IAccounts'
+import store from "../../store"
 
   const CompProps = Vue.extend({
     props: {
@@ -487,6 +488,10 @@
       this.copyToClipboard = copyToClipboard.bind(this)
     }
 
+    public setNewEmailAddress() {
+      store.commit("setNewEmailAddress", { emailAddress: this.$data.defaults.userEmail })
+    }
+
     data() {
       return {
         defaults: {
@@ -517,6 +522,7 @@
       this[apiCallFlag + 'Response'] = await rawResponse.json();
       // this.registerResponse = await rawResponse.json();
 
+      this.setNewEmailAddress();
     }
 
     async runApiConfirmation() {
@@ -538,6 +544,8 @@
       });
       const content = await rawResponse.json();
       this.confirmationResponse = content
+
+      this.setNewEmailAddress();
       console.log(content);
 
     }
@@ -560,6 +568,7 @@
       this.confirmationResponse = content
       console.log(content);
 
+      this.setNewEmailAddress();
     }
 
     mounted (): void {

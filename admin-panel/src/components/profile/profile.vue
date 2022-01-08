@@ -240,6 +240,9 @@ export default class userRocketProfile extends CompProps {
       this.$data.system.adminAccountToken = this.$store.state.permission.token
     })
 
+    addEventListener('onNewEmailAddress', (e) => {
+      this.$data.system.emailAddress = this.$store.state.permission.emailAddress
+    })
   }
 
   async runApiUsers() {

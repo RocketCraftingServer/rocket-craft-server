@@ -213,6 +213,15 @@ Only implications between ue client vs server.js is account session status
 
 ## Production 
 
+Note:
+  - Make shiled from `Hacker attacks`.
+    Recommended is to run mongo without remote access!
+    Make strong database password
+    Use permission by definited host be mac-address or ip...
+
+    All this prevent job is minimum action to make your server
+    application `stay a live`.
+
 Basic data:
   - Dedicated Server CentOS 8.3
   - Build shipping version at the end.
@@ -255,12 +264,35 @@ sudo firewall-cmd --reload
 
 ### Server flow
 
-  For production or stage server dev use `secured` arg and also you need 
-  to have ssl private key and .crt file.
-   Run:
-   ```js
-   npm run app
-   ```
+For production or stage server dev use `secured` arg and also you need 
+to have ssl private key and .crt file.
+Run:
+```js
+  npm run app
+```
+
+Localhost MongoDB setup:
+  - run mongodb service on your computer
+```bash
+  mongod --dbpath data --bind_ip <DOMAIN>
+```
+
+At the end it looks like:
+```bash
+mongo --host IP-OR-HOST --port SECRET_PORT_CUSTOM -u "userAdmin" --authenticationDatabase "admin" -p
+```
+
+
+Manual operate with database:
+
+```bash
+show dbs
+use <database_name>
+```
+
+```
+db.users.update({},{$set : {"role":"user"}},{upsert:false, multi:true})
+```
 
    Deep look at package.json in root dir:
    ```js
@@ -268,6 +300,8 @@ sudo firewall-cmd --reload
        "app": "node server maximumroulette.com secured",
        "sameDomain": "node server IP_ADDESS secured"
    ```
+
+
 
    Ue4 Clients ->
    Must be game engine builded from source.

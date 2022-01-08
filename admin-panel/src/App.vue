@@ -201,10 +201,6 @@ export default class App extends AppProps {
     };
   }
 
-  public setNewToken(token) {
-    console.log("NEW TOKEN MAN", token)
-  }
-
   public setLeaderboardComponentVisibility() {
     this.$data.visibility.leadrboardComponent = !this.$data.visibility
       .leadrboardComponent;

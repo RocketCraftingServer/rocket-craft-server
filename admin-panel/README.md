@@ -22,18 +22,33 @@
 Vue supported with typescrypt.
 
 #### Run on local mashine:
+
+Prepare deps:
 ```js
-  npm run dev
+  npm install
+```
+
+Run on own computer:
+```js
   npm run serve
 ```
 
-This is web part access:
+Do it on local then just copy `dist` folder files intro your public server:
+You can put it in any destination folder. Api route will be always http://DOMAIN.com/rocket/[any route]
+[Plug and play in web manire]
+```js
+  npm run build
+```
+
+This is web part access [npm run serve]:
 http://localhost:3000/
 
 But also you can access on:
-http://localhost:30100/
+
+   http://localhost:PORT/
+
  - In this case you need to run `npm run build`
-   to make update.
+   to make update if you use dist folder[build].
 
 #### Running server
 This is `npm run dev` output:
@@ -44,12 +59,12 @@ This is `npm run dev` output:
  -> Server running under dev configuration
  -> domain dev: localhost
  -> masterServerKey: rocket-server-app-database
- -> connectorPort: 30100
+ -> connectorPort: 80  [443] or any other
  -> protocol: http
  -> databaseName: rocket-master-base1
  --------------------------------------------
 RocketRoute loaded with success.
-ROCKET LAUNCH ON PORT 30100. Good luck ...
+ROCKET LAUNCH ON PORT 80. Good luck ...
 ```
 
 ## Routes Data

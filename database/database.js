@@ -101,7 +101,7 @@ class MyDatabase {
             }
 
             if(result === null) {
-              let uniqLocal = shared.generateToken(5);
+              let uniqLocal = shared.generateToken(6);
               console.info("MyDatabase Register new user...");
               dbo.collection("users").insertOne(
                 {
@@ -114,7 +114,9 @@ class MyDatabase {
                   online: false,
                   points: 1000,
                   rank: "junior",
-                  permission: "basic"
+                  permission: "basic",
+                  age: "any",
+                  country: "any"
                 },
                 function(err, res) {
                   if(err) {

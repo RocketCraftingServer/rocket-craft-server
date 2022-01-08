@@ -6,18 +6,16 @@ class ResponseHandler {
   }
 
   async onRegisterResponse(req, res) {
-    
-      if (req.secure) {
-        // console.log("S");
-      };
-    
-      console.log("/rocket/register ", req.body.emailField);    
+
+      console.log("/rocket/register ", req.body.emailField);
       if (typeof req.body.emailField !== 'undefined' & typeof req.body.passwordField !== 'undefined' ) {
-                
+
         var user = {
           email: req.body.emailField,
           password: req.body.passwordField
         };
+
+        // check email validation
         
         var responseFlag = await this.dataAction.register(user, this)
         console.log("/rocket/register responseFlag ", responseFlag);

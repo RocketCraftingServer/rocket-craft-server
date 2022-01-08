@@ -59,7 +59,9 @@ class CreateDatabaseCollections {
             dbo.createCollection("users").createIndex({ nickname: 1 }, { unique: false });
             dbo.createCollection("users").createIndex({ points: 1 }, { unique: false });
             dbo.createCollection("users").createIndex({ profileUrl: 1 }, { unique: true });
-            dbo.createCollection("users").createIndex({ permission: 1 }, { unique: true });
+            dbo.createCollection("users").createIndex({ permission: 1 }, { unique: false });
+            dbo.createCollection("users").createIndex({ age: 1 }, { unique: false });
+            dbo.createCollection("users").createIndex({ country: 1 }, { unique: false });
             resolve("Collections users created.")
           } else {
             resolve("Collections users already exist.")
@@ -110,7 +112,7 @@ class CreateDatabaseCollections {
     const databaseName = this.config.databaseName;
 
     /**
-     * @description 
+     * @description
      * Log critical requests to create 
      * black list.
      */

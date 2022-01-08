@@ -4,7 +4,7 @@
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
-    <md-menu md-size="medium" md-align-trigger>
+    <md-menu md-size="big" md-align-trigger>
       <md-button class="md-primary md-raised" md-menu-trigger>
         Integrity
         <md-icon class="fa fa-rocket md-accent" />
@@ -89,7 +89,7 @@
         <md-tab md-label="About RocketCraftServer Service">
           <md-content class="md-scrollbar" v-bind:style="optionsStyle">
             <h3> Project name: Rocket Craft Server</h3>
-            <p>Version Integrity 2020</p>
+            <p>Version Integrity 2022</p>
             <p>Integrity is based on Node.js server part and Vue clietn part for admin page</p>
             <br>
             <img style="width:200px;margin: -5px -5px -5px -5px;" src="assets/logo.png" />
@@ -116,11 +116,18 @@
 }
 
 .md-menu {
-  margin: 1px;
+  min-height: initial;
+  margin: 0;
+}
+
+.md-list-item-content {
+  min-height: initial;
 }
 
 .md-button {
-  font-weight: 400;
+  min-width: 100px;
+  margin: 0;
+  font-weight: 300;
 }
 
 .myHeader {

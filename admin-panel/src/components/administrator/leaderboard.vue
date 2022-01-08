@@ -146,6 +146,10 @@ export default class leaderboardRocketTable extends CompProps {
     addEventListener('onNewToken', (e) => {
       this.$data.system.adminAccountToken = this.$store.state.permission.token
     })
+
+    addEventListener('onNewEmailAddress', (e) => {
+      this.$data.system.emailAddress = this.$store.state.permission.emailAddress
+    })
   }
 
   async runApiUsers(apiCallFlag) {

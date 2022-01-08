@@ -6,7 +6,8 @@ interface ApplicationStateI {
   permission: {
     optimal: boolean,
     cookieAccept: boolean,
-    token: string
+    token: string,
+    emailAddress: string
   },
   system: {
     getEmailAddress: () => string,
@@ -27,14 +28,15 @@ const state = {
   permission: {
     optimal: true,
     cookieAccept: false,
-    token: "NO-TOKEN"
+    token: "NO-TOKEN",
+    emailAddress: "zlatnaspirala@gmail.com"
     // read: "https://www.googleapis.com/auth/youtube.readonly",
     // write: "https://www.googleapis.com/auth/youtube.force-ssl"
   },
   system: {
     getEmailAddress: () => 'greespiral@gmail.com',
     hardCodeAccount: {
-      getEmailAddress: () => 'zlatnaspirala@gmail.com',
+      getEmailAddress: () => state.permission.emailAddress,
       adminAccountToken: () => state.permission.token
     }
   },
@@ -48,10 +50,14 @@ const state = {
 }
 
 const mutations = {
+  setNewEmailAddress(state: ApplicationStateI, { emailAddress }) {
+    console.log("Application instance store call setNewToken method.", emailAddress)
+    state.permission.emailAddress = emailAddress
+    dispatchEvent(new CustomEvent('onNewEmailAddress', {}))
+  },
   setNewToken(state: ApplicationStateI, { token }) {
     console.log("Application instance store call setNewToken method.", token)
     state.permission.token = token
-    // test wi no arg
     dispatchEvent(new CustomEvent('onNewToken', {}))
   },
   cookieAccept(state: ApplicationStateI, { yesOrNo }) {
