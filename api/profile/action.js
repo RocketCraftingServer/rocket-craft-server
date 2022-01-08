@@ -5,12 +5,12 @@ module.exports = {
 
     const databaseName = dataOptions.dbName;
 
-    return new Promise((resolve) => {  
+    return new Promise((resolve) => {
       var root = this;
       MongoClient.connect(
        dataOptions.dbRoot, { useNewUrlParser: true, useUnifiedTopology: true },
        function(error, db) {
-        if (error) { 
+        if (error) {
           console.warn("Profile actions profile error :" + error);
           resolve({ status: 'error in MyDatabase getUsers'})
           return;
@@ -56,10 +56,6 @@ module.exports = {
         });
       })
     })
-  },
-
-  test() {
-    console.log("Nikola Lukic")
   }
 
 }
