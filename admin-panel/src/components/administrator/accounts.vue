@@ -5,7 +5,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
     <md-menu md-align-trigger>
-      <md-button class="md-primary md-raised" md-menu-trigger>Account Component</md-button>
+      <md-button class="md-primary md-raised" md-menu-trigger>
+        <md-icon class="fa fa-user" ></md-icon>Account Component</md-button>
       <md-menu-content class="md-primary md-raised" >
         <md-menu-item>
            <md-button @click="showRegisterDialogClick()" class="md-primary md-raised" md-menu-trigger>Register</md-button>
@@ -59,7 +60,7 @@
                               {{ Object.keys(loginResponse)[Object.values(loginResponse).indexOf(item)] }} 
                               <md-icon class="fa fa-caret-right"></md-icon>
                             </md-button>
-                            <md-button class="md-primary md-raised" v-on:click="copyToClipboard($event)" > {{ item }} </md-button>
+                            <md-button class="md-primary md-raised notexttransform" v-on:click="copyToClipboard($event)" > {{ item }} </md-button>
                           </div>
                     </div>
 
@@ -67,7 +68,7 @@
                          style="padding: 2px;margin: 0;height:200px;display:flex;flex-direction:column;overflow:scroll;overflow-x:hidden;" >
                       <div  v-for="(subItem, name, index) in item" :key="subItem" style="display:flex;">
                         <md-button v-if="index === 0" 
-                                   class="md-accent md-raised" 
+                                   class="md-accent md-raised notexttransform" 
                                    style="width:150px;padding-top:-5px;">
                           {{ Object.keys(loginResponse)[Object.values(loginResponse).indexOf(item)] }}
                           <md-icon class="fa fa-sitemap"></md-icon>
@@ -77,7 +78,7 @@
                           {{ Object.keys(item)[Object.values(item).indexOf(subItem)] }}
                           <md-icon class="fa fa-caret-right"></md-icon>
                         </md-button>
-                        <md-button class="md-primary md-raised" v-on:click="copyToClipboard($event)">{{ subItem }}</md-button>
+                        <md-button class="md-primary md-raised notexttransform" v-on:click="copyToClipboard($event)">{{ subItem }}</md-button>
                       </div>
                     </div>
    
@@ -90,10 +91,13 @@
         </md-tab>
         <md-tab md-label="Route Info">
           <md-content class="md-scrollbar">
-            <img style="width:200px;margin: -5px -5px -5px -5px;" src="assets/logo.png" />
+            <!--img style="width:200px;margin: -5px -5px -5px -5px;" src="assets/logo.png" /-->
+            <h3>Description: This is login route. </h3>
+              <p>@param emailField</p>
+              <p>@param passwordField</p>
             <md-content class="md-scrollbar myscroll">
-              <h2>Fetch[js]</h2>
-              <p class="mycode">
+              <p>Fetch[js]</p>
+              <md-content class="md-raised md-primary" v-on:click="copyToClipboard($event)">
                 fetch("http://maximumroulette.com/rocket/login", { <br>
                   "headers": {<br>
                     "accept": "application/json",<br>
@@ -109,9 +113,9 @@
                   "mode": "cors",<br>
                   "credentials": "omit"<br>
                 });
-               </p>
-               <h2>CURL</h2>
-               <p class="mycode">
+              </md-content>
+              <p>CURL</p>
+              <md-content class="md-primary md-raised" v-on:click="copyToClipboard($event)">
                  curl 'http://maximumroulette.com/rocket/login' \ <br>
                   -H 'Connection: keep-alive' \ <br>
                   -H 'Pragma: no-cache' \ <br>
@@ -125,7 +129,21 @@
                   --data-raw '{"emailField":"zlatnaspirala@gmail.com","passwordField":"123123123"}' \ <br>
                   --compressed \ <br>
                   --insecure <br>
-               </p>
+             </md-content>
+
+              <p>Response</p>
+              <md-content class="md-accent">
+                <p>{"message":"User logged","rocketStatus":"USER_LOGGED",<br>
+                   "flag":{<br>
+                     "status":"USER_LOGGED",<br>
+                     "email":"zlatnaspirala@gmail.com",<br>
+                     "nickname":"barbarianHead",<br>
+                     "points":2011,<br>
+                     "rank":"junior",<br>
+                     "token":"36toO"<br>
+                     }}</p>
+              </md-content>
+
             </md-content>
           </md-content>
         </md-tab>
@@ -182,11 +200,55 @@
         </md-tab>
 
         <md-tab md-label="Route Info">
-          <md-content class="md-scrollbar" v-bind:style="optionsStyle">
-            <img style="width:200px;margin: -5px -5px -5px -5px;" src="/assets/vule-logo1.png" />
-            <h3> rocket-craft-server service-route register</h3>
-            <p> `@param useremail` </p>
-            <p> `@param userpassword` </p>
+          <md-content class="md-scrollbar">
+            <!--img style="width:200px;margin: -5px -5px -5px -5px;" src="assets/logo.png" /-->
+            <h3>Description: This is register route.</h3>
+              <p>@param emailField</p>
+              <p>@param passwordField</p>
+            <md-content class="md-scrollbar myscroll">
+              <p>Fetch[js]</p>
+              <md-content class="md-raised md-primary" v-on:click="copyToClipboard($event)">
+                fetch("http://maximumroulette.com/rocket/register", { <br>
+                  "headers": {<br>
+                    "accept": "application/json",<br>
+                    "accept-language": "en-US,en;q=0.9,ru;q=0.8",<br>
+                    "cache-control": "no-cache",<br>
+                    "content-type": "application/json",<br>
+                    "pragma": "no-cache"<br>
+                  },<br>
+                  "referrer": "http://localhost:3000/",<br>
+                  "referrerPolicy": "strict-origin-when-cross-origin",<br>
+                  "body": "{\"emailField\":\"zlatnaspirala@gmail.com\",\"passwordField\":\"123123123\"}",<br>
+                  "method": "POST",<br>
+                  "mode": "cors",<br>
+                  "credentials": "omit"<br>
+                });<br>
+              </md-content>
+              <p>CURL</p>
+              <md-content class="md-primary md-raised" v-on:click="copyToClipboard($event)">
+                curl 'http://maximumroulette.com/rocket/register' \<br>
+                  -H 'Connection: keep-alive' \<br>
+                  -H 'Pragma: no-cache' \<br>
+                  -H 'Cache-Control: no-cache' \<br>
+                  -H 'Accept: application/json' \<br>
+                  -H 'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.71 Safari/537.36' \<br>
+                  -H 'Content-Type: application/json' \<br>
+                  -H 'Origin: http://localhost:3000' \<br>
+                  -H 'Referer: http://localhost:3000/' \<br>
+                  -H 'Accept-Language: en-US,en;q=0.9,ru;q=0.8' \<br>
+                  --data-raw '{"emailField":"zlatnaspirala@gmail.com","passwordField":"123123123"}' \<br>
+                  --compressed \<br>
+                  --insecure<br>
+             </md-content>
+
+              <p>Response</p>
+              <md-content class="md-accent">
+                <p>
+                  {"message":"You are already registred.","rocketStatus":"USER_ALREADY_REGISTERED"}
+                </p>
+              </md-content>
+
+            </md-content>
           </md-content>
         </md-tab>
       </md-tabs>
@@ -240,11 +302,55 @@
         </md-tab>
 
         <md-tab md-label="Route Info">
-          <md-content class="md-scrollbar" v-bind:style="optionsStyle">
-            <img style="width:200px;margin: -5px -5px -5px -5px;" src="/assets/logo.png" />
-            <h3> rocket-craft-server service-route register</h3>
-            <p> `@param useremail` </p>
-            <p> `@param confirmatin token` </p>
+          <md-content class="md-scrollbar">
+            <!--img style="width:200px;margin: -5px -5px -5px -5px;" src="assets/logo.png" /-->
+            <h3>Description: This is register comfirmation route.</h3>
+              <p>@param emailField</p>
+              <p>@param passwordField</p>
+            <md-content class="md-scrollbar myscroll">
+              <p>Fetch[js]</p>
+              <md-content class="md-raised md-primary" v-on:click="copyToClipboard($event)">
+                fetch("http://maximumroulette.com/rocket/confirmation", {<br>
+                  "headers": {<br>
+                    "accept": "application/json",<br>
+                    "accept-language": "en-US,en;q=0.9,ru;q=0.8",<br>
+                    "cache-control": "no-cache",<br>
+                    "content-type": "application/json",<br>
+                    "pragma": "no-cache"<br>
+                  },<br>
+                  "referrer": "http://localhost:3000/",<br>
+                  "referrerPolicy": "strict-origin-when-cross-origin",<br>
+                  "body": "{\"emailField\":\"zlatnaspirala@gmail\",\"tokenField\":\"\"}",<br>
+                  "method": "POST",<br>
+                  "mode": "cors",<br>
+                  "credentials": "omit"<br>
+                });<br>
+              </md-content>
+              <p>CURL</p>
+              <md-content class="md-primary md-raised" v-on:click="copyToClipboard($event)">
+                curl 'http://maximumroulette.com/rocket/confirmation' \<br>
+                  -H 'Connection: keep-alive' \<br>
+                  -H 'Pragma: no-cache' \<br>
+                  -H 'Cache-Control: no-cache' \<br>
+                  -H 'Accept: application/json' \<br>
+                  -H 'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.71 Safari/537.36' \<br>
+                  -H 'Content-Type: application/json' \<br>
+                  -H 'Origin: http://localhost:3000' \<br>
+                  -H 'Referer: http://localhost:3000/' \<br>
+                  -H 'Accept-Language: en-US,en;q=0.9,ru;q=0.8' \<br>
+                  --data-raw '{"emailField":"zlatnaspirala@gmail","tokenField":""}' \<br>
+                  --compressed \<br>
+                  --insecure<br>
+             </md-content>
+
+              <p>Response</p>
+              <md-content class="md-accent">
+                <p>
+                  {"message":"Wrong confirmation code.","rocketStatus":"USER_NOT_CONFIRMED"}
+                </p>
+              </md-content>
+
+            </md-content>
           </md-content>
         </md-tab>
       </md-tabs>
@@ -259,7 +365,7 @@
 <style lang="scss" scoped>
 
   .myscroll {
-    height: calc(50vh);
+    height: calc(50vh) !important;
     overflow: auto;
   }
 
@@ -278,7 +384,7 @@
 
   .myStyle {
     width:100%;
-    height: 41px;
+    height: 37px;
     -webkit-box-shadow: 1px 1px 3px 3px rgba(0,0,0,0.5);
     -moz-box-shadow: 1px 1px 3px 3px rgba(0,0,0,0.5);
     box-shadow: 1px 1px 3px 3px rgba(0,0,0,0.5);
@@ -286,12 +392,12 @@
 
   .md-content {
     font-size: 110%;
-    min-height: fit-content;
+    height: fit-content;
   }
 
   .positive {
-    padding: 2px;
-    margin: 2px;
+    padding: 1px;
+    margin: 1px;
     color: rgb(255, 230, 163) !important;
     text-shadow: 0 0 1px #fffb12;
     -webkit-border-radius: 3px 3px 3px 3px;
@@ -354,7 +460,7 @@
       height: 'auto',
       border: '1px solid gray',
       borderRadius: '2px',
-      padding : '10px',
+      padding : '5px',
       margin : '1px 1px 1px 1px',
       overflow: 'auto'
     }
@@ -379,7 +485,6 @@
       super()
 
       this.copyToClipboard = copyToClipboard.bind(this)
-      
     }
 
     data() {
@@ -395,7 +500,7 @@
     }
 
     async runApiCallByActionName(apiCallFlag) {
-  
+
       let route = this.$props.domain
 
       const args = {
@@ -407,13 +512,13 @@
         method: 'POST',
         headers: API.JSON_HEADER,
         body: JSON.stringify(args)
-      });
+      })
 
       this[apiCallFlag + 'Response'] = await rawResponse.json();
       // this.registerResponse = await rawResponse.json();
-      
+
     }
-    
+
     async runApiConfirmation() {
 
       let route = this.$props.domain
@@ -448,10 +553,7 @@
 
       const rawResponse = await fetch(route+ this.$props.prefix + '/confirmation', {
         method: 'POST',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
-        },
+        headers: API.JSON_HEADER,
         body: JSON.stringify(args)
       });
       const content = await rawResponse.json();
@@ -461,7 +563,7 @@
     }
 
     mounted (): void {
-      console.log("Account created.")
+      console.log("Account component created.")
     }
 
     public showLoginDialogClick() {

@@ -5,16 +5,17 @@
  * @param connectorPort { number }
  */
 
-class ServerConfig {
+ class ServerConfig {
 
   constructor(serverModeArg) {
   
     if (typeof serverModeArg === 'undefined') {
-      this.serverMode = "dev";  
+      this.serverMode = "dev";
     } else if (serverModeArg == 'prod' ||
                serverModeArg == 'secured' ||
-               serverModeArg == 'dev') {
-      this.serverMode = serverModeArg;  
+               serverModeArg == 'dev' ||
+               serverModeArg == 'mongodb.net') {
+      this.serverMode = serverModeArg;
     } else {
       console.error("Something wrong with Config arg!")
       return;
@@ -46,7 +47,7 @@ class ServerConfig {
   get hostSpecialRoute() {
     return {
       active: true,
-      route: "/var/www/html/testue",
+      route: "/var/www/html/",
       webAppName: "BarbarianRoadMashines",
       type: "Race Game",
       unsecured: true,
@@ -54,11 +55,11 @@ class ServerConfig {
   }
 
   get ownHttp() {
-    return false;
+    return true;
   }
 
   get ownHttpHostPort() {
-    return 6001;
+    return 443;
   }
 
   get networkDeepLogs() {
@@ -76,8 +77,8 @@ class ServerConfig {
     return "rocket-server-app-database";
   }
 
-  get protocol() { 
-    return "http"; 
+  get protocol() {
+    return "http";
   }
 
   get maxRequestSize() {
@@ -109,12 +110,12 @@ class ServerConfig {
   get systemEmail() {
     return {
       user: "greespiral@gmail.com",
-      pass: "**************"
+      pass: "********"
     };
   };
 
   get connectorPort() {
-    return 30100
+    return 80
   } 
 
       /**
@@ -132,11 +133,13 @@ class ServerConfig {
   }
 
   get getDatabaseRoot() {
-  
+
+    */
     var databaseRoot = {
       dev: "mongodb://localhost:27017",
-      prod: "mongodb://userAdmin:*************@x.x.x.x:xxxx/admin",
-      secured: "mongodb://userAdmin:*************@x.x.x.x:xxxx/admin",
+      prod: "mongodb://userAdmin:*********@IPADDRESS:PORT/admin",
+      secured: "mongodb://userAdmin:********@IPADDRESS:PORT/admin",
+      freeService: "mongodb+srv://userAdmin:PUT_YOUR_PASSWORD@cluster0.piqav.mongodb.net/[YOUR DATABASE NAME]?retryWrites=true&w=majority"
     };
 
     if (this.serverMode == "dev") {
@@ -144,6 +147,8 @@ class ServerConfig {
     } else if (this.serverMode == "prod") {
       return databaseRoot.prod;
     } else if (this.serverMode == "secured") {
+      return databaseRoot.secured;
+    } else if (this.serverMode == "mongodb.net") {
       return databaseRoot.secured;
     }
   }

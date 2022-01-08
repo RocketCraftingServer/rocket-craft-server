@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <myHeader slogan="Rocket-craft server - Admin Panel web app"></myHeader>
-    <div ref="mybodycontent" class="myshadows" v-bind:style="styleObject">
+    <div ref="mybodycontent" v-bind:style="styleObject">
       <div class="loader" ref="loader" style="display: block">
         <md-progress-spinner md-mode="indeterminate"></md-progress-spinner>
       </div>
@@ -64,13 +64,12 @@ import CountrySelector from "./components/countries-selector/country-selector.vu
 import Users from "./components/administrator/users.vue";
 import userRocketProfile from "./components/profile/profile.vue";
 import GenericComponent from "./components/generic/generic.vue";
-
 import Leaderboard from "./components/administrator/leaderboard.vue";
 
 Vue.use(VueMaterial as any);
 
 /**
- *  We declare the props separately
+ * @description We declare the props separately
  *  to make props types inferable.
  */
 const AppProps = Vue.extend({
@@ -94,8 +93,9 @@ const AppProps = Vue.extend({
     Leaderboard,
   },
   computed: mapState(["permission"]),
-  methods: mapMutations(["cookieAccept"]),
+  methods: mapMutations(["cookieAccept", "setNewToken"]),
 })
+
 export default class App extends AppProps {
   /**
    * @description  Annotate refs type
@@ -199,6 +199,10 @@ export default class App extends AppProps {
         leadrboardComponent: false,
       },
     };
+  }
+
+  public setNewToken(token) {
+    console.log("NEW TOKEN MAN", token)
   }
 
   public setLeaderboardComponentVisibility() {

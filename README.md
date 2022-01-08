@@ -253,8 +253,23 @@ sudo firewall-cmd --reload
 
 ```
 
-### Server Builds
+### Server flow
 
+  For production or stage server dev use `secured` arg and also you need 
+  to have ssl private key and .crt file.
+   Run:
+   ```js
+   npm run app
+   ```
+
+   Deep look at package.json in root dir:
+   ```js
+     "scripts": {
+       "app": "node server maximumroulette.com secured",
+       "sameDomain": "node server IP_ADDESS secured"
+   ```
+
+   Ue4 Clients ->
    Must be game engine builded from source.
    Generate visual studio source files.
    Build on right click -> first ue4 instance than build game instance.
@@ -265,11 +280,11 @@ sudo firewall-cmd --reload
    For all platforms
 
    4.24.3 Main reason is devices with opengles < 3.0 support plus Linux supported 
-   websocket experimental net driver.
+   websocket experimental net driver [also dedicated server works fine].
 
    This is `Tradicional way`.
    On finish whole this staff i will add future `modern way` brach ( 4.26 > )
-   with last ue updated.
+   with last ue4 upgrade.
 
 ### Signaling Server host [optimal]
 

@@ -94,7 +94,7 @@ import { mdMenu,
           mdIcon,
           mdContent,
           mdProgressSpinner } from 'vue-material'
-import { switchTheme } from '../../my-common/common-func'
+import { copyToClipboard, switchTheme } from '../../my-common/common-func'
 import IAccounts from './IAccounts'
 
 const CompProps = Vue.extend({
@@ -133,12 +133,19 @@ export default class leaderboardRocketTable extends CompProps {
     margin : '1px 1px 1px 1px',
   }
 
+  private copyToClipboard;
+
   constructor() {
     super()
+    this.copyToClipboard = copyToClipboard.bind(this);
   }
 
   mounted(): void {
     console.log('Users Service.')
+    // Emit flow
+    addEventListener('onNewToken', (e) => {
+      this.$data.system.adminAccountToken = this.$store.state.permission.token
+    })
   }
 
   async runApiUsers(apiCallFlag) {

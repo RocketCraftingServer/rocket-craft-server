@@ -69,7 +69,7 @@
 
   .myStyle {
     width:100%;
-    height: 41px;
+    height: 37px;
     -webkit-box-shadow: 1px 1px 3px 3px rgba(0,0,0,0.5);
     -moz-box-shadow: 1px 1px 3px 3px rgba(0,0,0,0.5);
     box-shadow: 1px 1px 3px 3px rgba(0,0,0,0.5);

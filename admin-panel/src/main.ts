@@ -26,7 +26,9 @@ var Application = new Vue({
   render: h => h(App, {
     props: {
       AppPropVersion: '0.1.1',
-      AppDomainHost: API.constructDomain()
+      AppDomainHost: API.constructMaximumroulette()
+      // API.constructDomainForceHTTP()
+      // API.constructDomain()
       // API.constructMaximumroulette()
     }
   }),

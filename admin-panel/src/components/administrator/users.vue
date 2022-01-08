@@ -19,6 +19,7 @@
               </md-button>
               <md-field style="width:50%;margin-left:5%;">
                 <md-input class="md-primary" placeholder="Enter you token." v-model="system.adminAccountToken" />
+                <md-button @click="setNewToken(system.adminAccountToken)">Set new token!</md-button>
               </md-field>
             </div>
           <!-- table.searched -->
@@ -52,6 +53,61 @@
             </md-table>
           </md-content>
         </md-tab>
+        <md-tab md-label="Route Info">
+          <md-content class="md-scrollbar">
+            <!--img style="width:200px;margin: -5px -5px -5px -5px;" src="assets/logo.png" /-->
+            <h3>Description: This is get users route.</h3>
+              <p>@param emailField</p>
+              <p>@param passwordField</p>
+            <md-content class="md-scrollbar myscroll">
+              <p>Fetch[js]</p>
+              <md-content class="md-raised md-primary" v-on:click="copyToClipboard($event)">
+                fetch("http://maximumroulette.com/rocket/users", { <br>
+                  "headers": {<br>
+                    "accept": "application/json",<br>
+                    "accept-language": "en-US,en;q=0.9,ru;q=0.8",<br>
+                    "cache-control": "no-cache",<br>
+                    "content-type": "application/json",<br>
+                    "pragma": "no-cache"<br>
+                  },<br>
+                  "referrer": "http://localhost:3000/",<br>
+                  "referrerPolicy": "strict-origin-when-cross-origin",<br>
+                  "body": "{\"email\":\"zlatnaspirala@gmail.com\",\"token\":\"36toO\",
+                            \"criterium\":{\"description\":\"list-all\",\"moreExploreUsers\":0}}",<br>
+                  "method": "POST",<br>
+                  "mode": "cors",<br>
+                  "credentials": "omit"<br>
+                });<br>
+              </md-content>
+              <p>CURL</p>
+              <md-content class="md-primary md-raised" v-on:click="copyToClipboard($event)">
+                curl 'http://maximumroulette.com/rocket/users' \<br>
+                -H 'Connection: keep-alive' \<br>
+                -H 'Pragma: no-cache' \<br>
+                -H 'Cache-Control: no-cache' \<br>
+                -H 'Accept: application/json' \<br>
+                -H 'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.110 Safari/537.36' \<br>
+                -H 'Content-Type: application/json' \<br>
+                -H 'Origin: http://localhost:3000' \<br>
+                -H 'Referer: http://localhost:3000/' \<br>
+                -H 'Accept-Language: en-US,en;q=0.9,ru;q=0.8' \<br>
+                --data-raw '{"email":"zlatnaspirala@gmail.com","token":"36toO","criterium":{"description":"list-all","moreExploreUsers":0}}' \<br>
+                --compressed \<br>
+                --insecure<br>
+             </md-content>
+
+              <p>Response</p>
+              <md-content class="md-accent">
+                <p>{"message":"get users response",
+                    "rocketStatus":"AUTHORIZED",
+                     "users":[
+                       {"id":"600c307f4475b16683435dea","nickname":"no-nick-name0","points":1000,"rank":"junior","online":false,"email":"fake_user0@localhost.com","confirmed":false,"profileImage":"users-shared-data/no-image.jpg"},
+                       ... </p>
+              </md-content>
+
+            </md-content>
+          </md-content>
+        </md-tab>
       </md-tabs>
       <md-dialog-actions>
         <md-button class="md-primary md-raised" @click="setUsersPage('prev')">Prev Page</md-button>
@@ -62,6 +118,11 @@
 </template>
 
 <style lang="scss" scoped>
+
+  .myscroll {
+    height: calc(45vh);
+    overflow: auto;
+  }
 
   .md-menu {
     margin: 1px;
@@ -81,8 +142,7 @@
   }
 
   .md-content {
-    font-size: 110%;
-    height: fit-content;
+    font-size: 100%;
   }
 
 </style>
@@ -91,13 +151,14 @@
 
 import { API } from "../../my-common/literal"
 import Vue from 'vue'
+import store from '../../store'
 import Component from 'vue-class-component'
 import { mdMenu,
           mdButton,
           mdIcon,
           mdContent,
           mdProgressSpinner } from 'vue-material'
-import { switchTheme } from '../../my-common/common-func'
+import { copyToClipboard, switchTheme } from '../../my-common/common-func'
 import IAccounts from './IAccounts'
 
 const CompProps = Vue.extend({
@@ -121,7 +182,7 @@ const CompProps = Vue.extend({
 @Component
 export default class usersRocketTable extends CompProps {
 
-  private visibility = true
+  private visibility = false
   
   public optionsStyle = {
     display: 'flex',
@@ -136,12 +197,26 @@ export default class usersRocketTable extends CompProps {
     margin : '1px 1px 1px 1px',
   }
 
+  public copyToClipboard;
+
+  public setNewToken(t) {
+
+    store.commit("setNewToken", { token: this.$data.system.adminAccountToken })
+    // (this.$root.$children[0] as any).setNewToken(t)
+  }
+
   constructor() {
     super()
+    this.copyToClipboard = copyToClipboard.bind(this)
   }
 
   mounted(): void {
     console.log('Users Service.')
+
+    // Emit flow
+    addEventListener('onNewToken', (e) => {
+      this.$data.system.adminAccountToken = this.$store.state.permission.token
+    })
   }
 
   async runApiUsers(apiCallFlag) {
@@ -163,7 +238,7 @@ export default class usersRocketTable extends CompProps {
       body: JSON.stringify(args)
     });
 
-    var r =  await rawResponse.json();    
+    var r =  await rawResponse.json();
     this.$data.usersResponse = r.users
     this.setUsersPage('new-buffer-data')
   

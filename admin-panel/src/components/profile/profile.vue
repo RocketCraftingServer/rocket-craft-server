@@ -31,12 +31,12 @@
                 </md-input>
               </md-field>
               <md-field class="md-content-options">
-                <label class="labelText">Password:</label>
+                <label class="labelText">Token:</label>
                 <md-input
                   @keyup.enter="runProfileCall('profile')"
                   v-model="system.adminAccountToken"
                   class="md-primary md-raised"
-                  placeholder="Default password:"
+                  placeholder="Default token:"
                   maxlength="200"
                 >
                 </md-input>
@@ -133,23 +133,7 @@
             </md-content>
           </md-content>
         </md-tab>
-        <md-tab md-label="Route Info">
-          <md-content class="md-scrollbar">
-            <md-content
-              class="md-scrollbar backgroundRocketLand"
-              v-bind:style="optionsStyle"
-            >
-              <img
-                style="width: 200px; margin: -5px -5px -5px -5px"
-                src="/assets/images/rocket-image-land.jpg"
-              />
-            </md-content>
-            <md-content class="md-scrollbar" v-bind:style="optionsStyle">
-              <h3>Project name: rocket-craft-server service</h3>
-              <p>@params { useremail }</p>
-            </md-content>
-          </md-content>
-        </md-tab>
+
       </md-tabs>
       <md-dialog-actions>
         <md-button color="md-primary" @click="showProfileDialog = false"
@@ -179,6 +163,7 @@
 }
 
 .md-content {
+  min-width: 400px;
   font-size: 110%;
   height: fit-content;
 }
@@ -248,7 +233,13 @@ export default class userRocketProfile extends CompProps {
   }
 
   mounted(): void {
-    console.log("Users Service.");
+    console.log("Users Service. adminAccountToken ", this.$data.system.adminAccountToken);
+
+    addEventListener('onNewToken', (e) => {
+      e.preventDefault()
+      this.$data.system.adminAccountToken = this.$store.state.permission.token
+    })
+
   }
 
   async runApiUsers() {
