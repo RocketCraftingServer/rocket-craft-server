@@ -1,10 +1,10 @@
 let MongoClient = require("mongodb").MongoClient;
-module.exports = { 
-  
+module.exports = {
+
   getUserProfile(user, dataOptions) {
 
     const databaseName = dataOptions.dbName;
-    
+
     return new Promise((resolve) => {  
       var root = this;
       MongoClient.connect(
