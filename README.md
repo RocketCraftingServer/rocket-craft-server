@@ -273,6 +273,8 @@ Run:
 
 Localhost MongoDB setup:
   - run mongodb service on your computer
+
+  Then attach it:
 ```bash
   mongod --dbpath data --bind_ip <DOMAIN>
 ```
@@ -281,7 +283,6 @@ At the end it looks like:
 ```bash
 mongo --host IP-OR-HOST --port SECRET_PORT_CUSTOM -u "userAdmin" --authenticationDatabase "admin" -p
 ```
-
 
 Manual operate with database:
 
