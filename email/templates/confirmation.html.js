@@ -17,7 +17,7 @@ module.exports = {
       Copy/Paste in your SignUp form.</p> <br/> \
       CODE : <p>" + token + "</p>  <br/><br/><br/> \
       <img style='width:80px;' src='https://github.com/zlatnaspirala/visual-ts-game-engine/blob/master/logo.png?raw=true' /> \
-      <small>Powered by <small>Node-Mongo-Account.</small> \
+      <small>Powered by maximumroulette.com 2022 </small> \
       </div>";
   }
 
