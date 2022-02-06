@@ -366,3 +366,6 @@ npm install -g npm
    then(data => console.log(data));
 ```
 
+
+For private job i also run KureOrange at:
+https://kure.maximumroulette.com/
