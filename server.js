@@ -10,6 +10,8 @@
 
 console.log("Initial params [3] => ", process.argv[3]);
 
+const path = require('path');
+
 const ConfigAccountSession = require("./config");
 const config = new ConfigAccountSession(process.argv[3]);
 
@@ -75,20 +77,25 @@ var options = null;
 // this.app.use(root.express.static(__dirname + "./../../admin-panel/dist"));
 
 var hostingHTTP = express();
-
 vhost = require('vhost')
 routerSub = express.Router()
 routerSub.use(express.static('/var/www/html/apps/ultimate-roulette/'));
-
+hostingHTTP.use(vhost('roulette.maximumroulette.com', routerSub));
 routerSub2 = express.Router()
 routerSub2.use(express.static('/var/www/html/apps/barbarian-road-mashines/beta/'));
-
+app.use(vhost('brm.maximumroulette.com', routerSub2));
 routerSub3 = express.Router()
 routerSub3.use(express.static('/var/www/html/apps/ai/'));
-hostingHTTP.use(vhost('ai.maximumroulette.com', routerSub3));
+routerSub4 = express.Router()
+routerSub4.use(express.static('/var/applications/kure/kure-server-client/public/'));
 
-app.use(vhost('rocketcraft.maximumroulette.com', routerSub2));
+// TEST INJECT ONE MORE SERVICE -  Router prefix /api/
+var KUREORANGE = require("/var/applications/kure/kure-server-client/ko-attacher.js");
+console.log(">>>>", KUREORANGE)
+KUREORANGE.setExpressForKo(hostingHTTP);
 
+
+// node server.js https://maximumroulette.com:4443 
 hostingHTTP.get('*', function(req, res, next) {
   // console.log(">>" , req.hostname);
   /* if (req.hostname == "ai.maximumroulette.com") {
@@ -100,10 +107,11 @@ hostingHTTP.get('*', function(req, res, next) {
   next();
 });
 
-hostingHTTP.use(vhost('roulette.maximumroulette.com', routerSub));
-hostingHTTP.use(vhost('rocketcraft.maximumroulette.com', routerSub2));
 
 // I use simple my root page
+hostingHTTP.use(vhost('kure.maximumroulette.com', routerSub4));
+hostingHTTP.use(vhost('ai.maximumroulette.com', routerSub3));
+hostingHTTP.use(vhost('brm.maximumroulette.com', routerSub2));
 hostingHTTP.use(express.static("/var/www/html/"));
 
 // Compress all HTTP responses
@@ -127,6 +135,32 @@ hostingHTTP.use(function (req, res, next) {
 
 app.use(bodyParser.json({ limit: config.maxRequestSize }))
 app.use(cors());
+
+
+/**
+ * @description
+ * You can add samo special route for any proporse.
+ * Not work if you have 443 https started at same domain,
+ * it redirect to https and rocket crating server hostend on 80 
+ * is not reached.
+ * 
+ */
+ if (config.hostSpecialRoute.active) {
+
+  app.use("/admin", express.static(config.hostSpecialRoute.route));
+  app.use("/brm", express.static('/var/www/html/apps/barbarian-road-mashines/beta/'));
+  app.use("/apps/barbarian-road-mashines/beta", express.static('/var/www/html/apps/barbarian-road-mashines/beta/'));
+  app.use("/apps/shooter/", express.static('/var/www/html/apps/shooter/'));
+  
+
+  console.log(
+    "Rocket activate " +
+    config.hostSpecialRoute.webAppName + " application host." +
+    " Application www folder is `" + config.hostSpecialRoute.route + 
+    " __dirname is " + __dirname );
+
+}
+
 
 /**
  * @description Compression
@@ -171,6 +205,8 @@ app.use(
     type: "application/vnd.api+json"
   })
 );
+
+// hostAdminPanel
 
 // Parse application/vnd.api+json as json
 
@@ -245,17 +281,6 @@ if (config.protocol == 'http') {
   serverRunner = spdy;
 }
 
-/**
- * @description
- * You can add samo special route for any proporse.
- */
-if (config.hostSpecialRoute.active) {
-  app.use(express.static(config.hostSpecialRoute.route)); 
-  console.log(
-    "Rocket activate " +
-    config.hostSpecialRoute.webAppName + " application host." +
-    " Application www folder is `" + config.hostSpecialRoute.route)
-}
 
 /**
  * @description serverRunner
