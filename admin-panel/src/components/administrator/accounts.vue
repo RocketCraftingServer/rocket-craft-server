@@ -6,7 +6,7 @@
 
     <md-menu md-align-trigger>
       <md-button class="md-primary md-raised" md-menu-trigger>
-        <md-icon class="fa fa-user" ></md-icon>Account Component</md-button>
+        <md-icon class="fa fa-user" ></md-icon>Account</md-button>
       <md-menu-content class="md-primary md-raised" >
         <md-menu-item>
            <md-button @click="showRegisterDialogClick()" class="md-primary md-raised" md-menu-trigger>Register</md-button>

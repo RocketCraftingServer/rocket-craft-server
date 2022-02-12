@@ -72,8 +72,7 @@
             <md-content v-bind:style="optionsStyle">
               <h4>Project structural/methodology </h4>
               <a target="_blank" href="https://vuejs.org/">https://vuejs.org/</a>
-              <h4>JavaScript 3D library. </h4>
-              <a target="_blank" href="https://threejs.org/">https://threejs.org/</a>
+              This project use http/https protocol.
             </md-content>
           </md-content>
         </md-tab>
