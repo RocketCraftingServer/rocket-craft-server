@@ -489,6 +489,7 @@ import store from "../../store"
     }
 
     public setNewEmailAddress() {
+      console.log(">>>", this.$data.defaults.userEmail )
       store.commit("setNewEmailAddress", { emailAddress: this.$data.defaults.userEmail })
     }
 

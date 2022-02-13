@@ -353,7 +353,7 @@ export default class usersRocketTable extends CompProps {
     return {
       system: {
         emailAddress:
-          this.$store.state.system.hardCodeAccount.getEmailAddress(),
+          this.$store.state.permission.emailAddress.getEmailAddress(),
         adminAccountToken:
           this.$store.state.system.hardCodeAccount.adminAccountToken(),
       },

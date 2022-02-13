@@ -22,7 +22,8 @@ module.exports = {
             token: user.token,
             confirmed: true,
             online: true,
-            email: user.email
+            email: user.email,
+            permission: "admin"
         }, {}, function(err, result) {
           if (err) {console.warn("Profile actions profile error :" + err); resolve({ status: "WRONG DB QUERY LEVEL 1" }); }
           if (result !== null) {
