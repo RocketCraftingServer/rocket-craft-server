@@ -2,7 +2,6 @@
 let MongoClient = require("mongodb").MongoClient;
 const shared = require("./../common/shared");
 const Crypto = require("./../common/crypto");
-// const fs = require("fs");
 
 /**
  * MyDatabase class
@@ -18,22 +17,17 @@ class SeedDatabaseCollections {
 
   emailConstructor() {
     return 'fake_user' + this.seedIncrementalIndex() + '@localhost.com'
-  } 
+  }
 
   constructor(serverConfig) {
-
     this.config = serverConfig;
-
     this.crypto = new Crypto();
-
     this.usersSeedIndex = 0;
     this.seedNumberOfUsers = 1000;
     this.mPassword = '12345678';
-    
   }
 
   seedCollections() {
-
     const r1 = this.seedUsersCollection();
     return r1;
   }
@@ -46,11 +40,9 @@ class SeedDatabaseCollections {
    * @param {classInstance} callerInstance
    */
   seedUsersCollection(numOfFakeUsers) {
-
     var root = this;
     this.seedNumberOfUsers = numOfFakeUsers;
     const databaseName = this.config.databaseName;
-
     /**
      * @description 
      * Create `users` collections.
@@ -84,10 +76,10 @@ class SeedDatabaseCollections {
                   rank: "junior",
                   permission: "basic",
                   age: "any",
-                  country: "any"
+                  country: "any",
+                  ban: false
               })
             }
-
               dbo.collection("users").insertMany(
               fakeUsers,
               function(err, res) {
@@ -105,9 +97,6 @@ class SeedDatabaseCollections {
                 db.close();
               }
             )
-        
-            
-            
           } else {
             resolve("Collections users already exist.")
             db.close();

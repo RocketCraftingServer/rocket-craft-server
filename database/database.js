@@ -86,17 +86,15 @@ class MyDatabase {
         this.config.getDatabaseRoot,
         {useNewUrlParser: true, useUnifiedTopology: true},
         function(error, db) {
-          if(error) {
-            console.warn("MyDatabase : err1:" + error);
+          if(error) {console.warn("MyDatabase : err1:" + error);
             resolve("SOMETHING_WRONG_WITH_REGISTRATION")
             return;
           }
 
           const dbo = db.db(databaseName);
           dbo.collection("users").findOne({email: user.email}, function(err, result) {
-            if(err) {
-              console.warn("MyDatabase err in register:" + err);
-              resolve("SOMETHING_WRONG_WITH_REGISTRATION")
+            if(err) {console.warn("MyDatabase err in register:" + err);
+              resolve("SOMETHING_WRONG_WITH_REGISTRATION");
               return null;
             }
 
@@ -116,14 +114,11 @@ class MyDatabase {
                   rank: "junior",
                   permission: "basic",
                   age: "any",
-                  country: "any"
+                  country: "any",
+                  ban: false
                 },
                 function(err, res) {
-                  if(err) {
-                    console.log("MyDatabase err3:" + err);
-                    db.close();
-                    return;
-                  }
+                  if(err) {console.log("MyDatabase err3:" + err);return;}
                   var responseFromDatabaseEngine = {
                     status: "USER_REGISTERED",
                     email: res.ops[0].email,
@@ -494,12 +489,8 @@ class MyDatabase {
               if(user.token) {
                 console.warn("Session passed.");
                 var coll = dbo.collection("users");
-                // { confirmed: true }
-
-                // 
                 var skipValue = 0;
                 var limitValue = 500;
-
                 //  resolve({ status: "WRONG_" }); NEED FIX
                 if(user.criterium.description == 'list-all') {
                   // 
@@ -545,6 +536,7 @@ class MyDatabase {
             } else {
               console.warn("RESULT NULL");
               resolve("MyDatabase.no.results");
+              db.close();
             }
           });
         })

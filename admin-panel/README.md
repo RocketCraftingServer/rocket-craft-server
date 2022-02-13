@@ -3,6 +3,9 @@
 
  Test route with web view UI.
 
+ Public RocketCraftingServer API at http://maximumroulette.com/
+ Admin panel (this) : http://maximumroulette.com/admin
+
 ### Style
 
   - Use inline

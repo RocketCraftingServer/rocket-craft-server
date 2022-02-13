@@ -173,45 +173,49 @@ Only implications between ue client vs server.js is account session status
            |          |
            |          |        WEB SERVER [For hosting ue html5 clients also for rocketcraft session]
            |          |
-+-------------------------------------------------------------------------------------------------------+
-|          |          |                                                                                 |
-|     +----+----------v--------+                                      +-----------------------------+   |
-|     |                        |                                      |                             |   |
-|     |      REST API          |                                      |  HTTP, HTTPS (1.1 or 2)     |   |
-|     | [/rocket/register]     |                                      |                             |   |
-|     | [/rocket/confirmation] |                                      +-----------------------------+   |
-|     | [/rocket/register]     |                                                                        |
-|     | [/rocket/login]        |                                                                        |
-|     | [/rocket/profile]      |                                                                        |
-|     +------------------------+                                                                        |
-|                                                                                                       |
-|  +------------------------------------------------------------+                                       |
-|  SOURCE : https://github.com/zlatnaspirala/rocket-craft-server                                        |
-|  +------------------------------------------------------------+                                       |
-|                                                                                                       |
-+-------------------------------------------------------------------------------------------------------+
-|                                            NODEJS CORE                                                |
-+-------------------------------------------------------------------------------------------------------+
-|                                           MONGO DATABASE                                              |
-+-------------------------------------------------------------------------------------------------------+
++--------------------------------------------------------------------------------------------------------+
+|          |          |                                                                                  |
+|     +----+----------v---------+                                      +-----------------------------+   |
+|     |                         |                                      |                             |   |
+|     |      REST API           |                                      |  HTTP, HTTPS (1.1 or 2)     |   |
+|     | [/rocket/register]      |                                      |                             |   |
+|     | [/rocket/confirmation]  |                                      +-----------------------------+   |
+|     | [/rocket/register]      |                                                                        |
+|     | [/rocket/login]         |                                                                        |
+|     | [/rocket/profile]       |                                                                        |
+|     | [/rocket/profile-delete]|                                                                        |
+|     +-------------------------+                                                                        |
+|                                                                                                        |
+|  +------------------------------------------------------------+                                        |
+|  SOURCE : https://github.com/zlatnaspirala/rocket-craft-server                                         |
+|  +------------------------------------------------------------+                                        |
+|                                                                                                        |
++--------------------------------------------------------------------------------------------------------+
+|                                            NODEJS CORE                                                 |
++--------------------------------------------------------------------------------------------------------+
+|                                           MONGO DATABASE                                               |
++--------------------------------------------------------------------------------------------------------+
 
 </pre>
 
-### Features in WIP status:
+### Status/info:
 
   - Admin Panel (Vue-ClassComponent-Typescript)
-
   - Debugging proccess for server part with Visual-Code.
     (Launch.json tested on windows)`
     create folder `.vscode` in root of workspace and copy `launch.json`.
-
     Please use debugger and learn and feel node iterrator flow.
+  - Admin ban user [NEXT]
+  - Active servers list [DONE]
+  - Admin only - delete profile [done]
 
- - Rocket server
-   - Get active servers list
-   - Open game session
+## Production
 
-## Production 
+ Public RocketCraftingServer API:
+    Prefix: `rocket`
+  - http://maximumroulette.com/
+ Admin panel:
+  - http://maximumroulette.com/admin
 
 Note:
   - Make shiled from `Hacker attacks`.
@@ -221,6 +225,10 @@ Note:
 
     All this prevent job is minimum action to make your server
     application `stay a live`.
+
+    About <PROFILE>.permission there is no setup this arg from code.
+    Use MongoDB console or GUI Mongo DB Compass. This is all free.
+    Just replace value `basic` with `admin`.
 
 Basic data:
   - Dedicated Server CentOS 8.3

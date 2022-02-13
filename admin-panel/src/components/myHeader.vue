@@ -31,7 +31,7 @@
         <md-menu-item>
           <md-button class="md-primary md-raised" @click="visibilityGenericComponent">
             <md-icon class="fa fa-shield"></md-icon>
-            Generic Rocket 
+            Generic Rocket [DEV]
           </md-button>
         </md-menu-item>
         <md-menu-item>
@@ -93,7 +93,7 @@
             <br>
             <img style="width:200px;margin: -5px -5px -5px -5px;" src="assets/logo.png" />
             <br>
-              <span>http://maximumroulette:80</span>
+              <span>http://maximumroulette.com</span>
               <p>This project is open source:</p>
               <a target="_blank" href="https://github.com/zlatnaspirala//blob/master/LICENSE">LICENCE</a>
               <br>

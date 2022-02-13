@@ -151,7 +151,6 @@ app.use(cors());
   app.use("/brm", express.static('/var/www/html/apps/barbarian-road-mashines/beta/'));
   app.use("/apps/barbarian-road-mashines/beta", express.static('/var/www/html/apps/barbarian-road-mashines/beta/'));
   app.use("/apps/shooter/", express.static('/var/www/html/apps/shooter/'));
-  
 
   console.log(
     "Rocket activate " +
@@ -207,6 +206,15 @@ app.use(
 );
 
 // hostAdminPanel
+
+let routerProfileDeleteAdmin =  new require('./api/admin/admin-profile')(
+  app, express,
+  { 
+    dbName: config.databaseName,
+    dbRoot: config.getDatabaseRoot,
+    database: database
+  },
+  crypto);
 
 // Parse application/vnd.api+json as json
 

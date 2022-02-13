@@ -27,17 +27,13 @@ class RocketRouteActiveList extends ResponseHandler {
   }
 
   routeRegister() {
-
     this.app.post("/rocket/active-games", this.getServerListResponse.bind(this));
     this.app.post("/rocket/wanna-play", this.getResponse.bind(this));
     this.app.post("/rocket/remove-from-server-list", this.getResponseRemoveFromServerList.bind(this));
     this.app.post("/rocket/leaderboard", this.getResponseLeaderboard.bind(this));
     this.app.post("/rocket/point-plus10", this.getResponsePointPlus10.bind(this));
-
     this.app.post("/rocket/dead", this.getResponseDead.bind(this));
-
-    console.log("wanna play route reg. loaded with success.");
-
+    console.info("Wanna play route loaded.");
   }
 
 }
