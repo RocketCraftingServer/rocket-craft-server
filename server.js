@@ -89,13 +89,18 @@ routerSub3.use(express.static('/var/www/html/apps/ai/'));
 routerSub4 = express.Router()
 routerSub4.use(express.static('/var/applications/kure/kure-server-client/public/'));
 
+
+// This have nothing with rocket crafting server project start
+// hostingHTTP also it is just host !
 // TEST INJECT ONE MORE SERVICE -  Router prefix /api/
-var KUREORANGE = require("/var/applications/kure/kure-server-client/ko-attacher.js");
-console.log(">>>>", KUREORANGE)
-KUREORANGE.setExpressForKo(hostingHTTP);
+if (config.serverMode != "dev") {
+  var KUREORANGE = require("/var/applications/kure/kure-server-client/ko-attacher.js");
+  console.log(">>>>", KUREORANGE)
+  KUREORANGE.setExpressForKo(hostingHTTP);
+}
+// This have nothing with rocket crafting server project end
 
 
-// node server.js https://maximumroulette.com:4443 
 hostingHTTP.get('*', function(req, res, next) {
   // console.log(">>" , req.hostname);
   /* if (req.hostname == "ai.maximumroulette.com") {

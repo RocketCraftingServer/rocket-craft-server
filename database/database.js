@@ -462,6 +462,74 @@ class MyDatabase {
     );
   }
 
+  forgotPass(user, callerInstance) {
+    console.log(">>>> uiser", user)
+    return new Promise((resolve) => {
+    const databaseName = this.config.databaseName;
+    MongoClient.connect(this.config.getDatabaseRoot, {useNewUrlParser: true, useUnifiedTopology: true},
+      function(error, db) { if(error) {console.warn("MyDatabase.forgotPassword.err1:" + error); return;}
+        const dbo = db.db(databaseName);
+        dbo.collection("users").findOne({email: user.email}, function(err, result) {
+          if(err) {console.log("MyDatabase.forgotPassword => " + err); return null;}
+          if(result !== null) {
+            var FTOKEN = shared.generateToken(5);
+            dbo
+              .collection("users")
+              .updateOne({email: user.email}, {$set: {ftoken: FTOKEN}}, {multi: true}, function(err, r1) {
+                if(err) {console.warn("MyDatabase.FTOKEN err2 => " + err); return;}
+                if(r1 != null) {
+                  console.warn("MyDatabase UPDATE FTOKEN. r1.nModified  " + r1.nModified );
+                  resolve({ status: "FTOKEN CREATED", email: user.email, ftoken: FTOKEN });
+                  db.close();
+                }
+                else {
+                  resolve({status: "FTOKEN-FAIL1"});
+                  db.close();
+                }
+              });
+          } else {
+            resolve({status: "FTOKEN-FAIL2"});
+            console.log("There is no registred email. leave it with no server action.");
+            db.close();
+          }
+        });
+      });
+    });
+  }
+
+  setNewPass(user, callerInstance) {
+    console.log(">>>> uiser VVVVV ", user)
+    return new Promise((resolve) => {
+    const databaseName = this.config.databaseName;
+    MongoClient.connect(this.config.getDatabaseRoot, {useNewUrlParser: true, useUnifiedTopology: true},
+      function(error, db) { if(error) {console.warn("MyDatabase.forgotPassword.err1:" + error); return;}
+        const dbo = db.db(databaseName);
+        dbo.collection("users").findOne({email: user.email, ftoken: user.ftoken}, function(err, result) {
+          if(err) {console.log("MyDatabase.setnewpass => " + err); return null;}
+          if(result !== null) {
+            var FTOKEN = shared.generateToken(5);
+            dbo
+              .collection("users")
+              .updateOne({email: user.email}, {$set: {password: callerInstance.crypto.encrypt(user.newPassword)}}, function(err, r1) {
+                if(err) {console.warn("MyDatabase.setNewPassword err => " + err); return;}
+                if(r1 != null) {
+                  console.log("NICE NICE r1.nModified  ", r1.nModified );
+                  resolve({status: "NEW-PASS-DONE"})
+                } else {
+                  console.log("Waooo.");
+                  resolve({status: "NEWPASS-FAIL4"});
+                }
+              });
+          } else {
+            resolve({status: "NEWPASS-FAIL3"});
+            console.log("Waooo.");
+            db.close();
+          }
+        });
+      });
+    });
+  }
+
   // UPGRADE
   getUsersList(user, callerInstance) {
     var root = this;

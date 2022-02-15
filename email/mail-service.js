@@ -23,13 +23,13 @@ class Sender {
 
     let arg = {
       user: "greespiral@gmail.com",
-      pass: "**************",
+      pass: "******",
       to: this.to,
       subject: this.subject,
       html: this.content
     }
 
-    new Promise((resolve, reject) => {
+    return new Promise((resolve, reject) => {
       this.GM = require("gmail-send")(arg);
       this.GM((
         subject

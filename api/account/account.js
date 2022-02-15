@@ -31,7 +31,8 @@ class RocketRoute extends ResponseHandler {
     this.app.post("/rocket/login", this.onLoginResponse.bind(this));
     this.app.post("/rocket/register", this.onRegisterResponse.bind(this));
     this.app.post("/rocket/confirmation", this.onRegValidationResponse.bind(this));
-
+    this.app.post("/rocket/forgot-pass", this.onForgotNewPassworkResponse.bind(this));
+    this.app.post("/rocket/set-new-pass", this.onSetNewPassworkResponse.bind(this));
     console.log("RocketRoute for account loaded with success.");
 
   }

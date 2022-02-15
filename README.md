@@ -363,7 +363,8 @@ Be sure:
 npm install -g npm
 ```
 
-## Test from browser console
+## Test from browser console 
+ Read more at routes.md
 
   From http://maximumroulette.com/ or from your own server.
   -  Login:
