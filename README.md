@@ -381,3 +381,17 @@ npm install -g npm
 
 For private job i also run KureOrange at:
 https://kure.maximumroulette.com/
+
+
+## Dedicated server 
+
+ - Success build for linux cent os 8.3
+ - Success build for windows 10
+
+Run on 5$ server dedicated server with:
+(Add permise for ShooterGame/Binaries/Linux/ShooterServer-Linux-Shipping )
+
+```
+ ./ShooterServer.sh /Game/Maps/Sanctuary?game=FFA?listen?Bots=0
+```
+
