@@ -77,7 +77,8 @@ class SeedDatabaseCollections {
                   permission: "basic",
                   age: "any",
                   country: "any",
-                  ban: false
+                  ban: false,
+                  profileUrl: `/imgs/${uniqLocal}`
               })
             }
               dbo.collection("users").insertMany(
