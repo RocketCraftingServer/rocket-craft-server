@@ -41,6 +41,10 @@
                 >
                 </md-input>
               </md-field>
+            <md-field>
+               <label>Single</label>
+              <md-file v-model="single"></md-file>
+            </md-field>
               <md-button
                 class="md-primary md-raised"
                 @click="runProfileCall('profile/upload')"
@@ -91,6 +95,7 @@ import { API } from "../../my-common/literal";
 import Vue from "vue";
 import Component from "vue-class-component";
 import {
+  mdFile,
   mdMenu,
   mdButton,
   mdIcon,
@@ -115,6 +120,7 @@ const CompProps = Vue.extend({
 
 @Component({
   components: {
+    mdFile,
     mdButton,
     mdMenu,
     mdIcon,
@@ -206,6 +212,7 @@ export default class profileAvatar extends CompProps {
 
   data() {
     return {
+      single: null,
       system: {
         emailAddress:
           this.$store.state.system.hardCodeAccount.getEmailAddress(),

@@ -705,31 +705,28 @@ class MyDatabase {
 
   // UPGRADE
   saveProfileImageAddress(user, callerInstance) {
-
-    return new Promise((resolve) => {
-
+    return new Promise((resolve, reject) => {
       console.log("MyDatabase.saveProfileImageAddress user.data: ", user);
       const databaseName = this.config.databaseName;
-      MongoClient.connect(
-        this.config.getDatabaseRoot,
-        {
-          useNewUrlParser: true,
-          useUnifiedTopology: true
-        },
+      MongoClient.connect(this.config.getDatabaseRoot, { useNewUrlParser: true, useUnifiedTopology: true },
         (error, db) => {
-          if(error) { console.warn("MyDatabase.saveProfileImageAddress error:" + error); return; }
+          if(error) { reject("MyDatabase.saveProfileImageAddress error:" + error); return;}
           const dbo = db.db(databaseName);
           dbo.collection("users")
             .findOne({token: user.token, online: true, confirmed: true}, (err, result) => {
-              if(err) { console.log("MyDatabase.saveProfileImageAddress (user not found by accessToken):" + err); return null; }
+              if(err) { reject("MyDatabase.saveProfileImageAddress err:" + err); return null; }
               if(result !== null) {
-                // console.log(" >>>>>:>>>>> " + this.config.hostSpecialRoute().route );
-                var userFolder = "admin-panel\\dist\\storage";
-                if(!fs.existsSync(userFolder)) { fs.mkdirSync(userFolder) }
-                userFolder += '/' + result.token;
-                if(!fs.existsSync(userFolder)) { fs.mkdirSync(userFolder) }
+                var userFolder = "admin-panel/public/storage";
+                // must be builded - to come from public to dist
+                if(!fs.existsSync(userFolder)) {
+                   fs.mkdirSync(userFolder)
+                   }
+                userFolder += '\\' + shared.generateToken(10);
+                if(!fs.existsSync(userFolder)) {
+                  fs.mkdirSync(userFolder) 
+                }
 
-                var generatedPathProfileImage = userFolder + "/profile.png";
+                var generatedPathProfileImage = userFolder + "\\profile.png";
                 var base64Data = "";
 
                 if(user.photo.indexOf("jpeg;base64") !== -1) {
@@ -743,17 +740,19 @@ class MyDatabase {
 
                 fs.writeFile(generatedPathProfileImage, base64Data, "base64", function(err) {
                   if(err) throw err;
-                  console.log("Photo profile saved.");
+                  console.log("[async] Photo profile saved.");
                 });
+
+                let aliasAvatarPath = generatedPathProfileImage.split('storage')[1]
 
                 dbo.collection("users")
                   .updateOne(
-                    {socketid: user.token},
-                    {$set: {"profileUrl": generatedPathProfileImage}},
+                    {token: user.token},
+                    {$set: {"profileUrl": aliasAvatarPath}},
                     function(err, result2) {
                       if(err) { console.log("MyDatabase.saveProfileImageAddress: ", err); return; }
                       resolve({
-                        status: 'good',
+                        status: 'AVATAR_PASSED',
                         result: result2
                       })
                     });

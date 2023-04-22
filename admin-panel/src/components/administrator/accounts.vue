@@ -75,19 +75,18 @@
                         </md-button>
                         <p v-else class="positive" style="width:204px;" >   </p>
                         <md-button class="md-accent md-raised" style="width:150px;">
-                          <img v-bind:src="'storage/' + subItem + '/profile.png'" width="100px" />
                           {{ Object.keys(item)[Object.values(item).indexOf(subItem)] }}
                           <md-icon class="fa fa-caret-right"></md-icon>
                         </md-button>
-                        <md-button class="md-primary md-raised notexttransform" v-on:click="copyToClipboard($event)">{{ subItem }}</md-button>
+                        <md-button class="md-primary md-raised notexttransform" v-on:click="copyToClipboard($event)">
+                          <img v-if="Object.keys(item)[Object.values(item).indexOf(subItem)] === 'profileImage'" v-bind:src="'storage/' + subItem" width="100px" />
+                         <p v-else > {{ subItem }} </p>
+                        </md-button>
                       </div>
                     </div>
-   
-                    <md-icon v-if="item == 'USER_ALREADY_REGISTERED'" 
-                             class="fa fa-exclamation-triangle md-accent" />
+                    <md-icon v-if="item == 'USER_ALREADY_REGISTERED'" class="fa fa-exclamation-triangle md-accent" />
                   </div>
-                
-              </md-content>   
+              </md-content>
           </md-content>
         </md-tab>
         <md-tab md-label="Route Info">
