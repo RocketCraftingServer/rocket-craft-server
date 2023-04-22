@@ -85,7 +85,7 @@ class ResponseHandler {
 
       var responseFlag = await this.dataOptions.database.saveProfileImageAddress(user);
       console.log("/rocket/profile/upload", responseFlag);
-      if (responseFlag.status == 'good') {
+      if (responseFlag.status == 'AVATAR_PASSED') {
         res.status(200).json({
           message: "Avatar image saved!",
           rocketStatus: responseFlag.status,
