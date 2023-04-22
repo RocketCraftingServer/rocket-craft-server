@@ -15,9 +15,7 @@ module.exports = {
         if (error) {console.warn("Profile actions profile error :" + error);
           resolve({ status: 'error in MyDatabase getUsers'}); return; }
         const dbo = db.db(databaseName);
-
         console.log("DELETE USER user " , user)
-
         dbo.collection("users").findOne({
             token: user.token,
             confirmed: true,
@@ -37,20 +35,15 @@ module.exports = {
                 status: "AUTHORIZED",
                 user: userAdmin
               };
-
-              // OK  findOne({confirmed: true, _id: new Mongo.ObjectID(user.data.tryThisUser)}
               dbo.collection("users").removeOne({_id: new Mongo.ObjectID(user.deleteUserId)}, {} , (err, r2)=>{
                 if (err) {console.warn("Profile actions profile error :" + err); resolve({ status: "WRONG DB QUERY LEVEL 2" }); }
                 if (r2 !== null) {
-                  // console.log("REMOVED !!!", r2)
                   resolve(usersData);
                 }
-              });
-
+              })
             } else {
               resolve({ status: "WRONG_PASSWORD" });
             }
-
           }
         });
       })
