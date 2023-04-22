@@ -75,6 +75,42 @@ class ResponseHandler {
       }
   }
  
+  async profileUploadAvatar(req, res) {
+
+    if (typeof req.body.token !== 'undefined') {
+
+      var user = {
+        token: req.body.token,
+        email: req.body.email,
+        photo: req.body.photo
+      };
+
+      var responseFlag = await this.dataOptions.database.saveProfileImageAddress(user)
+      console.log("/rocket/profile/upload", responseFlag);
+      if (responseFlag.status) {
+
+        res.status(200).json({
+          message: "where is image !",
+          rocketStatus: responseFlag.status,
+        });
+
+      } else {
+        res.status(401).json({
+          message: "NO AUTHORIZED nickname",
+          rocketStatus: "Very bad request nickname"
+        });
+      }
+      
+    } else {
+      console.log("/rocket/profile/newNickname There is no exspected props in request body.");
+      res.status(400).json({
+        message: "There is no exspected props in request body.",
+        rocketStatus: "Bad request"
+      });
+      return;
+    }
+
+  }
 }
 
 module.exports = ResponseHandler

@@ -30,6 +30,12 @@
         :domain="$props.AppDomainHost">
       </userRocketProfile>
 
+      <profileAvatar
+        v-show="visibility.userProfileAvatarComponent"
+        prefix="rocket"
+        :domain="$props.AppDomainHost">
+      </profileAvatar>
+
       <generic-component v-show="visibility.genericComponent">
       </generic-component>
 
@@ -65,6 +71,7 @@ import Users from "./components/administrator/users.vue";
 import userRocketProfile from "./components/profile/profile.vue";
 import GenericComponent from "./components/generic/generic.vue";
 import Leaderboard from "./components/administrator/leaderboard.vue";
+import profileAvatar from "./components/profile/avatar.vue";
 
 Vue.use(VueMaterial as any);
 
@@ -91,6 +98,7 @@ const AppProps = Vue.extend({
     GenericComponent,
     userRocketProfile,
     Leaderboard,
+    profileAvatar
   },
   computed: mapState(["permission"]),
   methods: mapMutations(["cookieAccept", "setNewToken"]),
@@ -197,6 +205,7 @@ export default class App extends AppProps {
         genericComponent: false,
         userProfileComponent: false,
         leadrboardComponent: false,
+        userProfileAvatarComponent: true
       },
     };
   }
@@ -209,6 +218,11 @@ export default class App extends AppProps {
   public setUserProfileComponentVisibility() {
     this.$data.visibility.userProfileComponent = !this.$data.visibility
       .userProfileComponent;
+  }
+
+  public setUserProfileAvatarComponentVisibility() {
+    this.$data.visibility.userProfileAvatarComponent = !this.$data.visibility
+      .userProfileAvatarComponent;
   }
 
   public setGenericComponentVisibility() {

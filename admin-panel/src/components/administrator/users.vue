@@ -350,10 +350,11 @@ export default class usersRocketTable extends CompProps {
   }
 
   data() {
+    console.log('test ' ,  this.$store.state.permission.emailAddress)
     return {
       system: {
         emailAddress:
-          this.$store.state.permission.emailAddress.getEmailAddress(),
+          this.$store.state.permission.emailAddress,
         adminAccountToken:
           this.$store.state.system.hardCodeAccount.adminAccountToken(),
       },
