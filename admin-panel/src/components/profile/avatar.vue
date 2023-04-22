@@ -22,7 +22,7 @@
               <md-field class="md-content-options">
                 <label class="labelText">User email address:</label>
                 <md-input
-                  @keyup.enter="runProfileCall('profile/upload')"
+                  @keyup.enter="runProfileUpload()"
                   v-model="system.emailAddress"
                   class="md-primary md-raised"
                   placeholder="Please enter your email"
@@ -33,7 +33,7 @@
               <md-field class="md-content-options">
                 <label class="labelText">Token:</label>
                 <md-input
-                  @keyup.enter="runProfileCall('profile/upload')"
+                  @keyup.enter="runProfileUpload()"
                   v-model="system.adminAccountToken"
                   class="md-primary md-raised"
                   placeholder="Default token:"
@@ -47,10 +47,25 @@
             </md-field>
               <md-button
                 class="md-primary md-raised"
-                @click="runProfileCall('profile/upload')"
+                @click="runProfileUpload('profile/upload')"
               >
                 /rocket/profile/
               </md-button>
+
+                  <div v-for="(item) in profileResponse" :key="item.message">
+
+                    <div v-if="typeof item != 'object'"
+                          style="padding: 1px;margin: 0;display:flex;flex-direction:column" class="level1">
+                          <div style="display:flex;padding: 0px;margin: 0px;">
+                            <md-button class="md-accent md-raised">
+                              {{ Object.keys(profileResponse)[Object.values(profileResponse).indexOf(item)] }} 
+                              <md-icon class="fa fa-caret-right"></md-icon>
+                            </md-button>
+                            <md-button class="md-primary md-raised notexttransform" v-on:click="copyToClipboard($event)" > {{ item }} </md-button>
+                          </div>
+                    </div>
+              </div>
+                    
             </md-content>
           </md-content>
         </md-tab>
@@ -155,30 +170,22 @@ export default class profileAvatar extends CompProps {
     this.copyToClipboard = copyToClipboard.bind(this);
   }
 
-  handleFileUpload( e ){
+  handleFileUpload(e){
     this.$data.avatar = e.target.files[0];
-
-    const reader = new FileReader()
-
+    const reader = new FileReader();
     let rawImg;
     reader.onloadend = () => {
       rawImg = reader.result;
-      console.log(rawImg);
-      console.log("aaaaaaaaaaaaaaaaaaa")
       this.$set(this, 'avatar', rawImg)
     }
     reader.readAsDataURL(this.$data.avatar);
-    console.log(this.$data.avatar)
-
-    
   }
 
   mounted(): void {
-    console.log("Users Service. adminAccountToken ", this.$data.system.adminAccountToken);
-
     addEventListener('onNewToken', (e) => {
       e.preventDefault()
       this.$data.system.adminAccountToken = this.$store.state.permission.token
+      console.log("onNewToken ", this.$store.state.permission.token);
     })
 
     addEventListener('onNewEmailAddress', (e) => {
@@ -186,29 +193,25 @@ export default class profileAvatar extends CompProps {
     })
   }
 
- 
-
-  async runProfileCall() {
+  async runProfileUpload() {
     let route = this.$props.domain;
-
-console.log('>>>>>>>>>>>>>>>>>')
     const args = {
       email: this.$data.system.emailAddress.toString(),
       token: this.$data.system.adminAccountToken.toString(),
       photo: this.$data.avatar
     };
-
-    const rawResponse = await fetch(route + this.$props.prefix + "/profile/upload", {
+    fetch(route + this.$props.prefix + "/profile/upload", {
       method: "POST",
       headers: API.JSON_HEADER,
       body: JSON.stringify(args),
-    });
-
-    this.$data.profileResponse = await rawResponse.json();
-  }
-
-  newUser() {
-    console.log("test");
+    }).then((r) => r.json()).then((r) => {
+      this.$data.profileResponse = r;
+      console.log('finished ', this.$data.profileResponse)
+    }).catch((err) => {
+      console.log('finished bad ', err)
+    })
+    
+    
   }
 
   data() {
@@ -223,14 +226,8 @@ console.log('>>>>>>>>>>>>>>>>>')
   }
 
   setUsersPage(arg: string) {
-    if (!arg) {
-      console.error(
-        "You need to pass arg with type of `string` for Users.setUsersPage."
-      );
-    }
-    console.log(" arg =>  ", arg);
+    if (!arg) {console.error("You need to pass arg with type of `string` for setUsersPage.");}
     var currentPage = 0;
-
     if (arg === "next") {
       this.$data.usersPaginatorIndex++;
     } else if (arg === "prev") {
@@ -243,7 +240,6 @@ console.log('>>>>>>>>>>>>>>>>>')
     }
 
     currentPage = this.$data.usersPaginatorIndex;
-
     // currentPage
     this.$data.usersCurrentPage = this.$data.profileResponse;
   }

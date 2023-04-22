@@ -83,12 +83,20 @@ class ResponseHandler {
         photo: req.body.photo
       };
 
-      var responseFlag = await this.dataOptions.database.saveProfileImageAddress(user);
-      console.log("/rocket/profile/upload", responseFlag);
+      var r = this.dataOptions.database.saveProfileImageAddress(user);
+
+      r.catch((err) => {
+        console.log(err.status)
+      });
+
+      r.then((responseFlag) => {
+       console.log("/rocket/profile/upload", responseFlag);
+
       if (responseFlag.status == 'AVATAR_PASSED') {
         res.status(200).json({
           message: "Avatar image saved!",
           rocketStatus: responseFlag.status,
+          avatarPath: responseFlag.avatarPath
         });
       } else {
         res.status(401).json({
@@ -96,6 +104,8 @@ class ResponseHandler {
           rocketStatus: "Very bad request!"
         });
       }
+     })
+
     } else {
       console.log("/rocket/profile/upload There is no exspected props in request body.");
       res.status(400).json({

@@ -714,7 +714,10 @@ class MyDatabase {
           const dbo = db.db(databaseName);
           dbo.collection("users")
             .findOne({token: user.token, online: true, confirmed: true}, (err, result) => {
-              if(err) { reject("MyDatabase.saveProfileImageAddress err:" + err); return null; }
+              if(err) { resolve(
+                { status: 'BAD',
+                  message: 'MyDatabase.saveProfileImageAddress'
+                }); return null; }
               if(result !== null) {
                 var userFolder = "admin-panel/public/storage";
                 // must be builded - to come from public to dist
@@ -729,12 +732,23 @@ class MyDatabase {
                 var generatedPathProfileImage = userFolder + "\\profile.png";
                 var base64Data = "";
 
+                if (user.photo == null) {
+                  resolve({
+                    status: 'BAD',
+                    message: 'NO PHOTO BASE64'
+                  })
+                  return;
+                }
+
                 if(user.photo.indexOf("jpeg;base64") !== -1) {
                   base64Data = user.photo.replace(/^data:image\/jpeg;base64,/, "");
                 } else if(user.photo.indexOf("png;base64") !== -1) {
                   base64Data = user.photo.replace(/^data:image\/png;base64,/, "");
                 } else {
-                  console.log("MyDatabase.saveProfileImageAddress ERROR with photo data.");
+                  resolve({
+                    status: 'BAD',
+                    message: 'NO PHOTO BASE64'
+                  })
                   return;
                 }
 
@@ -750,10 +764,14 @@ class MyDatabase {
                     {token: user.token},
                     {$set: {"profileUrl": aliasAvatarPath}},
                     function(err, result2) {
-                      if(err) { console.log("MyDatabase.saveProfileImageAddress: ", err); return; }
+                      if(err) { resolve({
+                        status: 'BAD',
+                        message: 'NO PHOTO BASE64'
+                      }); return; }
                       resolve({
                         status: 'AVATAR_PASSED',
-                        result: result2
+                        result: result2,
+                        avatarPath: aliasAvatarPath
                       })
                     });
               }
