@@ -11,7 +11,7 @@ export namespace API {
   }
 
   export const constructDomainForceHTTP = () => {
-    return 'http:' + '//' + location.host + '/'
+    return 'http:' + '//localhost/'
   }
 
   export const constructMaximumroulette = () => {

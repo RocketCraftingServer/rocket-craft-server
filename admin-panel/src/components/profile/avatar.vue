@@ -198,7 +198,6 @@ export default class profileAvatar extends CompProps {
     });
 
     this.$data.profileResponse = await rawResponse.json();
-    // this.registerResponse = await rawResponse.json();
   }
 
   newUser() {

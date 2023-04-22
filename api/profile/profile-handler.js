@@ -10,7 +10,6 @@ class ResponseHandler {
   async profileNewNickname(req, res) {
 
     if (typeof req.body.token !== 'undefined') {
-
       var user = {
         token: req.body.token,
         email: req.body.email,
@@ -26,8 +25,8 @@ class ResponseHandler {
         });
       } else {
         res.status(401).json({
-          message: "NO AUTHORIZED nickname",
-          rocketStatus: "Very bad request nickname"
+          message: "NO AUTHORIZED",
+          rocketStatus: "Very bad request [nickname]"
         });
       }
       
@@ -78,39 +77,35 @@ class ResponseHandler {
   async profileUploadAvatar(req, res) {
 
     if (typeof req.body.token !== 'undefined') {
-
       var user = {
         token: req.body.token,
         email: req.body.email,
         photo: req.body.photo
       };
 
-      var responseFlag = await this.dataOptions.database.saveProfileImageAddress(user)
+      var responseFlag = await this.dataOptions.database.saveProfileImageAddress(user);
       console.log("/rocket/profile/upload", responseFlag);
-      if (responseFlag.status) {
-
+      if (responseFlag.status == 'good') {
         res.status(200).json({
-          message: "where is image !",
+          message: "Avatar image saved!",
           rocketStatus: responseFlag.status,
         });
-
       } else {
         res.status(401).json({
-          message: "NO AUTHORIZED nickname",
-          rocketStatus: "Very bad request nickname"
+          message: "NO AUTHORIZED",
+          rocketStatus: "Very bad request!"
         });
       }
-      
     } else {
-      console.log("/rocket/profile/newNickname There is no exspected props in request body.");
+      console.log("/rocket/profile/upload There is no exspected props in request body.");
       res.status(400).json({
         message: "There is no exspected props in request body.",
         rocketStatus: "Bad request"
       });
       return;
     }
-
   }
+
 }
 
 module.exports = ResponseHandler

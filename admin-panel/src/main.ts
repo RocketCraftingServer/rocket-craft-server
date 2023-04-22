@@ -9,7 +9,7 @@ Vue.prototype.window = window
  * @description for Application main instance.
  * 
  * @property AppPropVersion @default '0.1.1',
- * @property AppDomainHost  @default 'https://localhost:30100/'
+ * @property AppDomainHost  @default 'http://localhost:3000/'
  *
  * API.constructMaximumroulette() Hardcoded for my own server
  * API.constructDomain() create domain by client current protocol and hostname.

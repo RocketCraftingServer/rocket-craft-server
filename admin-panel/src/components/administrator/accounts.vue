@@ -75,6 +75,7 @@
                         </md-button>
                         <p v-else class="positive" style="width:204px;" >   </p>
                         <md-button class="md-accent md-raised" style="width:150px;">
+                          <img v-bind:src="'storage/' + subItem + '/profile.png'" width="100px" />
                           {{ Object.keys(item)[Object.values(item).indexOf(subItem)] }}
                           <md-icon class="fa fa-caret-right"></md-icon>
                         </md-button>
@@ -498,7 +499,7 @@ import store from "../../store"
         defaults: {
           userEmail: 'zlatnaspirala@gmail.com',
           userName: "nikola",
-          userPassword: "123123123",
+          userPassword: "12345678",
           userEmailConfirmation: ""
         },
         
@@ -507,7 +508,7 @@ import store from "../../store"
 
     async runApiCallByActionName(apiCallFlag) {
 
-      let route = this.$props.domain
+      let route = 'http://localhost/' // this.$props.domain
 
       const args = {
         emailField: this.$data.defaults.userEmail.toString(),

@@ -7,7 +7,7 @@
     "start": "node server maximumroulette.com mongodb.net",
     "app": "node server maximumroulette.com mongodb.net",
     "sameDomain": "node server IP_ADDESS secured",
-    "dev": "node server localhost dev"
+    "dev": "node server localhost:3000 dev"
   },
   "repository": {
     "type": "git",

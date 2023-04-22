@@ -86,14 +86,16 @@ class MyDatabase {
         this.config.getDatabaseRoot,
         {useNewUrlParser: true, useUnifiedTopology: true},
         function(error, db) {
-          if(error) {console.warn("MyDatabase : err1:" + error);
+          if(error) {
+            console.warn("MyDatabase : err1:" + error);
             resolve("SOMETHING_WRONG_WITH_REGISTRATION")
             return;
           }
 
           const dbo = db.db(databaseName);
           dbo.collection("users").findOne({email: user.email}, function(err, result) {
-            if(err) {console.warn("MyDatabase err in register:" + err);
+            if(err) {
+              console.warn("MyDatabase err in register:" + err);
               resolve("SOMETHING_WRONG_WITH_REGISTRATION");
               return null;
             }
@@ -118,7 +120,7 @@ class MyDatabase {
                   ban: false
                 },
                 function(err, res) {
-                  if(err) {console.log("MyDatabase err3:" + err);return;}
+                  if(err) {console.log("MyDatabase err3:" + err); return;}
                   var responseFromDatabaseEngine = {
                     status: "USER_REGISTERED",
                     email: res.ops[0].email,
@@ -269,6 +271,8 @@ class MyDatabase {
                 console.warn("ONLINE: ", userData.nickname);
                 resolve(userData);
               })
+            } else {
+
             }
           })
         })
@@ -465,68 +469,70 @@ class MyDatabase {
   forgotPass(user, callerInstance) {
     console.log(">>>> uiser", user)
     return new Promise((resolve) => {
-    const databaseName = this.config.databaseName;
-    MongoClient.connect(this.config.getDatabaseRoot, {useNewUrlParser: true, useUnifiedTopology: true},
-      function(error, db) { if(error) {console.warn("MyDatabase.forgotPassword.err1:" + error); return;}
-        const dbo = db.db(databaseName);
-        dbo.collection("users").findOne({email: user.email}, function(err, result) {
-          if(err) {console.log("MyDatabase.forgotPassword => " + err); return null;}
-          if(result !== null) {
-            var FTOKEN = shared.generateToken(5);
-            dbo
-              .collection("users")
-              .updateOne({email: user.email}, {$set: {ftoken: FTOKEN}}, {multi: true}, function(err, r1) {
-                if(err) {console.warn("MyDatabase.FTOKEN err2 => " + err); return;}
-                if(r1 != null) {
-                  console.warn("MyDatabase UPDATE FTOKEN. r1.nModified  " + r1.nModified );
-                  resolve({ status: "FTOKEN CREATED", email: user.email, ftoken: FTOKEN });
-                  db.close();
-                }
-                else {
-                  resolve({status: "FTOKEN-FAIL1"});
-                  db.close();
-                }
-              });
-          } else {
-            resolve({status: "FTOKEN-FAIL2"});
-            console.log("There is no registred email. leave it with no server action.");
-            db.close();
-          }
+      const databaseName = this.config.databaseName;
+      MongoClient.connect(this.config.getDatabaseRoot, {useNewUrlParser: true, useUnifiedTopology: true},
+        function(error, db) {
+          if(error) {console.warn("MyDatabase.forgotPassword.err1:" + error); return;}
+          const dbo = db.db(databaseName);
+          dbo.collection("users").findOne({email: user.email}, function(err, result) {
+            if(err) {console.log("MyDatabase.forgotPassword => " + err); return null;}
+            if(result !== null) {
+              var FTOKEN = shared.generateToken(5);
+              dbo
+                .collection("users")
+                .updateOne({email: user.email}, {$set: {ftoken: FTOKEN}}, {multi: true}, function(err, r1) {
+                  if(err) {console.warn("MyDatabase.FTOKEN err2 => " + err); return;}
+                  if(r1 != null) {
+                    console.warn("MyDatabase UPDATE FTOKEN. r1.nModified  " + r1.nModified);
+                    resolve({status: "FTOKEN CREATED", email: user.email, ftoken: FTOKEN});
+                    db.close();
+                  }
+                  else {
+                    resolve({status: "FTOKEN-FAIL1"});
+                    db.close();
+                  }
+                });
+            } else {
+              resolve({status: "FTOKEN-FAIL2"});
+              console.log("There is no registred email. leave it with no server action.");
+              db.close();
+            }
+          });
         });
-      });
     });
   }
 
   setNewPass(user, callerInstance) {
     console.log(">>>> uiser VVVVV ", user)
     return new Promise((resolve) => {
-    const databaseName = this.config.databaseName;
-    MongoClient.connect(this.config.getDatabaseRoot, {useNewUrlParser: true, useUnifiedTopology: true},
-      function(error, db) { if(error) {console.warn("MyDatabase.forgotPassword.err1:" + error); return;}
-        const dbo = db.db(databaseName);
-        dbo.collection("users").findOne({email: user.email, ftoken: user.ftoken}, function(err, result) {
-          if(err) {console.log("MyDatabase.setnewpass => " + err); return null;}
-          if(result !== null) {
-            var FTOKEN = shared.generateToken(5);
-            dbo
-              .collection("users")
-              .updateOne({email: user.email}, {$set: {password: callerInstance.crypto.encrypt(user.newPassword)}}, function(err, r1) {
-                if(err) {console.warn("MyDatabase.setNewPassword err => " + err); return;}
-                if(r1 != null) {
-                  console.log("NICE NICE r1.nModified  ", r1.nModified );
-                  resolve({status: "NEW-PASS-DONE"})
-                } else {
-                  console.log("Waooo.");
-                  resolve({status: "NEWPASS-FAIL4"});
-                }
-              });
-          } else {
-            resolve({status: "NEWPASS-FAIL3"});
-            console.log("Waooo.");
-            db.close();
-          }
+      const databaseName = this.config.databaseName;
+      MongoClient.connect(this.config.getDatabaseRoot, {useNewUrlParser: true, useUnifiedTopology: true},
+        function(error, db) {
+          if(error) {console.warn("MyDatabase.forgotPassword.err1:" + error); return;}
+          const dbo = db.db(databaseName);
+          dbo.collection("users").findOne({email: user.email, ftoken: user.ftoken}, function(err, result) {
+            if(err) {console.log("MyDatabase.setnewpass => " + err); return null;}
+            if(result !== null) {
+              var FTOKEN = shared.generateToken(5);
+              dbo
+                .collection("users")
+                .updateOne({email: user.email}, {$set: {password: callerInstance.crypto.encrypt(user.newPassword)}}, function(err, r1) {
+                  if(err) {console.warn("MyDatabase.setNewPassword err => " + err); return;}
+                  if(r1 != null) {
+                    console.log("NICE NICE r1.nModified  ", r1.nModified);
+                    resolve({status: "NEW-PASS-DONE"})
+                  } else {
+                    console.log("Waooo.");
+                    resolve({status: "NEWPASS-FAIL4"});
+                  }
+                });
+            } else {
+              resolve({status: "NEWPASS-FAIL3"});
+              console.log("Waooo.");
+              db.close();
+            }
+          });
         });
-      });
     });
   }
 
@@ -655,7 +661,7 @@ class MyDatabase {
     );
   }
 
-  // UPGRADE
+  // UPGRADE - FUTURE - WEBRTC
   callRejectUser(user, callerInstance) {
     const databaseName = this.config.databaseName;
     MongoClient.connect(
@@ -699,85 +705,63 @@ class MyDatabase {
 
   // UPGRADE
   saveProfileImageAddress(user, callerInstance) {
-    // console.log("MyDatabase.saveProfileImageAddress user.data: ", user.data);
-    const databaseName = this.config.databaseName;
-    MongoClient.connect(
-      this.config.getDatabaseRoot,
-      {
-        useNewUrlParser: true,
-        useUnifiedTopology: true
-      },
-      function(error, db) {
-        if(error) {
-          console.warn("MyDatabase.login error:" + error);
-          return;
-        }
-        const dbo = db.db(databaseName);
-        dbo
-          .collection("users")
-          .findOne({socketid: user.data.accessToken, online: true, confirmed: true}, function(err, result) {
-            if(err) {
-              console.log("MyDatabase.setNewNickname (user not found by accessToken):" + err);
-              return null;
-            }
 
-            if(result !== null) {
+    return new Promise((resolve) => {
 
-              const userData = {
-                accessToken: user.data.accessToken
-              };
+      console.log("MyDatabase.saveProfileImageAddress user.data: ", user);
+      const databaseName = this.config.databaseName;
+      MongoClient.connect(
+        this.config.getDatabaseRoot,
+        {
+          useNewUrlParser: true,
+          useUnifiedTopology: true
+        },
+        (error, db) => {
+          if(error) { console.warn("MyDatabase.saveProfileImageAddress error:" + error); return; }
+          const dbo = db.db(databaseName);
+          dbo.collection("users")
+            .findOne({token: user.token, online: true, confirmed: true}, (err, result) => {
+              if(err) { console.log("MyDatabase.saveProfileImageAddress (user not found by accessToken):" + err); return null; }
+              if(result !== null) {
+                // console.log(" >>>>>:>>>>> " + this.config.hostSpecialRoute().route );
+                var userFolder = "admin-panel\\dist\\storage";
+                if(!fs.existsSync(userFolder)) { fs.mkdirSync(userFolder) }
+                userFolder += '/' + result.token;
+                if(!fs.existsSync(userFolder)) { fs.mkdirSync(userFolder) }
 
-              var userFolder = "public/users-shared-data/";
-              if(!fs.existsSync(userFolder)) {
-                fs.mkdirSync(userFolder);
+                var generatedPathProfileImage = userFolder + "/profile.png";
+                var base64Data = "";
+
+                if(user.photo.indexOf("jpeg;base64") !== -1) {
+                  base64Data = user.photo.replace(/^data:image\/jpeg;base64,/, "");
+                } else if(user.photo.indexOf("png;base64") !== -1) {
+                  base64Data = user.photo.replace(/^data:image\/png;base64,/, "");
+                } else {
+                  console.log("MyDatabase.saveProfileImageAddress ERROR with photo data.");
+                  return;
+                }
+
+                fs.writeFile(generatedPathProfileImage, base64Data, "base64", function(err) {
+                  if(err) throw err;
+                  console.log("Photo profile saved.");
+                });
+
+                dbo.collection("users")
+                  .updateOne(
+                    {socketid: user.token},
+                    {$set: {"profileUrl": generatedPathProfileImage}},
+                    function(err, result2) {
+                      if(err) { console.log("MyDatabase.saveProfileImageAddress: ", err); return; }
+                      resolve({
+                        status: 'good',
+                        result: result2
+                      })
+                    });
               }
-              userFolder += result.token;
-              if(!fs.existsSync(userFolder)) {
-                fs.mkdirSync(userFolder);
-              }
+            });
+        });
 
-              var generatedPathProfileImage = userFolder + "/profileImage.png";
-              var base64Data = "";
-
-              if(user.data.photo.indexOf("jpeg;base64") !== -1) {
-                base64Data = user.data.photo.replace(/^data:image\/jpeg;base64,/, "");
-              } else if(user.data.photo.indexOf("png;base64") !== -1) {
-                base64Data = user.data.photo.replace(/^data:image\/png;base64,/, "");
-              } else {
-                console.log("MyDatabase.saveProfileImageAddress ERROR with photo data.");
-                return;
-              }
-
-              fs.writeFile(generatedPathProfileImage, base64Data, "base64", function(err) {
-                if(err) throw err;
-                // file has been written to disk
-                console.log("Photo profile saved.");
-              });
-
-              // console.log("user.data.accessToken: ", user.data.accessToken);
-
-              dbo
-                .collection("users")
-                .updateOne(
-                  {socketid: user.data.accessToken},
-                  {$set: {"profileUrl": generatedPathProfileImage}},
-                  function(err, result2) {
-                    if(err) {
-                      console.log("MyDatabase.saveProfileImageAddress (error in update profileUrl field):", err);
-                      return;
-                    }
-                    var userData = {
-                      profilePhotoAdded: "Profile photo added.",
-                      accessToken: user.data.accessToken
-                    };
-                    // console.log("result2: ", result2);
-                    callerInstance.onUserNewProfileImage(userData, callerInstance);
-                  }
-                );
-            }
-          });
-      }
-    );
+    });
   }
 }
 
