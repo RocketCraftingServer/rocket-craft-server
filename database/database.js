@@ -1,5 +1,6 @@
 
 let MongoClient = require("mongodb").MongoClient;
+const {get} = require("http");
 const shared = require("./../common/shared");
 const fs = require("fs");
 
@@ -708,31 +709,48 @@ class MyDatabase {
     return new Promise((resolve, reject) => {
       console.log("MyDatabase.saveProfileImageAddress user.data: ", user);
       const databaseName = this.config.databaseName;
-      MongoClient.connect(this.config.getDatabaseRoot, { useNewUrlParser: true, useUnifiedTopology: true },
+      MongoClient.connect(this.config.getDatabaseRoot, {useNewUrlParser: true, useUnifiedTopology: true},
         (error, db) => {
-          if(error) { reject("MyDatabase.saveProfileImageAddress error:" + error); return;}
+          if(error) {reject("MyDatabase.saveProfileImageAddress error:" + error); return;}
           const dbo = db.db(databaseName);
           dbo.collection("users")
             .findOne({token: user.token, online: true, confirmed: true}, (err, result) => {
-              if(err) { resolve(
-                { status: 'BAD',
-                  message: 'MyDatabase.saveProfileImageAddress'
-                }); return null; }
+              if(err) {
+                resolve(
+                  {
+                    status: 'BAD',
+                    message: 'MyDatabase.saveProfileImageAddress'
+                  }); return null;
+              }
               if(result !== null) {
-                var userFolder = "admin-panel/public/storage";
-                // must be builded - to come from public to dist
+
+                // delete old image
+                var oldUserFolder = "admin-panel/dist/storage";
+                var test =result.profileUrl
+                var getOnlyFolder = test.replace('profile.png', '');
+                var oldFullPAth = oldUserFolder + getOnlyFolder;
+                if(fs.existsSync(oldFullPAth)) {
+                  fs.rmSync(oldFullPAth, { recursive: true, force: true });
+                  // fs.rmdirSync(oldFullPAth);
+                }
+
+                var userFolder = "admin-panel/dist/storage";
                 if(!fs.existsSync(userFolder)) {
-                   fs.mkdirSync(userFolder)
-                   }
+                  fs.mkdirSync(userFolder)
+                }
+
+                if(!fs.existsSync(userFolder)) {
+                  fs.mkdirSync(userFolder)
+                }
                 userFolder += '\\' + shared.generateToken(10);
                 if(!fs.existsSync(userFolder)) {
-                  fs.mkdirSync(userFolder) 
+                  fs.mkdirSync(userFolder)
                 }
 
                 var generatedPathProfileImage = userFolder + "\\profile.png";
                 var base64Data = "";
 
-                if (user.photo == null) {
+                if(user.photo == null) {
                   resolve({
                     status: 'BAD',
                     message: 'NO PHOTO BASE64'
@@ -764,10 +782,12 @@ class MyDatabase {
                     {token: user.token},
                     {$set: {"profileUrl": aliasAvatarPath}},
                     function(err, result2) {
-                      if(err) { resolve({
-                        status: 'BAD',
-                        message: 'NO PHOTO BASE64'
-                      }); return; }
+                      if(err) {
+                        resolve({
+                          status: 'BAD',
+                          message: 'NO PHOTO BASE64'
+                        }); return;
+                      }
                       resolve({
                         status: 'AVATAR_PASSED',
                         result: result2,

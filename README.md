@@ -22,14 +22,21 @@ Basic account session staff based on node.js and MongoDB.
  - Vue-Typescript administrator panel project
  - Test clients (rocket-craft repo)
  - Rocket-craft client (4.22) exchange IP for opened dedicated users server run.
+ - Basic implementation for client library `safir`.
 
 ### Run rocketcraftingserver in local (dev):
 ![](https://github.com/zlatnaspirala/rocket-craft-server/blob/main/non-project-files/tutorial-steps/local-run-rocket-crafting-server.gif)
 
 ### Run Admin panel
+In term of storage/ [public access for external clients], rocketcraftingserver depens on admin-panel!
+Also `npm run serve` will not delete `storage/` folder but `npm run build` will do.
+
+Do not use git or npm commands on your public server. Better is to build it local and then simple upload project.
+Do not use any dev tools on public server it is my personal advice.
+
 ![](https://github.com/zlatnaspirala/rocket-craft-server/blob/main/non-project-files/tutorial-steps/local-run-rocket-crafting-admin-panel.gif)
 
-### From ue4 client 
+### From ue4 client
     - First case is `Barbarian Road mashines` race game.
 ![](https://github.com/zlatnaspirala/rocket-craft-server/blob/main/non-project-files/tutorial-steps/profile-preview-in-ue-client-game-brm.png)
 
