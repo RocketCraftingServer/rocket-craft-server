@@ -200,7 +200,7 @@ export default class profileAvatar extends CompProps {
       token: this.$data.system.adminAccountToken.toString(),
       photo: this.$data.avatar
     };
-    fetch(route + this.$props.prefix + "/profile/upload", {
+    fetch(route + this.$props.prefix + "profile/upload", {
       method: "POST",
       headers: API.JSON_HEADER,
       body: JSON.stringify(args),
@@ -210,8 +210,6 @@ export default class profileAvatar extends CompProps {
     }).catch((err) => {
       console.log('finished bad ', err)
     })
-    
-    
   }
 
   data() {

@@ -78,14 +78,18 @@ var options = null;
 
 var hostingHTTP = express();
 vhost = require('vhost')
+
 routerSub = express.Router()
 routerSub.use(express.static('/var/www/html/apps/ultimate-roulette/'));
 hostingHTTP.use(vhost('roulette.maximumroulette.com', routerSub));
+
 routerSub2 = express.Router()
 routerSub2.use(express.static('/var/www/html/apps/barbarian-road-mashines/beta/'));
 app.use(vhost('brm.maximumroulette.com', routerSub2));
+
 routerSub3 = express.Router()
 routerSub3.use(express.static('/var/www/html/apps/ai/'));
+
 routerSub4 = express.Router()
 routerSub4.use(express.static('/var/applications/kure/kure-server-client/public/'));
 
@@ -94,15 +98,16 @@ routerSub4.use(express.static('/var/applications/kure/kure-server-client/public/
 // hostingHTTP also it is just host !
 // TEST INJECT ONE MORE SERVICE -  Router prefix /api/
 if (config.serverMode != "dev") {
-  var KUREORANGE = require("/var/applications/kure/kure-server-client/ko-attacher.js");
-  console.log(">>>>", KUREORANGE)
-  KUREORANGE.setExpressForKo(hostingHTTP);
+  // KURE VIDEO CHAT IS DISABLED!
+  // var KUREORANGE = require("/var/applications/kure/kure-server-client/ko-attacher.js");
+  // console.log(">>>>", KUREORANGE)
+  // KUREORANGE.setExpressForKo(hostingHTTP);
 }
 // This have nothing with rocket crafting server project end
 
 
 hostingHTTP.get('*', function(req, res, next) {
-  // console.log(">>" , req.hostname);
+  console.log(">compression>" , req.hostname);
   /* if (req.hostname == "ai.maximumroulette.com") {
     //console.log(" REDIRECT NOW " )
     //req.location = "/apps/ai/";
@@ -117,10 +122,38 @@ hostingHTTP.get('*', function(req, res, next) {
 hostingHTTP.use(vhost('kure.maximumroulette.com', routerSub4));
 hostingHTTP.use(vhost('ai.maximumroulette.com', routerSub3));
 hostingHTTP.use(vhost('brm.maximumroulette.com', routerSub2));
+
 hostingHTTP.use(express.static("/var/www/html/"));
+// hostingHTTP.use(express.static("G:\\web_server\\xampp\\htdocs\\PRIVATE_SERVER\\ROCKET-SERVER\\rocket-craft-server\\admin-panel\\dist"));
+
 
 // Compress all HTTP responses
-hostingHTTP.use(compression());
+// hostingHTTP.use(compression());
+// function shouldCompress (req, res) {
+//   if (req.headers['x-no-compression']) {
+//     // don't compress responses with this request header
+//     return false
+//   }
+//   res.set('Content-Encoding', 'gzip'); // gzip, deflate, br
+//   // fallback to standard filter function
+//   return compression.filter(req, res)
+// }
+
+
+// ORI
+// app.use(compression({
+//   filter: function () { return true; }
+// }));
+
+
+/**
+ * @description Compression
+ * @example
+
+ *  express.compress()
+ */
+
+
 hostingHTTP.use(cors());
 hostingHTTP.use(function (req, res, next) {
   // res.setHeader("Content-Type", "text/html")
@@ -153,9 +186,16 @@ app.use(cors());
  if (config.hostSpecialRoute.active) {
 
   app.use("/admin", express.static(config.hostSpecialRoute.route));
+  app.use("/safir", express.static(config.hostSpecialRoute.route2));
+  app.use("/storage", express.static(config.hostSpecialRoute.route3));
+
   app.use("/brm", express.static('/var/www/html/apps/barbarian-road-mashines/beta/'));
   app.use("/apps/barbarian-road-mashines/beta", express.static('/var/www/html/apps/barbarian-road-mashines/beta/'));
   app.use("/apps/shooter/", express.static('/var/www/html/apps/shooter/'));
+
+  // test link for hang3d nightmate
+  // app.use("/apps/shooter-mt/", express.static('/var/www/html/apps/shooter-mt/'));
+  app.use("/apps/hang3d/", express.static('/var/www/html/apps/hang3d/'));
 
   console.log(
     "Rocket activate " +
@@ -165,15 +205,6 @@ app.use(cors());
 
 }
 
-
-/**
- * @description Compression
- * @example
- *  app.use(compression({
- *    filter: function () { return true; }
- *  }));
- *  express.compress()
- */
 
 /**
  * @description  Allow or disallow headers flags.

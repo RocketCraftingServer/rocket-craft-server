@@ -3,6 +3,7 @@ let MongoClient = require("mongodb").MongoClient;
 const {get} = require("http");
 const shared = require("./../common/shared");
 const fs = require("fs");
+const {Console} = require("console");
 
 /**
  * @description MyDatabase class
@@ -709,6 +710,7 @@ class MyDatabase {
     return new Promise((resolve, reject) => {
       console.log("MyDatabase.saveProfileImageAddress user.data: ", user);
       const databaseName = this.config.databaseName;
+      const storagePath = this.config.storageDir;
       MongoClient.connect(this.config.getDatabaseRoot, {useNewUrlParser: true, useUnifiedTopology: true},
         (error, db) => {
           if(error) {reject("MyDatabase.saveProfileImageAddress error:" + error); return;}
@@ -716,40 +718,34 @@ class MyDatabase {
           dbo.collection("users")
             .findOne({token: user.token, online: true, confirmed: true}, (err, result) => {
               if(err) {
-                resolve(
-                  {
-                    status: 'BAD',
-                    message: 'MyDatabase.saveProfileImageAddress'
-                  }); return null;
+                resolve({
+                  status: 'BAD',
+                  message: 'MyDatabase saveProfileImageAddress err'
+                }); return null;
               }
               if(result !== null) {
-
+                console.log('storagePath', storagePath)
                 // delete old image
-                var oldUserFolder = "admin-panel/dist/storage";
-                var test =result.profileUrl
+                var oldUserFolder = storagePath;
+                var test = result.profileUrl;
                 var getOnlyFolder = test.replace('profile.png', '');
                 var oldFullPAth = oldUserFolder + getOnlyFolder;
                 if(fs.existsSync(oldFullPAth)) {
-                  fs.rmSync(oldFullPAth, { recursive: true, force: true });
-                  // fs.rmdirSync(oldFullPAth);
+                  fs.rmSync(oldFullPAth, {recursive: true, force: true});
                 }
-
                 var userFolder = "admin-panel/dist/storage";
                 if(!fs.existsSync(userFolder)) {
                   fs.mkdirSync(userFolder)
                 }
-
                 if(!fs.existsSync(userFolder)) {
                   fs.mkdirSync(userFolder)
                 }
-                userFolder += '\\' + shared.generateToken(10);
+                userFolder += '/' + shared.generateToken(10);
                 if(!fs.existsSync(userFolder)) {
                   fs.mkdirSync(userFolder)
                 }
-
-                var generatedPathProfileImage = userFolder + "\\profile.png";
+                var generatedPathProfileImage = userFolder + "/profile.png";
                 var base64Data = "";
-
                 if(user.photo == null) {
                   resolve({
                     status: 'BAD',
@@ -757,7 +753,6 @@ class MyDatabase {
                   })
                   return;
                 }
-
                 if(user.photo.indexOf("jpeg;base64") !== -1) {
                   base64Data = user.photo.replace(/^data:image\/jpeg;base64,/, "");
                 } else if(user.photo.indexOf("png;base64") !== -1) {
@@ -775,8 +770,7 @@ class MyDatabase {
                   console.log("[async] Photo profile saved.");
                 });
 
-                let aliasAvatarPath = generatedPathProfileImage.split('storage')[1]
-
+                let aliasAvatarPath = generatedPathProfileImage.split('storage')[1];
                 dbo.collection("users")
                   .updateOne(
                     {token: user.token},
