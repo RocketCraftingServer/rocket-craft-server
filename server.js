@@ -3,18 +3,15 @@
  * @description  RocketCraftServer
  * REST API Server powered with
  * PWA Admin Panel.
- * @version 2022 VICTORY
+ * @version 2023 ULTIMATE
  * @author Nikola Lukic
  * @email zlatnaspirala@gmail.com
  */
 
 console.log("Initial params [3] => ", process.argv[3]);
-
-const path = require('path');
-
+// const path = require('path');
 const ConfigAccountSession = require("./config");
 const config = new ConfigAccountSession(process.argv[3]);
-
 const MyDatabase = require("./database/database");
 let database = new MyDatabase(config);
 
@@ -64,20 +61,25 @@ var http = require('http');
 
 // Pull information from HTML POST (express4)
 var bodyParser = require("body-parser");
-const { endianness } = require( "os" );
+// const { endianness } = require( "os" );
 var app = express();
 var URL_ARG = process.argv[2];
 var options = null;
 
+var hostingHTTP = express();
+vhost = require('vhost');
+
 /**
  * @description
- * Almost any undefined case use admin page for now
+ * SWITCH TO SINGLE SERVER
+ * ALSO CAN BE USED LIKE API SERVER vs HOST SERVER
  * 
  */
 // this.app.use(root.express.static(__dirname + "./../../admin-panel/dist"));
 
-var hostingHTTP = express();
-vhost = require('vhost')
+if (true) {
+  // app = hostingHTTP;
+}
 
 routerSub = express.Router()
 routerSub.use(express.static('/var/www/html/apps/ultimate-roulette/'));
@@ -86,13 +88,17 @@ hostingHTTP.use(vhost('roulette.maximumroulette.com', routerSub));
 routerSub2 = express.Router()
 routerSub2.use(express.static('/var/www/html/apps/barbarian-road-mashines/beta/'));
 app.use(vhost('brm.maximumroulette.com', routerSub2));
+hostingHTTP.use(vhost('brm.maximumroulette.com', routerSub2));
 
 routerSub3 = express.Router()
 routerSub3.use(express.static('/var/www/html/apps/ai/'));
+hostingHTTP.use(vhost('ai.maximumroulette.com', routerSub3));
 
 routerSub4 = express.Router()
 routerSub4.use(express.static('/var/applications/kure/kure-server-client/public/'));
+hostingHTTP.use(vhost('kure.maximumroulette.com', routerSub4));
 
+// I use simple my root page
 
 // This have nothing with rocket crafting server project start
 // hostingHTTP also it is just host !
@@ -117,47 +123,23 @@ hostingHTTP.get('*', function(req, res, next) {
   next();
 });
 
-
-// I use simple my root page
-hostingHTTP.use(vhost('kure.maximumroulette.com', routerSub4));
-hostingHTTP.use(vhost('ai.maximumroulette.com', routerSub3));
-hostingHTTP.use(vhost('brm.maximumroulette.com', routerSub2));
-
 hostingHTTP.use(express.static("/var/www/html/"));
+hostingHTTP.use("/safir", express.static(config.hostSpecialRoute.route2));
+hostingHTTP.use("/storage", express.static(config.hostSpecialRoute.route3));
 // hostingHTTP.use(express.static("G:\\web_server\\xampp\\htdocs\\PRIVATE_SERVER\\ROCKET-SERVER\\rocket-craft-server\\admin-panel\\dist"));
-
-
-// Compress all HTTP responses
-// hostingHTTP.use(compression());
-// function shouldCompress (req, res) {
-//   if (req.headers['x-no-compression']) {
-//     // don't compress responses with this request header
-//     return false
-//   }
-//   res.set('Content-Encoding', 'gzip'); // gzip, deflate, br
-//   // fallback to standard filter function
-//   return compression.filter(req, res)
-// }
-
-
-// ORI
-// app.use(compression({
-//   filter: function () { return true; }
-// }));
-
 
 /**
  * @description Compression
  * @example
-
  *  express.compress()
  */
 
-
 hostingHTTP.use(cors());
+
 hostingHTTP.use(function (req, res, next) {
   // res.setHeader("Content-Type", "text/html")
-  res.setHeader('Content-Encoding', 'gzip');
+  // res.setHeader('Content-Encoding', 'gzip');
+
   // Website you wish to allow to connect
   res.setHeader('Access-Control-Allow-Origin', '*');
   // Request methods you wish to allow
@@ -242,7 +224,6 @@ app.use(
 );
 
 // hostAdminPanel
-
 let routerProfileDeleteAdmin =  new require('./api/admin/admin-profile')(
   app, express,
   { 
@@ -251,15 +232,9 @@ let routerProfileDeleteAdmin =  new require('./api/admin/admin-profile')(
     database: database
   },
   crypto);
-
 // Parse application/vnd.api+json as json
-
 let routerRocket = new require('./api/account/account')(app, express, database, crypto);
 let routerUsers = new require('./api/users/users')(app, express, database, crypto);
-
-// Test - Not for production
-// let routerGeneric = new require('./api/generic/route')(app, express, database, crypto);
-
 let routerProfile = new require('./api/profile/profile')(
   app,
   express,
@@ -280,6 +255,46 @@ let routerProfileWannaPlay = new require('./api/crafting/active-list')(
   },
   crypto
 );
+
+//////////////////////
+// hostingHTTP
+//////////////////////
+
+// hostingHTTP.use(bodyParser.json({ limit: config.maxRequestSize }))
+hostingHTTP.use(bodyParser.json());
+
+let routerProfileDeleteAdmin2 =  new require('./api/admin/admin-profile')(
+  hostingHTTP, express,
+  { 
+    dbName: config.databaseName,
+    dbRoot: config.getDatabaseRoot,
+    database: database
+  },
+  crypto);
+// Parse application/vnd.api+json as json
+let routerRocket2 = new require('./api/account/account')(hostingHTTP, express, database, crypto);
+let routerUsers2= new require('./api/users/users')(hostingHTTP, express, database, crypto);
+let routerProfile2 = new require('./api/profile/profile')(
+  hostingHTTP,
+  express,
+  { 
+    dbName: config.databaseName,
+    dbRoot: config.getDatabaseRoot,
+    database: database
+  },
+  crypto
+);
+
+let routerProfileWannaPlay2 = new require('./api/crafting/active-list')(
+  hostingHTTP,
+  express,
+  { 
+    dbName: config.databaseName,
+    dbRoot: config.getDatabaseRoot
+  },
+  crypto
+);
+////////////////////////////////////////////////////////////////////
 
 // Server configuration - compression.
 // At the moment conflicted with client webworker cache feature.
@@ -325,12 +340,13 @@ if (config.protocol == 'http') {
   serverRunner = spdy;
 }
 
-
 /**
  * @description serverRunner
  * Run `rocket-crafting-server` web server.
+ * [SINGLE SERVER DISABLED]
+ * DOUBLE - WE HOST ROCKET CRAFTING SERVER ON HTTP AND HTTPS.
  */
-serverRunner.createServer(options, app).listen(config.connectorPort, error => {
+http.createServer(options, app).listen(config.connectorPort, error => {
   if (error) {
     console.warn("Something wrong with rocket-crafting server.");
     console.error(error);

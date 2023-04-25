@@ -223,22 +223,15 @@ class MyDatabase {
           useUnifiedTopology: true
         },
         function(error, db) {
-          if(error) {
-            console.warn("MyDatabase.login error: " + error);
-            return;
-          }
-
+          if(error) {console.warn("MyDatabase.login error: " + error); return;}
           const dbo = db.db(databaseName);
-
-          console.warn("MyDatabase.login user => ", user);
-
+          // console.warn("MyDatabase.login user => ", user);
           dbo.collection("users").findOne({email: user.email, confirmed: true}, {}, function(err, result) {
             if(err) {
               console.log("MyDatabase.login error: " + err);
-              resolve("MyDatabase.login.error")
+              resolve("MyDatabase.login.error");
+              return;
             }
-
-            console.warn("MyDatabase.login result => ", result);
 
             if(result !== null) {
               // Secure
@@ -558,12 +551,10 @@ class MyDatabase {
               console.log("MyDatabase.login error: " + err);
               resolve("MyDatabase.login.error");
             }
-            // console.warn("MyDatabase.login result => ", result);
             if(result !== null) {
-              // Secure
-              // const pass = callerInstance.crypto.decrypt(result.password);
+              // Secure const pass = callerInstance.crypto.decrypt(result.password);
               if(user.token) {
-                console.warn("Session passed.");
+                // console.info("Session passed.");
                 var coll = dbo.collection("users");
                 var skipValue = 0;
                 var limitValue = 500;
@@ -724,7 +715,7 @@ class MyDatabase {
                 }); return null;
               }
               if(result !== null) {
-                console.log('storagePath', storagePath)
+                // console.log('storagePath', storagePath)
                 // delete old image
                 var oldUserFolder = storagePath;
                 var test = result.profileUrl;

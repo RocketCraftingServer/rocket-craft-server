@@ -36,7 +36,11 @@
   }
 
   get hostAdminPanel() {
-    return false;
+    return true;
+  }
+
+  get storageDir() {
+    return "admin-panel/dist/storage";
   }
 
   /**
@@ -47,9 +51,14 @@
   get hostSpecialRoute() {
     return {
       active: true,
-      route: "/var/www/html/",
-      webAppName: "BarbarianRoadMashines",
-      type: "Race Game",
+      route: "/var/applications/rocket/rocket-craft-server/admin-panel/dist", // My VPS Linux
+      route2: "/var/www/html/apps/safir/", // My VPS Linux
+      //dev
+      // route3: "G:\\web_server\\xampp\\htdocs\\PRIVATE_SERVER\\ROCKET-SERVER\\rocket-craft-server\\admin-panel\\dist", // My admin - this repo windows
+      route3: "/var/applications/rocket/rocket-craft-server/admin-panel/dist/storage/",
+      // route: "G:\\web_server\\xampp\\htdocs\\PRIVATE_SERVER\\SERBON\\safir\\test\\dist", // compbine with safir clietn lib.
+      webAppName: "ADMIN PANEL",
+      type: "admin",
       unsecured: true,
     }
   }
@@ -97,9 +106,9 @@
   // production
   get certPathProd() {
     return {
-      pKeyPath: "/etc/letsencrypt/live/maximumroulette.com/privkey.pem",
-      pCertPath: "/etc/letsencrypt/live/maximumroulette.com/cert.pem",
-      pCBPath: "/etc/letsencrypt/live/maximumroulette.com/fullchain.pem"
+      pKeyPath: "/etc/letsencrypt/live/ko.maximumroulette.com/privkey.pem",
+      pCertPath: "/etc/letsencrypt/live/ko.maximumroulette.com/cert.pem",
+      pCBPath: "/etc/letsencrypt/live/ko.maximumroulette.com/fullchain.pem"
     };
   };
 
@@ -109,8 +118,8 @@
    */
   get systemEmail() {
     return {
-      user: "greespiral@gmail.com",
-      pass: "********"
+      user: "**********@gmail.com",
+      pass: "******************"
     };
   };
 
@@ -134,12 +143,11 @@
 
   get getDatabaseRoot() {
 
-    */
     var databaseRoot = {
       dev: "mongodb://localhost:27017",
-      prod: "mongodb://userAdmin:*********@IPADDRESS:PORT/admin",
-      secured: "mongodb://userAdmin:********@IPADDRESS:PORT/admin",
-      freeService: "mongodb+srv://userAdmin:PUT_YOUR_PASSWORD@cluster0.piqav.mongodb.net/[YOUR DATABASE NAME]?retryWrites=true&w=majority"
+      prod: "mongodb://userAdmin:***@*.*.*.140:49326/admin",
+      secured: "mongodb://userAdmin:***@*.*.*.140:49326/admin",
+      freeService: "mongodb+srv://nikola:********@***.gcp.mongodb.net/rocket-1?retryWrites=true&w=majority"
     };
 
     if (this.serverMode == "dev") {
@@ -149,7 +157,7 @@
     } else if (this.serverMode == "secured") {
       return databaseRoot.secured;
     } else if (this.serverMode == "mongodb.net") {
-      return databaseRoot.secured;
+      return databaseRoot.freeService;
     }
   }
 
