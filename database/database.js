@@ -518,10 +518,8 @@ class MyDatabase {
   }
 
   // UPGRADE
-  getUsersList(user, callerInstance) {
-    var root = this;
+  getUsersList(user) {
     const databaseName = this.config.databaseName;
-
     return new Promise((resolve) => {
       MongoClient.connect(
         this.config.getDatabaseRoot, {useNewUrlParser: true, useUnifiedTopology: true},
@@ -683,9 +681,8 @@ class MyDatabase {
   }
 
   // UPGRADE
-  saveProfileImageAddress(user, callerInstance) {
+  saveProfileImageAddress(user) {
     return new Promise((resolve, reject) => {
-      console.log("MyDatabase.saveProfileImageAddress user.data: ", user);
       const databaseName = this.config.databaseName;
       const storagePath = this.config.storageDir;
       MongoClient.connect(this.config.getDatabaseRoot, {useNewUrlParser: true, useUnifiedTopology: true},
