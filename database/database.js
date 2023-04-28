@@ -362,57 +362,43 @@ class MyDatabase {
   }
 
   fastLogin(user, callerInstance) {
-    const databaseName = this.config.databaseName;
-    MongoClient.connect(
-      this.config.getDatabaseRoot,
-      {
-        useNewUrlParser: true,
-        useUnifiedTopology: true
-      },
-      function(error, db) {
-        if(error) {
-          console.warn("MyDatabase.login error:" + error);
-          return;
+    return new Promise((resolve) => {
+      const databaseName = this.config.databaseName;
+      MongoClient.connect(
+        this.config.getDatabaseRoot,
+        {
+          useNewUrlParser: true,
+          useUnifiedTopology: true
+        },
+        function(error, db) {
+          if(error) {console.warn("MyDatabase.login error:" + error); return;}
+          const dbo = db.db(databaseName);
+          dbo.collection("users").findOne(
+            {email: user.email, token: user.token, confirmed: true}, function(err, result) {
+              if(err) {console.log("MyDatabase.login :" + err); return null}
+              if(result !== null) {
+                // Security staff
+                const userData = {
+                  status: 'USER_LOGGED',
+                  email: result.email,
+                  nickname: result.nickname,
+                  points: result.points,
+                  rank: result.rank,
+                  token: result.token,
+                  profileImage: result.profileUrl
+                };
+
+                dbo.collection("users")
+                  .updateOne({email: result.email}, {$set: {online: true}}, function(err, result) {
+                    if(err) {console.log("BAD_EMAIL_OR_PASSWORD"); return;}
+                    console.warn("online: ", userData.nickname);
+                    resolve(userData);
+                  });
+              }
+            });
         }
-
-        const dbo = db.db(databaseName);
-
-        dbo
-          .collection("users")
-          .findOne({email: user.data.userLoginData.email, token: user.data.userLoginData.token, confirmed: true}, function(
-            err,
-            result
-          ) {
-            if(err) {
-              console.log("MyDatabase.login :" + err);
-              return null;
-            }
-
-            if(result !== null) {
-              // Security staff
-              const userData = {
-                email: result.email,
-                nickname: result.nickname,
-                points: result.points,
-                rank: result.rank,
-                token: result.token,
-                profileImage: result.profileUrl
-              };
-
-              dbo
-                .collection("users")
-                .updateOne({email: user.data.userLoginData.email}, {$set: {online: true}}, function(err, result) {
-                  if(err) {
-                    console.log("BAD_EMAIL_OR_PASSWORD");
-                    return;
-                  }
-                  console.warn("online: ", userData.nickname);
-                  callerInstance.onUserLogin(userData, callerInstance);
-                });
-            }
-          });
-      }
-    );
+      )
+    })
   }
 
   logOut(user, callerInstance) {
@@ -724,7 +710,7 @@ class MyDatabase {
                 if(fs.existsSync(oldFullPAth)) {
                   fs.rmSync(oldFullPAth, {recursive: true, force: true});
                 }
-                var userFolder = "admin-panel/dist/storage";
+                var userFolder = storagePath;
                 if(!fs.existsSync(userFolder)) {
                   fs.mkdirSync(userFolder)
                 }

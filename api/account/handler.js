@@ -103,10 +103,7 @@ class ResponseHandler {
     }
 
     console.log("/rocket/login ", req.body);
-    if (
-      (typeof req.body.emailField !== "undefined") &
-      (typeof req.body.passwordField !== "undefined")
-    ) {
+    if ((typeof req.body.emailField !== "undefined") & (typeof req.body.passwordField !== "undefined")) {
       var user = {
         email: req.body.emailField,
         password: req.body.passwordField,
@@ -114,6 +111,39 @@ class ResponseHandler {
 
       var responseFlag = await this.dataAction.loginUser(user, this);
       console.log("/rocket/login => ", responseFlag);
+      if (responseFlag.status == "USER_LOGGED") {
+        res.status(200).json({
+          message: "User logged",
+          rocketStatus: responseFlag.status,
+          flag: responseFlag,
+        });
+      } else {
+        res.status(300).json({
+          message: "Wrong Password",
+          rocketStatus: "no-session",
+        });
+      }
+    } else {
+      res.status(404).json({
+        message: "Waoou vauu",
+        rocketStatus: "no-session",
+      });
+    }
+  }
+
+  async onFastLoginResponse(req, res) {
+    if (req.secure) {
+      console.log("Secured.");
+    }
+
+    console.log("/rocket/fast-login", req.body);
+    if ((typeof req.body.email !== "undefined") & (typeof req.body.token !== "undefined")) {
+      var user = {
+        email: req.body.email,
+        token: req.body.token,
+      };
+      var responseFlag = await this.dataAction.fastLogin(user, this);
+      console.log("/rocket/fast-login => ", responseFlag);
       if (responseFlag.status == "USER_LOGGED") {
         res.status(200).json({
           message: "User logged",
