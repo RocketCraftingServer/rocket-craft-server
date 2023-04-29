@@ -182,16 +182,18 @@ Only implications between ue client vs server.js is account session status
            |          |
 +--------------------------------------------------------------------------------------------------------+
 |          |          |                                                                                  |
-|     +----+----------v---------+                                      +-----------------------------+   |
-|     |                         |                                      |                             |   |
-|     |      REST API           |                                      |  HTTP, HTTPS (1.1 or 2)     |   |
-|     | [/rocket/register]      |                                      |                             |   |
-|     | [/rocket/confirmation]  |                                      +-----------------------------+   |
-|     | [/rocket/register]      |                                                                        |
-|     | [/rocket/login]         |                                                                        |
-|     | [/rocket/profile]       |                                                                        |
-|     | [/rocket/profile-delete]|                                                                        |
-|     +-------------------------+                                                                        |
+|     +----+----------v-----------+                                    +-----------------------------+   |
+|     |                           |                                    |                             |   |
+|     |      REST API             |                                    |  HTTP, HTTPS (1.1 or 2)     |   |
+|     | [/rocket/register]        |                                    |                             |   |
+|     | [/rocket/confirmation]    |                                    +-----------------------------+   |
+|     | [/rocket/register]        |                                                                      |
+|     | [/rocket/login]           |                                                                      |
+|     | [/rocket/fast-login]      |                                                                      |
+|     | [/rocket/profile/upload]  |                                                                      |
+|     | [/rocket/profile]         |                                                                      |
+|     | [/rocket/profile-delete]  |                                                                      |
+|     +---------------------------+                                                                      |
 |                                                                                                        |
 |  +------------------------------------------------------------+                                        |
 |  SOURCE : https://github.com/zlatnaspirala/rocket-craft-server                                         |
