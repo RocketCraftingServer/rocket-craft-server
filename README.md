@@ -174,11 +174,11 @@ Only implications between ue client vs server.js is account session status
 |                                    rocket Server builds                                               |
 +----------+----------+---------------------------------------------------------------------------------+
            ^          |
-           |          |        MATCHMAKING  [OPTIMAL]
+           |          |        
            |          |
-           |          |        SINGNALING SERVER [OPTIMAL]
+           |          |        
            |          |
-           |          |        WEB SERVER [For hosting ue html5 clients also for rocketcraft session]
+           |          |        WEB SERVER [For hosting ue html5 clients also for rocketcraft api]
            |          |
 +--------------------------------------------------------------------------------------------------------+
 |          |          |                                                                                  |
