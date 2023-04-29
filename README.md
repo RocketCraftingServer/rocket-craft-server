@@ -143,6 +143,7 @@ Only implications between ue client vs server.js is account session status
     - register form        [DONE]
     - reg/confirmaton form [DONE]
     - login form           [DONE]
+    - foast-login [token]  [DONE]
     - profile              [DONE]
 </pre>
 
