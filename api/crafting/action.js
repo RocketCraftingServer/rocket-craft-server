@@ -234,6 +234,8 @@ module.exports = {
             return;
           }
           const dbo = db.db(databaseName);
+          var leaderboardSort = { points: -1 };
+
           dbo.collection("users").findOne({
             token: user.token,
             confirmed: true,
@@ -251,13 +253,24 @@ module.exports = {
                 var usersData = {
                   status: "RESULT NULL",
                 };
-                dbo.collection("users").find({confirmed: true}, {}).toArray(function(err, aresult) {
+                dbo.collection("users").find({confirmed: true}, {}).sort(leaderboardSort).toArray(function(err, aresult) {
                   if(err) {
                     console.warn("Profile actions pointplus10 error :" + err);
                     resolve({status: "WRONG DB QUERY"});
                   }
                   if(aresult !== null) {
 
+                    var skipValue = 0;
+                    var limitValue = 5;
+                    //  resolve({ status: "WRONG_" }); NEED FIX
+                    if(user.criterium.description == 'list-all') {
+                      // 
+                      if(user.criterium.moreExploreUsers == 1) {
+                        skipValue += limitValue;
+                      }
+                      console.log("Good ")
+                    }
+                    
                     var leaderboardHandleData = [];
                     aresult.forEach(function(item) {
                       leaderboardHandleData.push(

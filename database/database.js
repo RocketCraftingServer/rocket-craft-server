@@ -559,7 +559,7 @@ class MyDatabase {
                 // console.info("Session passed.");
                 var coll = dbo.collection("users");
                 var skipValue = 0;
-                var limitValue = 500;
+                var limitValue = 5;
                 //  resolve({ status: "WRONG_" }); NEED FIX
                 if(user.criterium.description == 'list-all') {
                   // 
