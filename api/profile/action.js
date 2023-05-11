@@ -25,6 +25,7 @@ module.exports = {
             if(err) {
               console.warn("Profile actions profile error :" + err);
               resolve({status: "WRONG DB QUERY"});
+              return;
             }
             if(result !== null) {
               if(result.token) {
@@ -48,10 +49,14 @@ module.exports = {
                   user: user
                 };
                 resolve(usersData);
+                db.close();
 
               } else {
                 resolve({status: "WRONG_PASSWORD"});
+                db.close();
               }
+            } else {
+              db.close();
             }
           });
         })

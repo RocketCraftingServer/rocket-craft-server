@@ -52,7 +52,10 @@ class MyDatabase {
           }
           const dbo = db.db(databaseName);
           var test = dbo.collection("users").countDocuments({})
-          test.then((e) => {resolve(e)})
+          test.then((e) => {
+            resolve(e)
+            db.close();
+          })
         })
     })
   }
@@ -183,6 +186,7 @@ class MyDatabase {
                       result: null,
                       email: user.email
                     };
+                    db.close();
                     resolve(local);
                     return;
                   }
@@ -192,6 +196,7 @@ class MyDatabase {
                     email: user.email,
                     accessToken: user.token
                   };
+                  db.close();
                   resolve(local);
                 });
             } else {
@@ -203,6 +208,7 @@ class MyDatabase {
                 email: user.email,
                 accessToken: user.accessToken
               };
+              db.close();
               resolve(local);
             }
           });
@@ -232,7 +238,6 @@ class MyDatabase {
               resolve("MyDatabase.login.error");
               return;
             }
-
             if(result !== null) {
               // Secure
               const pass = callerInstance.crypto.decrypt(result.password);
@@ -244,6 +249,7 @@ class MyDatabase {
                 const userData = {
                   status: "WRONG_PASSWORD",
                 }
+                db.close();
                 resolve(userData);
               }
               // Security staff
@@ -264,10 +270,11 @@ class MyDatabase {
                   return;
                 }
                 console.warn("ONLINE: ", userData.nickname);
+                db.close();
                 resolve(userData);
               })
             } else {
-
+              db.close();
             }
           })
         })
@@ -310,8 +317,10 @@ class MyDatabase {
                   profileImage: result.profileUrl
                 };
 
+                db.close();
                 resolve(userData);
               } else {
+                db.close();
                 resolve("NONO");
               }
             });
@@ -353,8 +362,11 @@ class MyDatabase {
                         resolve({status: "ERROR IN NEW NICK NAME"});
                         return;
                       }
+                      db.close();
                       resolve(userData);
                     });
+                } else {
+                  db.close();
                 }
               });
         });
@@ -392,8 +404,11 @@ class MyDatabase {
                   .updateOne({email: result.email}, {$set: {online: true}}, function(err, result) {
                     if(err) {console.log("BAD_EMAIL_OR_PASSWORD"); return;}
                     console.warn("online: ", userData.nickname);
+                    db.close();
                     resolve(userData);
                   });
+              } else {
+                db.close();
               }
             });
         }
@@ -440,6 +455,7 @@ class MyDatabase {
               }
               console.warn("logout: ", userData.nickname);
               callerInstance.onLogOutResponse(userData, callerInstance);
+              db.close();
             });
           }
         });
@@ -484,7 +500,7 @@ class MyDatabase {
   }
 
   setNewPass(user, callerInstance) {
-    console.log(">>>> uiser VVVVV ", user)
+    console.log("setNewPass ", user)
     return new Promise((resolve) => {
       const databaseName = this.config.databaseName;
       MongoClient.connect(this.config.getDatabaseRoot, {useNewUrlParser: true, useUnifiedTopology: true},
@@ -501,9 +517,11 @@ class MyDatabase {
                   if(err) {console.warn("MyDatabase.setNewPassword err => " + err); return;}
                   if(r1 != null) {
                     console.log("NICE NICE r1.nModified  ", r1.nModified);
+                    db.close();
                     resolve({status: "NEW-PASS-DONE"})
                   } else {
                     console.log("Waooo.");
+                    db.close();
                     resolve({status: "NEWPASS-FAIL4"});
                   }
                 });
@@ -550,13 +568,12 @@ class MyDatabase {
                   }
                   console.log("Good ")
                 }
-                coll.find().skip(skipValue).limit(limitValue).toArray(function(err, result) {
 
+                coll.find().skip(skipValue).limit(limitValue).toArray(function(err, result) {
                   if(err) {
                     console.log("error in get user list.");
                     resolve({status: 'error in getUsers'})
                   } else {
-
                     var usersData = {
                       status: "AUTHORIZED",
                       users: []
@@ -578,11 +595,13 @@ class MyDatabase {
                       usersData.users.push(user);
                     });
                     resolve(usersData);
+                    db.close();
                   }
                 });
 
               } else {
                 resolve({status: "WRONG_PASSWORD"});
+                db.close();
               }
             } else {
               console.warn("RESULT NULL");
@@ -630,8 +649,10 @@ class MyDatabase {
               fromUser: user.data.fromUser
             };
             callerInstance.onTryUserCallByNickname(userData, callerInstance);
+            db.close();
           } else {
             console.log("MyDatabase.tryUser: result null.");
+            db.close();
           }
         });
       }
@@ -672,8 +693,10 @@ class MyDatabase {
               rejectedBy: user.data.rejectedBy
             };
             callerInstance.onCallRejected(userData, callerInstance);
+            db.close();
           } else {
             console.log("MyDatabase.tryUser : result null");
+            db.close();
           }
         });
       }
@@ -695,7 +718,9 @@ class MyDatabase {
                 resolve({
                   status: 'BAD',
                   message: 'MyDatabase saveProfileImageAddress err'
-                }); return null;
+                });
+                db.close();
+                return null;
               }
               if(result !== null) {
                 // console.log('storagePath', storagePath)
@@ -754,13 +779,16 @@ class MyDatabase {
                         resolve({
                           status: 'BAD',
                           message: 'NO PHOTO BASE64'
-                        }); return;
+                        });
+                        db.close();
+                        return;
                       }
                       resolve({
                         status: 'AVATAR_PASSED',
                         result: result2,
                         avatarPath: aliasAvatarPath
-                      })
+                      });
+                      db.close();
                     });
               }
             });
