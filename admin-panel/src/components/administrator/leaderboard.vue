@@ -159,10 +159,12 @@ export default class leaderboardRocketTable extends CompProps {
     const args = {
       email: this.$data.system.emailAddress,
       token: this.$data.system.adminAccountToken,
+
       criterium: {
         description: 'list-all',
         moreExploreUsers: this.$data.moreExploreUsers
       }
+
     }
 
     const rawResponse = await fetch(route+ this.$props.prefix + '/' +  apiCallFlag, {

@@ -79,7 +79,7 @@
                           <md-icon class="fa fa-caret-right"></md-icon>
                         </md-button>
                         <md-button class="md-primary md-raised notexttransform" v-on:click="copyToClipboard($event)">
-                          <img v-if="Object.keys(item)[Object.values(item).indexOf(subItem)] === 'profileImage'" v-bind:src="'storage/' + subItem" width="100px" />
+                          <img v-if="Object.keys(item)[Object.values(item).indexOf(subItem)] === 'profileImage'" v-bind:src="$props.domain + 'storage' + subItem" width="100px" />
                          <p v-else > {{ subItem }} </p>
                         </md-button>
                       </div>
@@ -507,7 +507,7 @@ import store from "../../store"
 
     async runApiCallByActionName(apiCallFlag) {
 
-      let route = 'http://localhost/' // this.$props.domain
+      let route = this.$props.domain; // 'http://localhost/'
 
       const args = {
         emailField: this.$data.defaults.userEmail.toString(),

@@ -234,7 +234,7 @@ module.exports = {
             return;
           }
           const dbo = db.db(databaseName);
-          var leaderboardSort = { points: -1 };
+          var leaderboardSort = {points: -1};
 
           dbo.collection("users").findOne({
             token: user.token,
@@ -248,7 +248,7 @@ module.exports = {
             }
             if(result !== null) {
               if(result.token) {
-                console.warn("Session passed <BASIC> remote IP => ", user.myIp);
+                // console.warn("Session passed <BASIC> remote IP => ", user.myIp);
                 user.myIp = user.myIp.replace("::ffff:", "")
                 var usersData = {
                   status: "RESULT NULL",
@@ -258,36 +258,44 @@ module.exports = {
                 if(user.criterium.description == 'paginator') {
                   var limitValue = parseFloat(user.criterium.limitValue);
                   if(user.criterium.currentPagIndex) {
-                    skipValue = (parseFloat(user.criterium.currentPagIndex)-1) *  limitValue;
+                    skipValue = (parseFloat(user.criterium.currentPagIndex) - 1) * limitValue;
                   }
+                } else if(user.criterium.description == 'list-all') {
+                  skipValue = 0;
+                  var limitValue = 5;
+                  if(user.criterium.moreExploreUsers == 1) {
+                    skipValue += limitValue;
+                  }
+                  console.log("Good list-all")
                 }
 
-                dbo.collection("users").find({confirmed: true}, {}).skip(skipValue).limit(limitValue).sort(leaderboardSort).toArray(function(err, aresult) {
-                  if(err) {
-                    console.warn("Profile actions pointplus10 error :" + err);
-                    resolve({status: "WRONG DB QUERY"});
-                  }
-                  if(aresult !== null) {
-                    var leaderboardHandleData = [];
-                    aresult.forEach(function(item) {
-                      leaderboardHandleData.push(
-                        {
-                          nickname: item.nickname,
-                          points: item.points,
-                          rank: item.rank
-                        }
-                      )
-                    })
+                dbo.collection("users").find({confirmed: true}, {})
+                  .skip(skipValue).limit(limitValue).sort(leaderboardSort).toArray(function(err, aresult) {
+                    if(err) {
+                      console.warn("Profile actions pointplus10 error :" + err);
+                      resolve({status: "WRONG DB QUERY"});
+                    }
+                    if(aresult !== null) {
+                      var leaderboardHandleData = [];
+                      aresult.forEach(function(item) {
+                        leaderboardHandleData.push(
+                          {
+                            nickname: item.nickname,
+                            points: item.points,
+                            rank: item.rank
+                          }
+                        )
+                      })
 
-                    resolve({status: "LEADERBOARD_DATA", leaderboard: leaderboardHandleData});
-                    db.close();
-                    console.log("LEADERBOARD_DATA")
+                      resolve({status: "LEADERBOARD_DATA", leaderboard: leaderboardHandleData});
+                      db.close();
+                      console.log("LEADERBOARD_DATA")
 
-                  } else if(aresult == null) {
-                    db.close();
-                    resolve(usersData);
-                  }
-                })
+                    } else if(aresult == null) {
+                      db.close();
+                      resolve(usersData);
+                    }
+                  })
 
               } else {
                 resolve({status: "WRONG_PASS_ACTIVELIST"});
