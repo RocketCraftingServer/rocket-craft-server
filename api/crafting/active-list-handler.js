@@ -207,7 +207,8 @@ class ResponseHandler {
         token: req.body.token,
         email: req.body.email,
         mapName: req.body.mapName,
-        myIp: req.connection.remoteAddress
+        myIp: req.connection.remoteAddress,
+        criterium: req.body.criterium
       };
       var responseFlag = await action.getLeaderboard(user, this.dataOptions)
       console.log("/rocket/leaderboard", responseFlag.status);

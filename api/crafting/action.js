@@ -248,29 +248,26 @@ module.exports = {
             }
             if(result !== null) {
               if(result.token) {
-                console.warn("Session passed <BASIC> w is myIp ", user.myIp);
+                console.warn("Session passed <BASIC> remote IP => ", user.myIp);
                 user.myIp = user.myIp.replace("::ffff:", "")
                 var usersData = {
                   status: "RESULT NULL",
                 };
-                dbo.collection("users").find({confirmed: true}, {}).sort(leaderboardSort).toArray(function(err, aresult) {
+
+                var skipValue = 0;
+                if(user.criterium.description == 'paginator') {
+                  var limitValue = parseFloat(user.criterium.limitValue);
+                  if(user.criterium.currentPagIndex) {
+                    skipValue = (parseFloat(user.criterium.currentPagIndex)-1) *  limitValue;
+                  }
+                }
+
+                dbo.collection("users").find({confirmed: true}, {}).skip(skipValue).limit(limitValue).sort(leaderboardSort).toArray(function(err, aresult) {
                   if(err) {
                     console.warn("Profile actions pointplus10 error :" + err);
                     resolve({status: "WRONG DB QUERY"});
                   }
                   if(aresult !== null) {
-
-                    var skipValue = 0;
-                    var limitValue = 5;
-                    //  resolve({ status: "WRONG_" }); NEED FIX
-                    if(user.criterium.description == 'list-all') {
-                      // 
-                      if(user.criterium.moreExploreUsers == 1) {
-                        skipValue += limitValue;
-                      }
-                      console.log("Good ")
-                    }
-                    
                     var leaderboardHandleData = [];
                     aresult.forEach(function(item) {
                       leaderboardHandleData.push(
