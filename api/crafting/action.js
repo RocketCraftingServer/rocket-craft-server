@@ -262,7 +262,7 @@ module.exports = {
                   }
                 } else if(user.criterium.description == 'list-all') {
                   skipValue = 0;
-                  var limitValue = 5;
+                  var limitValue = 200;
                   if(user.criterium.moreExploreUsers == 1) {
                     skipValue += limitValue;
                   }

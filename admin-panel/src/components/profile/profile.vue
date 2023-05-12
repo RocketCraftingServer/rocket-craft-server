@@ -134,6 +134,69 @@
           </md-content>
         </md-tab>
 
+        <md-tab md-label="Route Info">
+          <md-content class="md-scrollbar">
+            <!--img style="width:200px;margin: -5px -5px -5px -5px;" src="assets/logo.png" /-->
+            <h3>Description: This is public get profile route. </h3>
+              <p>@param email</p>
+              <p>@param token</p>
+            <md-content class="md-scrollbar myscroll">
+              <p>Fetch[js]</p>
+              <md-content class="md-raised md-primary" v-on:click="copyToClipboard($event)">
+               fetch("http://maximumroulette.com/rocket/profile", { \ <br>
+                  "headers": { \ <br>
+                    "accept": "application/json", \ <br>
+                    "accept-language": "en-US,en;q=0.9,ru;q=0.8", \ <br>
+                    "cache-control": "no-cache", \ <br>
+                    "content-type": "application/json", \ <br>
+                    "pragma": "no-cache" \ <br>
+                  }, \ <br>
+                  "referrer": "http://localhost:3000/", \ <br>
+                  "referrerPolicy": "strict-origin-when-cross-origin", \ <br>
+                  "body": "{\"email\":\"zlatnaspirala@gmail.com\",\"token\":\"LDUlf\"}", \ <br>
+                  "method": "POST", \ <br>
+                  "mode": "cors", \ <br>
+                  "credentials": "omit" \ <br>
+                }); \ <br>
+              </md-content>
+              <p>CURL</p>
+              <md-content class="md-primary md-raised" v-on:click="copyToClipboard($event)">
+                curl 'http://maximumroulette.com/rocket/profile' \ <br>
+                  -H 'Accept: application/json' \ <br>
+                  -H 'Accept-Language: en-US,en;q=0.9,ru;q=0.8' \ <br>
+                  -H 'Cache-Control: no-cache' \ <br>
+                  -H 'Connection: keep-alive' \ <br>
+                  -H 'Content-Type: application/json' \ <br>
+                  -H 'Origin: http://localhost:3000' \ <br>
+                  -H 'Pragma: no-cache' \ <br>
+                  -H 'Referer: http://localhost:3000/' \ <br>
+                  -H 'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36' \ <br>
+                  --data-raw '{"email":"zlatnaspirala@gmail.com","token":"LDUlf"}' \ <br>
+                  --compressed \ <br>
+                  --insecure <br>
+             </md-content>
+
+              <p>Response</p>
+              <md-content class="md-accent">
+                <p>
+                  "message":"Welcome to your profile dashboard",\ <br>
+                  "rocketStatus":"AUTHORIZED",\ <br>
+                  "user":{
+                    "id":"6442e45395af81fa78663c5b",\ <br>
+                    "nickname":"nidza", \ <br>
+                    "points":361,\ <br>
+                    "rank":"junior",\ <br>
+                    "online":true,\ <br>
+                    "email":"zlatnaspirala@gmail.com",\ <br>
+                    "confirmed":true,\ <br>
+                    "profileImage":"/BcMr0015Mu/profile.png"}
+                </p>
+              </md-content>
+
+            </md-content>
+          </md-content>
+        </md-tab>
+
       </md-tabs>
       <md-dialog-actions>
         <md-button color="md-primary" @click="showProfileDialog = false"
@@ -162,6 +225,11 @@
   box-shadow: 1px 1px 3px 3px rgba(0, 0, 0, 0.5);
 }
 
+.myscroll {
+  height: calc(50vh) !important;
+  overflow: auto;
+}
+
 .md-content {
   min-width: 400px;
   font-size: 110%;
@@ -173,6 +241,7 @@
 import { API } from "../../my-common/literal";
 import Vue from "vue";
 import Component from "vue-class-component";
+import store from "../../store"
 import {
   mdMenu,
   mdButton,
@@ -243,6 +312,10 @@ export default class userRocketProfile extends CompProps {
     addEventListener('onNewEmailAddress', (e) => {
       this.$data.system.emailAddress = this.$store.state.permission.emailAddress
     })
+  }
+
+  public setNewToken(t) {
+    store.commit("setNewToken", { token: this.$data.system.adminAccountToken });
   }
 
   async runApiUsers() {
