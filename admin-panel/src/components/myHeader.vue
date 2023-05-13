@@ -8,13 +8,17 @@
       <md-menu-content>
         <md-menu-item>
           <md-content>
-            <md-chip md-disabled>RocketCraftingServer Admin page</md-chip><br>
-            <md-chip>Javascript oriented platform.</md-chip><br>
-            <md-chip md-disabled>Server side based on Nodejs</md-chip><br>
-            <md-chip md-disabled>Server active on http/https </md-chip><br>
-            <md-chip md-disabled>host: maximumroulette.com </md-chip><br>
-            <md-chip class="md-primary md-accent">
-              <a href="https://github.com/RocketCraftingServer/rocket-craft-server">Download backend/admin source</a>
+            <md-chip md-disabled>RocketCraftingServer Admin page<br>
+            Javascript oriented platform.<br>
+            Server side based on Nodejs<br>
+            Server active on http/https<br>
+            host: maximumroulette.com<br>
+              <a href="https://github.com/RocketCraftingServer/rocket-craft-server">Download backend/admin source</a><br>
+              <br>
+              <img src="assets/icons/pngs/information.png" /><br>
+              <h4>Kickstart frontend project<h4><br>
+              <a href="https://github.com/RocketCraftingServer/kickstart">Download web client source</a><br>
+              <a href="https://github.com/zlatnaspirala/safir">Download safir source</a><br>
             </md-chip>
           </md-content>
         </md-menu-item>
