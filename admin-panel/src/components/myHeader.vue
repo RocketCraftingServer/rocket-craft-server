@@ -108,18 +108,16 @@
         <md-tab md-label="About RocketCraftServer Service">
           <md-content class="md-scrollbar" v-bind:style="optionsStyle">
             <h3> Project name: Rocket Craft Server</h3>
-            <md-content>Version Integrity 2023</md-content>
+            <p>Version Integrity 2023</p>
             <p>Integrity is based on Node.js server part and Vue clietn part for admin page</p>
             <br>
-            <img style="width:200px;margin: -5px -5px -5px -5px;" src="assets/logo.png" />
+            <img style="height:40vh;margin: -5px -5px -5px -5px;" src="assets/logo.png" />
             <br>
-
-              <span>http://maximumroulette.com</span>
-              <p>This project is open source:</p>
-              <a target="_blank" href="https://github.com/zlatnaspirala//blob/master/LICENSE">LICENCE</a>
-              <br>
-              <a target="_blank" href="https://github.com/RocketCraftingServer/rocket-craft-server">Download source code</a>
-
+            <span>http://maximumroulette.com</span>
+            <p>This project is open source:</p>
+            <a target="_blank" href="https://github.com/zlatnaspirala//blob/master/LICENSE">LICENCE</a>
+            <br>
+            <a target="_blank" href="https://github.com/RocketCraftingServer/rocket-craft-server">Download source code</a>
           </md-content>
         </md-tab>
       </md-tabs>
@@ -209,7 +207,8 @@ export default class myHeader extends CompProps implements IHeader{
     width: '100%',
     paddingBottom: '10px',
     itemsAlign: 'left',
-    height: '650px'
+    height: '650px',
+    overflow: 'auto'
   }
 
   constructor() {
