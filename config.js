@@ -49,22 +49,31 @@
    * hosting any web folders contents.
    */
   get hostSpecialRoute() {
+
     return {
       active: true,
-      route: "/var/applications/rocket/rocket-craft-server/admin-panel/dist", // My VPS Linux
-      route2: "/var/www/html/apps/safir/", // My VPS Linux
-      //dev
-      // route3: "G:\\web_server\\xampp\\htdocs\\PRIVATE_SERVER\\ROCKET-SERVER\\rocket-craft-server\\admin-panel\\dist", // My admin - this repo windows
-      route3: "/var/applications/rocket/rocket-craft-server/admin-panel/dist/storage/",
-      // route: "G:\\web_server\\xampp\\htdocs\\PRIVATE_SERVER\\SERBON\\safir\\test\\dist", // compbine with safir clietn lib.
+      route: "G:\\web_server\\xampp\\htdocs\\PRIVATE_SERVER\\ROCKET-SERVER\\rocket-craft-server\\admin-panel\\dist", // My admin - this repo windows
+      route3: "G:\\web_server\\xampp\\htdocs\\PRIVATE_SERVER\\ROCKET-SERVER\\rocket-craft-server\\admin-panel\\dist\\storage\\",
+      route2: "G:\\web_server\\xampp\\htdocs\\PRIVATE_SERVER\\SERBON\\safir\\dist", 
       webAppName: "ADMIN PANEL",
       type: "admin",
       unsecured: true,
     }
+
+    // return {
+    //   active: true,
+    //   route: "/var/applications/rocket/rocket-craft-server/admin-panel/dist",
+    //   route2: "/var/www/html/apps/safir/",
+    //   route3: "/var/applications/rocket/rocket-craft-server/admin-panel/dist/storage/",
+    //   webAppName: "ADMIN PANEL",
+    //   type: "admin",
+    //   unsecured: true,
+    // }
+
   }
 
   get ownHttp() {
-    return true;
+    return false;
   }
 
   get ownHttpHostPort() {

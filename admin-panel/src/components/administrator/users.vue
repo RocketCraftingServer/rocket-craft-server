@@ -174,7 +174,15 @@
                 <p>
                   {"message":"get users response", "rocketStatus":"AUTHORIZED",
                   "users":[
-                  {"id":"600c307f4475b16683435dea","nickname":"no-nick-name0","points":1000,"rank":"junior","online":false,"email":"fake_user0@localhost.com","confirmed":false,"profileImage":"users-shared-data/no-image.jpg"},
+                  {
+                    "id":"600c307f4475b16683435dea", \ <br>
+                    "nickname":"no-nick-name0", \ <br>
+                    "points":1000, \ <br>
+                    "rank":"junior", \ <br>
+                    "online":false, \ <br>
+                    "email":"fake_user0@localhost.com", \ <br>
+                    "confirmed":false, \ <br>
+                    "profileImage":"users-shared-data/no-image.jpg"},
                   ...
                 </p>
               </md-content>

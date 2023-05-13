@@ -1,6 +1,29 @@
 
 // Specific image styles and other 
 
+/* Scroll bars */
+/* width */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 5px grey;
+  border-radius: 6px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+background: silver;
+border-radius: 10px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+background: rgb(144, 144, 144);
+}
+
 .backgroundFractal1 {
   background-image: url("/assets/images/fractal-1.jpg")
 }

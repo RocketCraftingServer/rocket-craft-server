@@ -40,6 +40,9 @@
                   maxlength="200"
                 >
                 </md-input>
+                <md-button @click="setNewToken(system.adminAccountToken)">
+                  Set new token!
+                </md-button>
               </md-field>
               <md-button
                 class="md-primary md-raised"
@@ -241,7 +244,7 @@
 import { API } from "../../my-common/literal";
 import Vue from "vue";
 import Component from "vue-class-component";
-import store from "../../store"
+import store from "../../store";
 import {
   mdMenu,
   mdButton,

@@ -199,12 +199,12 @@ export default class App extends AppProps {
   data() {
     return {
       visibility: {
-        account: false,
+        account: true,
         emailServiceComponent: false,
-        usersComponent: false,
+        usersComponent: true,
         genericComponent: false,
-        userProfileComponent: false,
-        leadrboardComponent: false,
+        userProfileComponent: true,
+        leadrboardComponent: true,
         userProfileAvatarComponent: true
       },
     };

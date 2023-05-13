@@ -20,6 +20,11 @@
               <md-field style="width:50%;margin-left:5%;" >
                 <md-input class="md-primary" placeholder="Enter you token." v-model="system.adminAccountToken" />
               </md-field>
+              <md-field style="width:50%;margin-left:-5%;" >
+                <md-button @click="setNewToken(system.adminAccountToken)">
+                  Set new token!
+                </md-button>
+              </md-field>
             </div>
           <!-- table.searched -->
             <md-table v-model="usersCurrentPage" md-sort="email" md-sort-order="asc" md-card md-fixed-header
@@ -96,6 +101,7 @@ import { mdMenu,
           mdProgressSpinner } from 'vue-material'
 import { copyToClipboard, switchTheme } from '../../my-common/common-func'
 import IAccounts from './IAccounts'
+import store from "../../store"
 
 const CompProps = Vue.extend({
   props: {
@@ -138,6 +144,10 @@ export default class leaderboardRocketTable extends CompProps {
   constructor() {
     super()
     this.copyToClipboard = copyToClipboard.bind(this);
+  }
+
+  public setNewToken(t) {
+    store.commit("setNewToken", { token: this.$data.system.adminAccountToken });
   }
 
   mounted(): void {

@@ -1,8 +1,12 @@
 
 /**
  * @description  RocketCraftServer
- * REST API Server powered with
- * PWA Admin Panel.
+ * REST API Server powered with PWA Admin Panel.
+ * 
+ * LAST UPDATE: 
+ * NOW I USE HOST AND API IN SAME EXPRESS 
+ * AND BOTH ARE ACTIVE HOSTED
+ * 
  * @version 2023 ULTIMATE
  * @author Nikola Lukic
  * @email zlatnaspirala@gmail.com
@@ -73,13 +77,10 @@ vhost = require('vhost');
  * @description
  * SWITCH TO SINGLE SERVER
  * ALSO CAN BE USED LIKE API SERVER vs HOST SERVER
- * 
+ * REMOVE THIS AND PUT YOUR REF.
+ * EXAMPLE FOR Virtual host [Sub domains]
  */
 // this.app.use(root.express.static(__dirname + "./../../admin-panel/dist"));
-
-if (true) {
-  // app = hostingHTTP;
-}
 
 routerSub = express.Router()
 routerSub.use(express.static('/var/www/html/apps/ultimate-roulette/'));
@@ -99,7 +100,6 @@ routerSub4.use(express.static('/var/applications/kure/kure-server-client/public/
 hostingHTTP.use(vhost('kure.maximumroulette.com', routerSub4));
 
 // I use simple my root page
-
 // This have nothing with rocket crafting server project start
 // hostingHTTP also it is just host !
 // TEST INJECT ONE MORE SERVICE -  Router prefix /api/
@@ -111,9 +111,7 @@ if (config.serverMode != "dev") {
 }
 // This have nothing with rocket crafting server project end
 
-
 hostingHTTP.get('*', function(req, res, next) {
-  console.log(">compression>" , req.hostname);
   /* if (req.hostname == "ai.maximumroulette.com") {
     //console.log(" REDIRECT NOW " )
     //req.location = "/apps/ai/";
@@ -123,9 +121,11 @@ hostingHTTP.get('*', function(req, res, next) {
   next();
 });
 
-hostingHTTP.use(express.static("/var/www/html/"));
-hostingHTTP.use("/safir", express.static(config.hostSpecialRoute.route2));
-hostingHTTP.use("/storage", express.static(config.hostSpecialRoute.route3));
+app.use("/safir", express.static("G:\\web_server\\xampp\\htdocs\\PRIVATE_SERVER\\SERBON\\safir\\dist\\"));
+
+if (config.hostSpecialRoute.active) hostingHTTP.use(express.static("/var/www/html/"));
+if (config.hostSpecialRoute.active) hostingHTTP.use("/safir", express.static(config.hostSpecialRoute.route2));
+if (config.hostSpecialRoute.active) hostingHTTP.use("/storage", express.static(config.hostSpecialRoute.route3));
 // hostingHTTP.use(express.static("G:\\web_server\\xampp\\htdocs\\PRIVATE_SERVER\\ROCKET-SERVER\\rocket-craft-server\\admin-panel\\dist"));
 
 /**
@@ -139,7 +139,6 @@ hostingHTTP.use(cors());
 hostingHTTP.use(function (req, res, next) {
   // res.setHeader("Content-Type", "text/html")
   // res.setHeader('Content-Encoding', 'gzip');
-
   // Website you wish to allow to connect
   res.setHeader('Access-Control-Allow-Origin', '*');
   // Request methods you wish to allow
@@ -156,27 +155,17 @@ hostingHTTP.use(function (req, res, next) {
 app.use(bodyParser.json({ limit: config.maxRequestSize }))
 app.use(cors());
 
-
 /**
  * @description
  * You can add samo special route for any proporse.
- * Not work if you have 443 https started at same domain,
- * it redirect to https and rocket crating server hostend on 80 
- * is not reached.
- * 
  */
  if (config.hostSpecialRoute.active) {
-
   app.use("/admin", express.static(config.hostSpecialRoute.route));
   app.use("/safir", express.static(config.hostSpecialRoute.route2));
   app.use("/storage", express.static(config.hostSpecialRoute.route3));
-
   app.use("/brm", express.static('/var/www/html/apps/barbarian-road-mashines/beta/'));
   app.use("/apps/barbarian-road-mashines/beta", express.static('/var/www/html/apps/barbarian-road-mashines/beta/'));
   app.use("/apps/shooter/", express.static('/var/www/html/apps/shooter/'));
-
-  // test link for hang3d nightmate
-  // app.use("/apps/shooter-mt/", express.static('/var/www/html/apps/shooter-mt/'));
   app.use("/apps/hang3d/", express.static('/var/www/html/apps/hang3d/'));
 
   console.log(
@@ -184,9 +173,7 @@ app.use(cors());
     config.hostSpecialRoute.webAppName + " application host." +
     " Application www folder is `" + config.hostSpecialRoute.route + 
     " __dirname is " + __dirname );
-
 }
-
 
 /**
  * @description  Allow or disallow headers flags.
@@ -259,7 +246,6 @@ let routerProfileWannaPlay = new require('./api/crafting/active-list')(
 //////////////////////
 // hostingHTTP
 //////////////////////
-
 // hostingHTTP.use(bodyParser.json({ limit: config.maxRequestSize }))
 hostingHTTP.use(bodyParser.json());
 
@@ -346,6 +332,7 @@ if (config.protocol == 'http') {
  * [SINGLE SERVER DISABLED]
  * DOUBLE - WE HOST ROCKET CRAFTING SERVER ON HTTP AND HTTPS.
  */
+
 http.createServer(options, app).listen(config.connectorPort, error => {
   if (error) {
     console.warn("Something wrong with rocket-crafting server.");

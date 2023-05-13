@@ -3,10 +3,26 @@
   <div ref="myHeader" class="myHeader">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-
+    <md-menu>
+      <md-button class="md-primary md-raised" md-menu-trigger>MORE</md-button>
+      <md-menu-content>
+        <md-menu-item>
+          <md-content>
+            <md-chip md-disabled>RocketCraftingServer Admin page</md-chip><br>
+            <md-chip>Javascript oriented platform.</md-chip><br>
+            <md-chip md-disabled>Server side based on Nodejs</md-chip><br>
+            <md-chip md-disabled>Server active on http/https </md-chip><br>
+            <md-chip md-disabled>host: maximumroulette.com </md-chip><br>
+            <md-chip class="md-primary md-accent">
+              <a href="https://github.com/RocketCraftingServer/rocket-craft-server">Download backend/admin source</a>
+            </md-chip>
+          </md-content>
+        </md-menu-item>
+      </md-menu-content>
+    </md-menu>
     <md-menu md-size="big" md-align-trigger>
       <md-button class="md-primary md-raised" md-menu-trigger>
-        Integrity
+        Visibility
         <md-icon class="fa fa-rocket md-accent" />
       </md-button>
       <md-menu-content>
@@ -88,16 +104,18 @@
         <md-tab md-label="About RocketCraftServer Service">
           <md-content class="md-scrollbar" v-bind:style="optionsStyle">
             <h3> Project name: Rocket Craft Server</h3>
-            <p>Version Integrity 2022</p>
+            <md-content>Version Integrity 2023</md-content>
             <p>Integrity is based on Node.js server part and Vue clietn part for admin page</p>
             <br>
             <img style="width:200px;margin: -5px -5px -5px -5px;" src="assets/logo.png" />
             <br>
+
               <span>http://maximumroulette.com</span>
               <p>This project is open source:</p>
               <a target="_blank" href="https://github.com/zlatnaspirala//blob/master/LICENSE">LICENCE</a>
               <br>
               <a target="_blank" href="https://github.com/RocketCraftingServer/rocket-craft-server">Download source code</a>
+
           </md-content>
         </md-tab>
       </md-tabs>

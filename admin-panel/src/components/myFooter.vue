@@ -10,7 +10,7 @@
           <md-content class="md-scrollbar">
             <h3>Effective date: june 23, 2020 </h3>
 
-            <p>Software development Nikola Lukic ("us", "we", or "our") operates the http://maximumroulette.com website (the "Service").</p>
+            <p>Software development Nikola Lukic ("us", "we", or "our") operates the maximumroulette.com website (the "Service").</p>
 
             <p>This page informs you of our policies regarding the collection, use, and disclosure of personal data when you use our Service and the choices you have associated with that data. Our Privacy Policy for Software development Nikola Lukic is based on the Free Privacy Policy Template Website.</p>
 

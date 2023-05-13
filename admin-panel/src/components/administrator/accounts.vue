@@ -51,8 +51,8 @@
               <md-button class="md-primary md-raised" @click="runApiCallByActionName('login')"> /rocket/login/ </md-button>
             </md-content>
               <md-content ref="responseLoginContainer" v-bind:style="optionsStyle">
+                <md-chip class="md-accent">Click on value field to copy in clipboard.</md-chip>
                   <div v-for="(item) in loginResponse" :key="item.message">
-
                     <div v-if="typeof item != 'object'"
                           style="padding: 1px;margin: 0;display:flex;flex-direction:column" class="level1">
                           <div style="display:flex;padding: 0px;margin: 0px;">
@@ -414,6 +414,7 @@
            MdList,
            mdButton,
            mdIcon,
+           mdChip,
            mdContent,
            mdTextArea,
            mdProgressSpinner } from 'vue-material'
@@ -437,7 +438,8 @@ import store from "../../store"
       mdProgressSpinner,
       mdContent,
       MdList,
-      mdTextArea
+      mdTextArea,
+      mdChip
     }
   })
 

@@ -194,6 +194,7 @@ Only implications between ue client vs server.js is account session status
 |     | [/rocket/profile/upload]  |                                                                      |
 |     | [/rocket/profile]         |                                                                      |
 |     | [/rocket/profile-delete]  |                                                                      |
+|     | [/rocket/leaderboard]     |                                                                      |
 |     +---------------------------+                                                                      |
 |                                                                                                        |
 |  +------------------------------------------------------------+                                        |
