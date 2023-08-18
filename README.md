@@ -31,7 +31,7 @@ Basic account session staff based on node.js and MongoDB.
 In term of storage/ [public access for external clients], rocketcraftingserver depens on admin-panel!
 Also `npm run serve` will not delete `storage/` folder but `npm run build` will do.
 
-Do not use git or npm commands on your public server. Better is to build it local and then simple upload project.
+Do not use git or npm commands on your public server. Better way is to build on local and then simple upload project.
 Do not use any dev tools on public server it is my personal advice.
 
 ![](https://github.com/zlatnaspirala/rocket-craft-server/blob/main/non-project-files/tutorial-steps/local-run-rocket-crafting-admin-panel.gif)
@@ -343,25 +343,6 @@ db.users.update({},{$set : {"role":"user"}},{upsert:false, multi:true})
    On finish whole this staff i will add future `modern way` brach ( 4.26 > )
    with last ue4 upgrade.
 
-### Signaling Server host [optimal]
-
-80 - for all HTTP requests coming from clients.
-To change this value, set the --httpPort parameter for the Signaling Server.
-
-443 - for all HTTPS requests coming from clients, when the Signaling Server is running in HTTPS mode.
-To change this value, set the --httpsPort parameter for the Signaling Server.
-
-8888 - for all incoming connection requests from the Unreal Engine application.
-To change this value, set both the --streamerPort parameter for the Signaling Server and the -PixelStreamingPort parameter for the UE4 application.
-
-#### Matchmaker Server host [optimal]
-
-90 - for all HTTP requests coming from clients.
-To change this value, use the --httpPort parameter for the Matchmaker Server.
-
-9999 - for all messages sent by the Signaling Server.
-To change this value, set both the --matchmakerPort parameter for the Matchmaker Server and the --matchmakerPort parameter for the Signaling Server.
-
 
 ## Multiplayer proxy servers for support [optimal]
 
@@ -394,7 +375,7 @@ For private job i also run KureOrange at:
 https://kure.maximumroulette.com/
 
 
-## Dedicated server 
+## Dedicated ue4 server from rocket-craft project [not rocketcraftingserver].
 
  - Success build for linux cent os 8.3
  - Success build for windows 10
@@ -405,4 +386,3 @@ Run on 5$ server dedicated server with:
 ```
  ./ShooterServer.sh /Game/Maps/Sanctuary?game=FFA?listen?Bots=0
 ```
-

@@ -9,7 +9,7 @@ class ResponseHandler {
 
   async getResponse(req, res) {
 
-      // console.log("/rocket/profile ", req.body);
+      console.log("/rocket/wanna-play");
       if (typeof req.body.token !== 'undefined') {
 
         var user = {
@@ -45,7 +45,7 @@ class ResponseHandler {
         }
         
       } else {
-        console.log("/rocket/register There is no exspected props in request body.");
+        console.log("/rocket/wanna-play There is no exspected props in request body.");
         res.status(400).json({
           message: "There is no exspected props in request body.",
           rocketStatus: "Bad request"
@@ -220,15 +220,17 @@ class ResponseHandler {
           leaderboard: responseFlag.leaderboard
         });
 
-      } else if (responseFlag.status == "ALREADY_IN_ACTIVE_LIST") {
+      } 
+      // else if (responseFlag.status == "ALREADY_IN_ACTIVE_LIST") {
 
-        res.status(200).json({
-          message: "Hi there, you are already in the active game list.",
-          rocketStatus: responseFlag.status,
-          leaderboard: responseFlag.leaderboard
-        });
+      //   res.status(200).json({
+      //     message: "Hi there, you are already in the active game list.",
+      //     rocketStatus: responseFlag.status,
+      //     leaderboard: responseFlag.leaderboard
+      //   });
 
-      } else {
+      // } 
+      else {
 
         res.status(401).json({
           message: "NO AUTHORIZED",

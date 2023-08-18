@@ -136,7 +136,7 @@ module.exports = {
                       userNickname: result.nickname,
                       sessionMapName: user.mapName,
                       sessionHostIp: user.myIp,
-                      sessionPlatform: 'unset'
+                      sessionPlatform: user.sessionPlatform
                     }, function(test) {
                       console.log('Mashine added to server active list. GOOD.')
                       console.log(test)

@@ -23,7 +23,7 @@ class RocketRouteActiveList extends ResponseHandler {
     this.dataOptions = dataOptions;
 
     this.routeRegister();
-    
+
   }
 
   routeRegister() {
@@ -38,4 +38,4 @@ class RocketRouteActiveList extends ResponseHandler {
 
 }
 
-module.exports = (app, express, dataOptions, crypto) => { return new RocketRouteActiveList(app, express, dataOptions, crypto) }
+module.exports = (app, express, dataOptions, crypto) => {return new RocketRouteActiveList(app, express, dataOptions, crypto)}
