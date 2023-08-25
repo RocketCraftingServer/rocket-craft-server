@@ -123,12 +123,10 @@ module.exports = {
                         localCheck = false;
                       }
                     }));
-
                     if(localCheck === false) {
                       db.close();
                       return resolve({status: "ALREADY_IN_ACTIVE_LIST"});
                     }
-
                     console.log("No in active list , add in active list")
                     dbo.collection("activegames").insertOne({
                       gameDescription: "Hosted by " + result.nickname,
@@ -144,9 +142,7 @@ module.exports = {
                       db.close();
                     });
                   }
-
                 })
-
               } else {
                 db.close();
                 resolve({status: "WRONG_PASS_ACTIVELIST"});

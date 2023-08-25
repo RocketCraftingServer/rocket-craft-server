@@ -23,6 +23,7 @@ class MyDatabase {
     var databasePopulate = new CreateDatabaseCollections(this.config);
     var r = await databasePopulate.createCollections();
     console.log("Database startup migrate -> ", r);
+    // console.log("Database startup migrate -> ", r[1]);
   }
 
   async seedDatabase(numOfFakeUsers) {
