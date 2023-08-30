@@ -24,7 +24,7 @@ class Sender {
       },
       auth: {
         user: "api",
-        pass: "*********",
+        pass: "***************",
       }
     });
 
@@ -37,10 +37,10 @@ class Sender {
     });
 
     const email = {
-      from: 'mailtrap@maximumroulette.com',
+      from: 'GamePlay@maximumroulette.com',
       to: this.to,
       subject: this.subject,
-      text: this.content
+      html: this.content
     };
 
     transporter.sendMail(email, function(error, success) {
