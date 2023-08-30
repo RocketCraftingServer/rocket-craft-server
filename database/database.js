@@ -170,7 +170,7 @@ class MyDatabase {
           }
 
           const dbo = db.db(databaseName);
-          console.log(">>>> user.token>>>>>> ", user.token)
+          console.log("user.token: ", user.token)
           dbo.collection("users").findOne({email: user.email, token: user.token}, function(err, result) {
             if(err) {
               console.log("MyDatabase.regValidator 2:" + err);
@@ -178,9 +178,7 @@ class MyDatabase {
             }
 
             if(result !== null) {
-              dbo
-                .collection("users")
-                .updateOne({email: user.email}, {$set: {confirmed: true, points: 100}}, function(err, result) {
+              dbo.collection("users").updateOne({email: user.email}, {$set: {confirmed: true, points: 100}}, function(err, result) {
                   if(err) {
                     console.info("MyDatabase, user confirmed err :" + err);
                     var local = {
@@ -191,7 +189,7 @@ class MyDatabase {
                     resolve(local);
                     return;
                   }
-                  console.info("MyDatabase, user confirmed result:" + result);
+                  console.info("User confirmed :" + result);
                   var local = {
                     result: result,
                     email: user.email,
@@ -234,8 +232,7 @@ class MyDatabase {
           const dbo = db.db(databaseName);
           // console.warn("MyDatabase.login user => ", user);
           dbo.collection("users").findOne({email: user.email, confirmed: true}, {}, function(err, result) {
-            if(err) {
-              console.log("MyDatabase.login error: " + err);
+            if(err) {console.log("MyDatabase.login error: " + err);
               resolve("MyDatabase.login.error");
               return;
             }
@@ -275,7 +272,13 @@ class MyDatabase {
                 resolve(userData);
               })
             } else {
+              console.warn("login.bad.password");
+              const userData = {
+                message: "Email is not registered",
+                status: "EMAIL_IS_NOT_REGISTERED",
+              }
               db.close();
+              resolve(userData);
             }
           })
         })
