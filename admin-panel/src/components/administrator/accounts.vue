@@ -304,7 +304,7 @@
         <md-tab md-label="Route Info">
           <md-content class="md-scrollbar">
             <!--img style="width:200px;margin: -5px -5px -5px -5px;" src="assets/logo.png" /-->
-            <h3>Description: This is register comfirmation route.</h3>
+            <h3>Description: This is register confirmation route.</h3>
               <p>@param emailField</p>
               <p>@param passwordField</p>
             <md-content class="md-scrollbar myscroll">

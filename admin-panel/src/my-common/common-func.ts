@@ -19,7 +19,7 @@ export function switchTheme (this: any) {
 
   var nextThemeIndex = themes.indexOf((this.$root as any).$material.theming.theme) + 1;
 
-  if (nextThemeIndex == themes.lenght) {
+  if (nextThemeIndex == themes.length) {
     nextThemeIndex = 0;
   }
 

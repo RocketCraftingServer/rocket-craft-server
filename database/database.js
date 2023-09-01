@@ -81,6 +81,16 @@ class MyDatabase {
       return;
     }
     */
+    if(user.password.length < 8) {
+      var responseFromDatabaseEngine = {
+        status: "TOO_SHORT_PASSW",
+        message: 'Too short password! Minimum is 8 chars.',
+      }
+
+      return new Promise((resolve) => {
+        resolve(responseFromDatabaseEngine);
+      })
+    }
 
     const databaseName = this.config.databaseName;
 
@@ -123,7 +133,8 @@ class MyDatabase {
                   permission: "basic",
                   age: "any",
                   country: "any",
-                  ban: false
+                  ban: false,
+                  profileUrl: `/imgs/${uniqLocal}`
                 },
                 function(err, res) {
                   if(err) {console.log("MyDatabase err3:" + err); return;}
@@ -179,25 +190,25 @@ class MyDatabase {
 
             if(result !== null) {
               dbo.collection("users").updateOne({email: user.email}, {$set: {confirmed: true, points: 100}}, function(err, result) {
-                  if(err) {
-                    console.info("MyDatabase, user confirmed err :" + err);
-                    var local = {
-                      result: null,
-                      email: user.email
-                    };
-                    db.close();
-                    resolve(local);
-                    return;
-                  }
-                  console.info("User confirmed :" + result);
+                if(err) {
+                  console.info("MyDatabase, user confirmed err :" + err);
                   var local = {
-                    result: result,
-                    email: user.email,
-                    accessToken: user.token
+                    result: null,
+                    email: user.email
                   };
                   db.close();
                   resolve(local);
-                });
+                  return;
+                }
+                console.info("User confirmed :" + result);
+                var local = {
+                  result: result,
+                  email: user.email,
+                  accessToken: user.token
+                };
+                db.close();
+                resolve(local);
+              });
             } else {
               // ? not tested
               console.warn("MyDatabase, update confirmed result ? not tested:" + result);
@@ -232,7 +243,8 @@ class MyDatabase {
           const dbo = db.db(databaseName);
           // console.warn("MyDatabase.login user => ", user);
           dbo.collection("users").findOne({email: user.email, confirmed: true}, {}, function(err, result) {
-            if(err) {console.log("MyDatabase.login error: " + err);
+            if(err) {
+              console.log("MyDatabase.login error: " + err);
               resolve("MyDatabase.login.error");
               return;
             }
@@ -468,7 +480,7 @@ class MyDatabase {
   }
 
   forgotPass(user, callerInstance) {
-    console.log(">>>> uiser", user)
+    console.log("forgotPass =>", user)
     return new Promise((resolve) => {
       const databaseName = this.config.databaseName;
       MongoClient.connect(this.config.getDatabaseRoot, {useNewUrlParser: true, useUnifiedTopology: true},
@@ -482,9 +494,9 @@ class MyDatabase {
               dbo
                 .collection("users")
                 .updateOne({email: user.email}, {$set: {ftoken: FTOKEN}}, {multi: true}, function(err, r1) {
-                  if(err) {console.warn("MyDatabase.FTOKEN err2 => " + err); return;}
+                  if(err) {console.warn("MyDatabase.forgotPass err2 => " + err); return;}
                   if(r1 != null) {
-                    console.warn("MyDatabase UPDATE FTOKEN. r1.nModified  " + r1.nModified);
+                    console.info("MyDatabase UPDATE forgotPass.");
                     resolve({status: "FTOKEN CREATED", email: user.email, ftoken: FTOKEN});
                     db.close();
                   }
