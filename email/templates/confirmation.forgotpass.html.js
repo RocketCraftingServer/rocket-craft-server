@@ -9,8 +9,7 @@ module.exports = {
    * @param {string} token
    */
   getConfirmationForgotPass: function(token, userName) {
-    return "<div style='background:linear-gradient(45deg, #ff6900, #d80000);color:white;height: 550px;font-size: large;padding: 20px;'> \
-      padding: 20px;' > \
+    return "<div style='background:linear-gradient(45deg, #ff6900, #d80000);color:white;font-size: large;padding: 20px;'> \
       <h2> - RocketCraftingServer platform - </h2> \
       Forgot Password confirmation email. <br/> \
       <h3>Dear " + userName + ". </h3><br/> \
