@@ -432,51 +432,38 @@ class MyDatabase {
     })
   }
 
-  logOut(user, callerInstance) {
+  logOut(user) {
     const databaseName = this.config.databaseName;
-    MongoClient.connect(
-      this.config.getDatabaseRoot,
-      {
-        useNewUrlParser: true,
-        useUnifiedTopology: true
-      },
-      function(error, db) {
-        if(error) {
-          console.warn("MyDatabase.login error:" + error);
-          return;
-        }
-
-        const dbo = db.db(databaseName);
-
-        dbo.collection("users").findOne({token: user.data.token, confirmed: true}, function(err, result) {
-          if(err) {
-            console.log("MyDatabase.logout :" + err);
-            return null;
-          }
-
-          if(result !== null) {
-            // Security staff
-            const userData = {
-              email: result.email,
-              nickname: result.nickname,
-              points: result.points,
-              rank: result.rank,
-              token: result.token
-            };
-
-            dbo.collection("users").updateOne({email: userData.email}, {$set: {online: false}}, function(err, result) {
-              if(err) {
-                console.log("warn: logout bad access!");
-                return;
+    return new Promise((resolve) => {
+      MongoClient.connect(this.config.getDatabaseRoot, {useNewUrlParser: true, useUnifiedTopology: true},
+        function(error, db) {
+          if(error) {console.warn("MyDatabase.login error:" + error); return;}
+          const dbo = db.db(databaseName);
+          dbo.collection("users").findOne({token: user.token, confirmed: true}, function(err, result) {
+            if(err) {console.log("MyDatabase.logout :" + err); return;}
+            if(result !== null) {
+              // Security staff
+              const userData = {
+                nickname: result.nickname,
+                status: 'USER_LOGOUT'
+              };
+              dbo.collection("users").updateOne({email: userData.email}, {$set: {online: false}}, function(err, result) {
+                if(err) {console.log("warn: logout bad access!"); return;}
+                console.warn("logout: ", userData.nickname);
+                resolve(userData);
+                db.close();
+              });
+            } else {
+              var userData = {
+                message: "Something wrong with logout.",
+                status: 'USER_LOGOUT_ERROR'
               }
-              console.warn("logout: ", userData.nickname);
-              callerInstance.onLogOutResponse(userData, callerInstance);
+              resolve(userData);
               db.close();
-            });
-          }
-        });
-      }
-    );
+            }
+          })
+        })
+    })
   }
 
   forgotPass(user, callerInstance) {
@@ -576,15 +563,12 @@ class MyDatabase {
                 var coll = dbo.collection("users");
                 var skipValue = 0;
                 var limitValue = 5;
-                //  resolve({ status: "WRONG_" }); NEED FIX
                 if(user.criterium.description == 'list-all') {
-                  // 
                   if(user.criterium.moreExploreUsers == 1) {
                     skipValue += limitValue;
                   }
-                  console.log("Good ")
+                  // console.log("Good ")
                 }
-
                 coll.find().skip(skipValue).limit(limitValue).toArray(function(err, result) {
                   if(err) {
                     console.log("error in get user list.");
@@ -632,27 +616,13 @@ class MyDatabase {
   // UPGRADE
   tryUser(user, callerInstance) {
     const databaseName = this.config.databaseName;
-    MongoClient.connect(
-      this.config.getDatabaseRoot,
-      {
-        useNewUrlParser: true,
-        useUnifiedTopology: true
-      },
+    MongoClient.connect(this.config.getDatabaseRoot, {useNewUrlParser: true, useUnifiedTopology: true},
       function(error, db) {
-        if(error) {
-          console.warn("MyDatabase.tryUser :" + error);
-          return;
-        }
-
+        if(error) {console.warn("MyDatabase.tryUser :" + error); return;}
         const dbo = db.db(databaseName);
         var coll = dbo.collection("users");
-
         coll.findOne({confirmed: true, nickname: user.data.tryThisUser}, function(err, result) {
-          if(err) {
-            console.log("MyDatabase.tryUser:" + err);
-            return null;
-          }
-
+          if(err) {console.log("MyDatabase.tryUser:" + err); return;}
           if(result !== null) {
             // Security staff
             // Private policy if you call someone you must expose email address

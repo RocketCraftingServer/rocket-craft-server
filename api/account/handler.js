@@ -170,6 +170,38 @@ class ResponseHandler {
     }
   }
 
+  async onSingOutResponse(req, res) {
+    if(req.secure) {
+      console.log("Secured.");
+    }
+
+    console.log("/rocket/logout", req.body);
+    if((typeof req.body.email !== "undefined") & (typeof req.body.token !== "undefined")) {
+      var user = {
+        email: req.body.email,
+        token: req.body.token,
+      };
+      var responseFlag = await this.dataAction.logOut(user, this);
+      console.log("/rocket/logout => ", responseFlag);
+      if(responseFlag.status == "USER_LOGOUT") {
+        res.status(200).json({
+          message: "User logout",
+          rocketStatus: responseFlag.status
+        });
+      } else {
+        res.status(300).json({
+          message: "Something Wrong",
+          rocketStatus: "no-session",
+        });
+      }
+    } else {
+      res.status(404).json({
+        message: "Waoou vauu",
+        rocketStatus: "no-session",
+      });
+    }
+  }
+
   async onForgotNewPassworkResponse(req, res) {
     var user = {
       email: req.body.emailField,

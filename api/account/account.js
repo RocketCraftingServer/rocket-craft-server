@@ -29,6 +29,7 @@ class RocketRoute extends ResponseHandler {
   routeRegister() {
 
     this.app.post("/rocket/login", this.onLoginResponse.bind(this));
+    this.app.post("/rocket/logout", this.onSingOutResponse.bind(this));
     this.app.post("/rocket/fast-login", this.onFastLoginResponse.bind(this));
     this.app.post("/rocket/register", this.onRegisterResponse.bind(this));
     this.app.post("/rocket/confirmation", this.onRegValidationResponse.bind(this));
