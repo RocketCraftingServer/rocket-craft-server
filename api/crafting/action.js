@@ -127,14 +127,15 @@ module.exports = {
                       db.close();
                       return resolve({status: "ALREADY_IN_ACTIVE_LIST"});
                     }
-                    console.log("No in active list , add in active list")
+                    console.log("No in active list , add in active list", user.gameName)
                     dbo.collection("activegames").insertOne({
                       gameDescription: "Hosted by " + result.nickname,
                       userid: result.nickname,
                       userNickname: result.nickname,
                       sessionMapName: user.mapName,
                       sessionHostIp: user.myIp,
-                      sessionPlatform: user.sessionPlatform
+                      gameName: user.gameName,
+                      gameHostAlias: user.gameHostAlias
                     }, function(test) {
                       console.log('Mashine added to server active list. GOOD.')
                       console.log(test)

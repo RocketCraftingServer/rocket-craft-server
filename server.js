@@ -295,7 +295,6 @@ let routerProfileWannaPlay2 = new require('./api/crafting/active-list')(
   },
   crypto
 );
-////////////////////////////////////////////////////////////////////
 
 // Server configuration - compression.
 // At the moment conflicted with client webworker cache feature.

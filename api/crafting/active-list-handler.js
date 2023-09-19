@@ -16,6 +16,8 @@ class ResponseHandler {
           token: req.body.token,
           email: req.body.email,
           mapName: req.body.mapName,
+          gameName: req.body.gameName,
+          gameHostAlias: req.body.gameHostAlias,
           myIp: req.connection.remoteAddress
         };
 

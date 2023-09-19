@@ -97,7 +97,8 @@ class CreateDatabaseCollections {
             dbo.createCollection("activegames").createIndex({ gameDescription: 1 }, { unique: true });
             dbo.createCollection("activegames").createIndex({ sessionMapName: 1 }, { unique: false });
             dbo.createCollection("activegames").createIndex({ sessionHostIp: 1 }, { unique: true });
-            dbo.createCollection("activegames").createIndex({ sessionPlatform: 1 }, { unique: false });
+            dbo.createCollection("activegames").createIndex({ gameName: 1 }, { unique: false });
+            dbo.createCollection("activegames").createIndex({ gameHostAlias: 1 }, { unique: false });
             resolve("Collections activegames created.")
           } else {
             resolve("Collections activegames already exist.")
