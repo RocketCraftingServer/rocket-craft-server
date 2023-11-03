@@ -271,11 +271,11 @@ Format:
 firewall-cmd --zone=public --permanent --add-port PORT/tcp
 ```
 
-Examples for cent os 8 in case of signaling server useage:
+Examples for centos in case of signaling server and UE4 server useage:
 
 ```bash
-sudo firewall-cmd --permanent --add-port=5349/tcp
-sudo firewall-cmd --permanent --add-port=5349/udp
+sudo firewall-cmd --permanent --add-port=999/tcp
+sudo firewall-cmd --permanent --add-port=999/udp
 sudo firewall-cmd --permanent --add-port=63000-64535/udp
 
 firewall-cmd --zone=public --permanent --add-port 85/tcp

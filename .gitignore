@@ -27,3 +27,4 @@ package-lock.json
 package-lock.json
 database/data
 admin-panel/public/storage/
+email/mail-service.js

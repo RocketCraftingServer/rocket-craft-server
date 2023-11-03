@@ -252,6 +252,13 @@ module.exports = {
                 };
 
                 var skipValue = 0;
+                if(typeof user.criterium === 'undefined') {
+                  user.criterium = {
+                    description: 'list-all',
+                    moreExploreUsers: 1
+                  }
+                }
+
                 if(user.criterium.description == 'paginator') {
                   var limitValue = parseFloat(user.criterium.limitValue);
                   if(user.criterium.currentPagIndex) {
