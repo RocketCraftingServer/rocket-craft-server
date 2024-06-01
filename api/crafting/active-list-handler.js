@@ -213,7 +213,7 @@ class ResponseHandler {
         criterium: req.body.criterium
       };
       var responseFlag = await action.getLeaderboard(user, this.dataOptions)
-      console.log("/rocket/leaderboard", responseFlag.status);
+      console.log("/rocket/leaderboard", responseFlag.leaderboard);
       if (responseFlag.status == "LEADERBOARD_DATA") {
       
         res.status(200).json({
