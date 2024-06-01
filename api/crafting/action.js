@@ -282,10 +282,7 @@ module.exports = {
 										if(aresult !== null) {
 											var leaderboardHandleData = [];
 											aresult.forEach(function(item) {
-
-												console.log("LEADERBOARD_DATA SET = ", item.nickname)
-												leaderboardHandleData.push(
-													{
+												leaderboardHandleData.push({
 														nickname: item.nickname,
 														points: item.points,
 														rank: item.rank
@@ -295,7 +292,7 @@ module.exports = {
 
 											resolve({status: "LEADERBOARD_DATA", leaderboard: leaderboardHandleData});
 											db.close();
-											console.log("LEADERBOARD_DATA")
+											// console.log("LEADERBOARD_DATA")
 
 										} else if(aresult == null) {
 											db.close();
