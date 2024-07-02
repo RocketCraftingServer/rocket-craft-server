@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "private": false,
   "scripts": {
-    "serve": "vue-cli-service serve",
+    "serve": "set NODE_OPTIONS=--openssl-legacy-provider && vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
     "format": "node_modules/.bin/eslint ./src/**",
@@ -33,7 +33,6 @@
     "node-sass": "^4.14.1",
     "path": "^0.12.7",
     "sass-loader": "^8.0.2",
-    "typedoc": "^0.24.5",
     "typescript": "^3.9.10",
     "vue-template-compiler": "^2.7.14"
   },
