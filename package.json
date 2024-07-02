@@ -20,16 +20,19 @@
   },
   "homepage": "maximumroulette.com",
   "dependencies": {
-    "body-parser": "1.18.2",
+    "body-parser": "^1.20.2",
     "compression": "^1.7.4",
     "cors": "^2.8.5",
     "crypto": "^1.0.1",
-    "express": "4.16.3",
+    "express": "^4.19.2",
     "express-subdomain": "^1.0.5",
-    "mongodb": "^3.6.3",
+    "mongodb": "^3.7.4",
     "node-static": "^0.7.11",
     "spdy": "^4.0.2",
     "vhost": "^3.0.2",
     "websocket": "^1.0.31"
+  },
+  "devDependencies": {
+    "nodemailer": "^6.9.14"
   }
 }
