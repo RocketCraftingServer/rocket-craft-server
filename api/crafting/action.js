@@ -283,10 +283,10 @@ module.exports = {
 											var leaderboardHandleData = [];
 											aresult.forEach(function(item) {
 												leaderboardHandleData.push({
-														nickname: item.nickname,
-														points: item.points,
-														rank: item.rank
-													}
+													nickname: item.nickname,
+													points: item.points,
+													rank: item.rank
+												}
 												)
 											})
 
@@ -456,5 +456,60 @@ module.exports = {
 				})
 		})
 	},
+
+	getPublicLeaderboard(user, dataOptions) {
+		const databaseName = dataOptions.dbName;
+		return new Promise((resolve) => {
+			var root = this;
+			MongoClient.connect(dataOptions.dbRoot, {useNewUrlParser: true, useUnifiedTopology: true},
+				function(error, db) {
+					if(error) {
+						resolve({status: 'error in MyDatabase getLeaderboardResponse'})
+						return;
+					}
+					const dbo = db.db(databaseName);
+					var leaderboardSort = {points: -1};
+					console.warn("++++++++++++++++=> ");
+					var usersData = {
+						status: "RESULT NULL",
+					};
+					var skipValue = 0;
+					user.criterium = {
+						description: 'list-all',
+						moreExploreUsers: 0
+					}
+
+					var limitValue = parseFloat(user.criterium.limitValue);
+					if(user.criterium.currentPagIndex) {
+						skipValue = (parseFloat(user.criterium.currentPagIndex) - 1) * limitValue;
+					}
+
+					dbo.collection("users").find({confirmed: true}, {})
+						.skip(skipValue).limit(limitValue).sort(leaderboardSort).toArray(function(err, aresult) {
+							if(err) {
+								console.warn("Profile actions get leaderboard error :" + err);
+								resolve({status: "WRONG DB QUERY"});
+							}
+							if(aresult !== null) {
+								var leaderboardHandleData = [];
+								aresult.forEach(function(item) {
+									leaderboardHandleData.push({
+										nickname: item.nickname,
+										points: item.points,
+										rank: item.rank
+									}
+									)
+								})
+								resolve({status: "LEADERBOARD_DATA", leaderboard: leaderboardHandleData});
+								db.close();
+								console.log("LEADERBOARD_DATA CLOSE")
+							} else if(aresult == null) {
+								db.close();
+								resolve(usersData);
+							}
+						})
+				})
+		})
+	}
 
 }

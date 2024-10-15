@@ -344,16 +344,10 @@ db.users.update({},{$set : {"role":"user"}},{upsert:false, multi:true})
    with last ue4 upgrade.
 
 
-## Multiplayer proxy servers for support [optimal]
+## Geolocation ip support [optimal] WIP 
 
-From ue4 engine recommended files
-- Turn server come from webRTC
-  excellent feature for next update.
-
-Be sure:
-```js
-npm install -g npm
-```
+ Test -> https://radar.cloudflare.com/ip/87.116.141.57
+ https://ipinfo.io/account/home?service=google&loginState=create
 
 ## Test from browser console 
  Read more at routes.md
