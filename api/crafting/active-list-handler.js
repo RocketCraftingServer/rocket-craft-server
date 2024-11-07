@@ -284,16 +284,14 @@ class ResponseHandler {
 
 	async getResponsePublicLeaderboard(req, res) {
 		console.log("/rocket/public-leaderboard", req.body);
-		if(typeof req.body.token !== 'undefined') {
-			var responseFlag = await action.getPublicLeaderboard(user, this.dataOptions)
-			console.log("/rocket/public-leaderboard", responseFlag.leaderboard);
-			if(responseFlag.status == "LEADERBOARD_DATA") {
-				res.status(200).json({
-					message: "You got leaderboard data.",
-					rocketStatus: responseFlag.status,
-					leaderboard: responseFlag.leaderboard
-				});
-			}
+		var responseFlag = await action.getPublicLeaderboard({}, this.dataOptions)
+		console.log("/rocket/public-leaderboard", responseFlag.leaderboard);
+		if(responseFlag.status == "LEADERBOARD_DATA") {
+			res.status(200).json({
+				message: "You got leaderboard data.",
+				rocketStatus: responseFlag.status,
+				leaderboard: responseFlag.leaderboard
+			});
 		} else {
 			console.log("/rocket/leaderboard There is no exspected props in request body.");
 			res.status(400).json({

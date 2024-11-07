@@ -1,275 +1,273 @@
 class ResponseHandler {
-  constructor(crypto) {
-    this.crypto = crypto;
-  }
+	constructor(crypto) {
+		this.crypto = crypto;
+	}
 
-  async onRegisterResponse(req, res) {
-    console.log("/rocket/register ", req.body.emailField);
-    if(
-      (typeof req.body.emailField !== "undefined") &
-      (typeof req.body.passwordField !== "undefined")
-    ) {
-      var user = {
-        email: req.body.emailField,
-        password: req.body.passwordField,
-      };
+	async onRegisterResponse(req, res) {
+		console.log("/rocket/register ", req.body.emailField);
+		if(
+			(typeof req.body.emailField !== "undefined") &
+			(typeof req.body.passwordField !== "undefined")
+		) {
+			var user = {
+				email: req.body.emailField,
+				password: req.body.passwordField,
+			};
 
-      // check email validation
+			// check email validation
 
-      var responseFlag = await this.dataAction.register(user, this);
-      console.log("/rocket/register responseFlag ", responseFlag);
-      if(responseFlag.status == "USER_ALREADY_REGISTERED") {
-        res.status(200).json({
-          message: "You are already registred.",
-          rocketStatus: responseFlag.status,
-        });
-      } else if(responseFlag.status == "TOO_SHORT_PASSW") {
-        res.status(400).json({
-          message: responseFlag.message,
-          rocketStatus: responseFlag.status,
-        });
-        return;
-      } else if(responseFlag.status == "USER_REGISTERED") {
-        let emailRegBody =
-          require("./../../email/templates/confirmation.html").getConfirmationEmail;
-        let contentRegBody = emailRegBody(
-          responseFlag.token,
-          responseFlag.email
-        );
-        let emailConnection = null;
+			var responseFlag = await this.dataAction.register(user, this);
+			console.log("/rocket/register responseFlag ", responseFlag);
+			if(responseFlag.status == "USER_ALREADY_REGISTERED") {
+				res.status(200).json({
+					message: "You are already registred.",
+					rocketStatus: responseFlag.status,
+				});
+			} else if(responseFlag.status == "TOO_SHORT_PASSW") {
+				res.status(400).json({
+					message: responseFlag.message,
+					rocketStatus: responseFlag.status,
+				});
+				return;
+			} else if(responseFlag.status == "USER_REGISTERED") {
+				let emailRegBody =
+					require("./../../email/templates/confirmation.html").getConfirmationEmail;
+				let contentRegBody = emailRegBody(
+					responseFlag.token,
+					responseFlag.email
+				);
+				let emailConnection = null;
 
-        try {
-          emailConnection = require("./../../email/mail-service")(
-            responseFlag.email,
-            responseFlag.status,
-            contentRegBody
-          ).SEND(responseFlag.email);
-        } catch(error) {
-          console.warn("Connector error in sending reg email!", error);
-          console.log("Email reg error. Notify client.");
-        } finally {
-          emailConnection
-            .then(data => {
-              res.status(200).json({
-                message: "Check email for conmfirmation key.",
-                rocketStatus: "USER_REGISTERED",
-                email: responseFlag.email,
-              });
-              console.log("Email reg sended. Notify client.");
-            })
-            .catch(error => {
-              console.log("Error in sending email procedure: " + error);
-              res.status(201).json({
-                message: "Check email for conmfirmation key.",
-                rocketStatus: "USER_REGISTERED",
-              });
-            });
-        }
-      }
-    } else {
-      console.log(
-        "/rocket/register There is no exspected props in request body."
-      );
+				try {
+					emailConnection = require("./../../email/mail-service")(
+						responseFlag.email,
+						responseFlag.status,
+						contentRegBody
+					).SEND2(responseFlag.email).then(data => {
+						res.status(200).json({
+							message: "Check email for conmfirmation key.",
+							rocketStatus: "USER_REGISTERED",
+							email: responseFlag.email,
+						});
+						console.log("Email reg sended. Notify client.");
+					})
+						.catch(error => {
+							console.log("Error in sending email procedure: " + error);
+							res.status(201).json({
+								message: "Check email for conmfirmation key.",
+								rocketStatus: "USER_REGISTERED",
+							});
+						});;
+				} catch(error) {
+					console.warn("Connector error in sending reg email!", error);
+					console.log("Email reg error. Notify client.");
+				}
 
-      res.status(400).json({
-        message: "There is no exspected props in request body.",
-        rocketStatus: "bad request",
-      });
-      return;
-    }
-  }
+			}
+		} else {
+			console.log(
+				"/rocket/register There is no exspected props in request body."
+			);
 
-  async onRegValidationResponse(req, res) {
-    var user = {
-      email: req.body.emailField,
-      token: req.body.tokenField,
-    };
+			res.status(400).json({
+				message: "There is no exspected props in request body.",
+				rocketStatus: "bad request",
+			});
+			return;
+		}
+	}
 
-    var responseFlag = await this.dataAction.regValidator(user, this);
-    // console.log("/rocket/confirmation responseFlag ", responseFlag);
+	async onRegValidationResponse(req, res) {
+		var user = {
+			email: req.body.emailField,
+			token: req.body.tokenField,
+		};
 
-    if(responseFlag.result !== null) {
-      // console.log("/rocket/confirmation passed ", responseFlag.email);
-      res.status(200).json({
-        message: "Confirmation done.",
-        rocketStatus: "USER_CONFIRMED",
-        accessToken: responseFlag.token,
-      });
-    } else {
-      res.status(202).json({
-        message: "Wrong confirmation code.",
-        rocketStatus: "USER_NOT_CONFIRMED",
-      });
-    }
-  }
+		var responseFlag = await this.dataAction.regValidator(user, this);
+		// console.log("/rocket/confirmation responseFlag ", responseFlag);
 
-  async onLoginResponse(req, res) {
-    if(req.secure) {
-      console.log("Secured.");
-    }
+		if(responseFlag.result !== null) {
+			// console.log("/rocket/confirmation passed ", responseFlag.email);
+			res.status(200).json({
+				message: "Confirmation done.",
+				rocketStatus: "USER_CONFIRMED",
+				accessToken: responseFlag.token,
+			});
+		} else {
+			res.status(202).json({
+				message: "Wrong confirmation code.",
+				rocketStatus: "USER_NOT_CONFIRMED",
+			});
+		}
+	}
 
-    console.log("/rocket/login ", req.body);
-    if((typeof req.body.emailField !== "undefined") & (typeof req.body.passwordField !== "undefined")) {
-      var user = {
-        email: req.body.emailField,
-        password: req.body.passwordField,
-      };
+	async onLoginResponse(req, res) {
+		if(req.secure) {
+			console.log("Secured.");
+		}
 
-      var responseFlag = await this.dataAction.loginUser(user, this);
-      console.log("/rocket/login => ", responseFlag);
-      if(responseFlag.status == "USER_LOGGED") {
-        res.status(200).json({
-          message: "User logged",
-          rocketStatus: responseFlag.status,
-          flag: responseFlag,
-        });
-      } else {
-        res.status(300).json({
-          message: "Wrong Password",
-          rocketStatus: "no-session",
-        });
-      }
-    } else {
-      res.status(404).json({
-        message: "Waoou vauu",
-        rocketStatus: "no-session",
-      });
-    }
-  }
+		console.log("/rocket/login ", req.body);
+		if((typeof req.body.emailField !== "undefined") & (typeof req.body.passwordField !== "undefined")) {
+			var user = {
+				email: req.body.emailField,
+				password: req.body.passwordField,
+			};
 
-  async onFastLoginResponse(req, res) {
-    if(req.secure) {
-      console.log("Secured.");
-    }
+			var responseFlag = await this.dataAction.loginUser(user, this);
+			console.log("/rocket/login => ", responseFlag);
+			if(responseFlag.status == "USER_LOGGED") {
+				res.status(200).json({
+					message: "User logged",
+					rocketStatus: responseFlag.status,
+					flag: responseFlag,
+				});
+			} else {
+				res.status(300).json({
+					message: "Wrong Password",
+					rocketStatus: "no-session",
+				});
+			}
+		} else {
+			res.status(404).json({
+				message: "Waoou vauu",
+				rocketStatus: "no-session",
+			});
+		}
+	}
 
-    console.log("/rocket/fast-login", req.body);
-    if((typeof req.body.email !== "undefined") & (typeof req.body.token !== "undefined")) {
-      var user = {
-        email: req.body.email,
-        token: req.body.token,
-      };
-      var responseFlag = await this.dataAction.fastLogin(user, this);
-      console.log("/rocket/fast-login => ", responseFlag);
-      if(responseFlag.status == "USER_LOGGED") {
-        res.status(200).json({
-          message: "User logged",
-          rocketStatus: responseFlag.status,
-          flag: responseFlag,
-        });
-      } else {
-        res.status(300).json({
-          message: "Wrong Password",
-          rocketStatus: "no-session",
-        });
-      }
-    } else {
-      res.status(404).json({
-        message: "Waoou vauu",
-        rocketStatus: "no-session",
-      });
-    }
-  }
+	async onFastLoginResponse(req, res) {
+		if(req.secure) {
+			console.log("Secured.");
+		}
 
-  async onSingOutResponse(req, res) {
-    if(req.secure) {
-      console.log("Secured.");
-    }
+		console.log("/rocket/fast-login", req.body);
+		if((typeof req.body.email !== "undefined") & (typeof req.body.token !== "undefined")) {
+			var user = {
+				email: req.body.email,
+				token: req.body.token,
+			};
+			var responseFlag = await this.dataAction.fastLogin(user, this);
+			console.log("/rocket/fast-login => ", responseFlag);
+			if(responseFlag.status == "USER_LOGGED") {
+				res.status(200).json({
+					message: "User logged",
+					rocketStatus: responseFlag.status,
+					flag: responseFlag,
+				});
+			} else {
+				res.status(300).json({
+					message: "Wrong Password",
+					rocketStatus: "no-session",
+				});
+			}
+		} else {
+			res.status(404).json({
+				message: "Waoou vauu",
+				rocketStatus: "no-session",
+			});
+		}
+	}
 
-    console.log("/rocket/logout", req.body);
-    if((typeof req.body.email !== "undefined") & (typeof req.body.token !== "undefined")) {
-      var user = {
-        email: req.body.email,
-        token: req.body.token,
-      };
-      var responseFlag = await this.dataAction.logOut(user, this);
-      console.log("/rocket/logout => ", responseFlag);
-      if(responseFlag.status == "USER_LOGOUT") {
-        res.status(200).json({
-          message: "User logout",
-          rocketStatus: responseFlag.status
-        });
-      } else {
-        res.status(300).json({
-          message: "Something Wrong",
-          rocketStatus: "no-session",
-        });
-      }
-    } else {
-      res.status(404).json({
-        message: "Waoou vauu",
-        rocketStatus: "no-session",
-      });
-    }
-  }
+	async onSingOutResponse(req, res) {
+		if(req.secure) {
+			console.log("Secured.");
+		}
 
-  async onForgotNewPassworkResponse(req, res) {
-    var user = {
-      email: req.body.emailField,
-      token: req.body.tokenField,
-    };
+		console.log("/rocket/logout", req.body);
+		if((typeof req.body.email !== "undefined") & (typeof req.body.token !== "undefined")) {
+			var user = {
+				email: req.body.email,
+				token: req.body.token,
+			};
+			var responseFlag = await this.dataAction.logOut(user, this);
+			console.log("/rocket/logout => ", responseFlag);
+			if(responseFlag.status == "USER_LOGOUT") {
+				res.status(200).json({
+					message: "User logout",
+					rocketStatus: responseFlag.status
+				});
+			} else {
+				res.status(300).json({
+					message: "Something Wrong",
+					rocketStatus: "no-session",
+				});
+			}
+		} else {
+			res.status(404).json({
+				message: "Waoou vauu",
+				rocketStatus: "no-session",
+			});
+		}
+	}
 
-    var responseFlag = await this.dataAction.forgotPass(user, this);
-    console.log("/rocket/forgot-pass =>", responseFlag);
+	async onForgotNewPassworkResponse(req, res) {
+		var user = {
+			email: req.body.emailField,
+			token: req.body.tokenField,
+		};
 
-    if(responseFlag.status == "FTOKEN CREATED") {
-      let emailFPassBody =
-        require("./../../email/templates/confirmation.forgotpass.html").getConfirmationForgotPass;
-      let contentRegBody = emailFPassBody(responseFlag.ftoken, user.email);
+		var responseFlag = await this.dataAction.forgotPass(user, this);
+		console.log("/rocket/forgot-pass =>", responseFlag);
 
-      var emailConnection = require("./../../email/mail-service")(
-        responseFlag.email,
-        responseFlag.status,
-        contentRegBody
-      ).SEND(responseFlag.email);
+		if(responseFlag.status == "FTOKEN CREATED") {
+			let emailFPassBody =
+				require("./../../email/templates/confirmation.forgotpass.html").getConfirmationForgotPass;
+			let contentRegBody = emailFPassBody(responseFlag.ftoken, user.email);
 
-      emailConnection.then(() => {
-        console.log("EMAIL FORGPASS");
-        res.status(200).json({
-          message: "Please check your email for confirmation code.",
-          rocketStatus: "CHECK_EMAIL_FORGOT_PASSWORD_CODE",
-          accessToken: responseFlag.email,
-        });
-      });
-      emailConnection.catch(err => {
-        console.log("CATCH => ", err);
-        res.status(200).json({
-          message: "Please check your email for confirmation code. If you dont get email for 5 minute try again.",
-          rocketStatus: "CHECK_EMAIL_FORGOT_PASSWORD_CODE",
-          accessToken: responseFlag.token,
-        });
-      });
-    } else {
-      res.status(405).json({
-        message: "Something wrong here, man.",
-        rocketStatus: responseFlag.status,
-      });
-    }
-  }
+			var emailConnection = require("./../../email/mail-service")(
+				responseFlag.email,
+				responseFlag.status,
+				contentRegBody
+			).SEND2(responseFlag.email);
 
-  async onSetNewPassworkResponse(req, res) {
+			emailConnection.then(() => {
+				console.log("EMAIL FORGPASS");
+				res.status(200).json({
+					message: "Please check your email for confirmation code.",
+					rocketStatus: "CHECK_EMAIL_FORGOT_PASSWORD_CODE",
+					accessToken: responseFlag.email,
+				});
+			});
+			emailConnection.catch(err => {
+				console.log("CATCH => ", err);
+				res.status(200).json({
+					message: "Please check your email for confirmation code. If you dont get email for 5 minute try again.",
+					rocketStatus: "CHECK_EMAIL_FORGOT_PASSWORD_CODE",
+					accessToken: responseFlag.token,
+				});
+			});
+		} else {
+			res.status(405).json({
+				message: "Something wrong here, man.",
+				rocketStatus: responseFlag.status,
+			});
+		}
+	}
 
-    var user = {
-      email: req.body.emailField,
-      ftoken: req.body.ftoken,
-      newPassword: req.body.newPassword,
-    };
+	async onSetNewPassworkResponse(req, res) {
 
-    var responseFlag = await this.dataAction.setNewPass(user, this);
-    // console.log("/rocket/forgotPass responseFlag ", responseFlag);
-    if(responseFlag.status == "NEW-PASS-DONE") {
-      console.log("NEW PASS DONE");
-      res.status(200).json({
-        message: "You setup new password for your rocket craft account.",
-        rocketStatus: "NEW_PASSWORD_DONE",
-        accessToken: responseFlag.email,
-      });
-    } else {
-      res.status(202).json({
-        message: "Something wrong here, man.",
-        rocketStatus: responseFlag.status,
-      });
-    }
-  }
+		var user = {
+			email: req.body.emailField,
+			ftoken: req.body.ftoken,
+			newPassword: req.body.newPassword,
+		};
+
+		var responseFlag = await this.dataAction.setNewPass(user, this);
+		// console.log("/rocket/forgotPass responseFlag ", responseFlag);
+		if(responseFlag.status == "NEW-PASS-DONE") {
+			console.log("NEW PASS DONE");
+			res.status(200).json({
+				message: "You setup new password for your rocket craft account.",
+				rocketStatus: "NEW_PASSWORD_DONE",
+				accessToken: responseFlag.email,
+			});
+		} else {
+			res.status(202).json({
+				message: "Something wrong here, man.",
+				rocketStatus: responseFlag.status,
+			});
+		}
+	}
 }
 
 module.exports = ResponseHandler;

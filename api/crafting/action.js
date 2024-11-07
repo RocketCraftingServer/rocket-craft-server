@@ -457,7 +457,7 @@ module.exports = {
 		})
 	},
 
-	getPublicLeaderboard(user, dataOptions) {
+	getPublicLeaderboard(_, dataOptions) {
 		const databaseName = dataOptions.dbName;
 		return new Promise((resolve) => {
 			var root = this;
@@ -474,9 +474,11 @@ module.exports = {
 						status: "RESULT NULL",
 					};
 					var skipValue = 0;
+					var user = {} 
 					user.criterium = {
 						description: 'list-all',
-						moreExploreUsers: 0
+						moreExploreUsers: 0,
+						limitValue: 10
 					}
 
 					var limitValue = parseFloat(user.criterium.limitValue);
@@ -486,8 +488,7 @@ module.exports = {
 
 					dbo.collection("users").find({confirmed: true}, {})
 						.skip(skipValue).limit(limitValue).sort(leaderboardSort).toArray(function(err, aresult) {
-							if(err) {
-								console.warn("Profile actions get leaderboard error :" + err);
+							if(err) {console.warn("Profile actions get leaderboard error :" + err);
 								resolve({status: "WRONG DB QUERY"});
 							}
 							if(aresult !== null) {
@@ -497,8 +498,7 @@ module.exports = {
 										nickname: item.nickname,
 										points: item.points,
 										rank: item.rank
-									}
-									)
+									})
 								})
 								resolve({status: "LEADERBOARD_DATA", leaderboard: leaderboardHandleData});
 								db.close();
