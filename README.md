@@ -111,7 +111,7 @@ Do not use any dev tools on public server it is my personal advice.
 ├── config.js                 [server side config]
 ├── LICENCE
 ├── README.md
-├── package.json                
+├── package.json
 ├── package-lock.json
 ├── server.js                   [Main Server]
 
@@ -354,7 +354,7 @@ db.users.update({},{$set : {"role":"user"}},{upsert:false, multi:true})
  Test -> https://radar.cloudflare.com/ip/87.116.141.57
  https://ipinfo.io/account/home?service=google&loginState=create
 
-## Test from browser console 
+## Test from browser console
  Read more at routes.md
 
   From http://maximumroulette.com/ or from your own server.
@@ -388,3 +388,8 @@ Run on 5$ server dedicated server with:
 
 
 [![DigitalOcean Referral Badge](https://web-platforms.sfo2.cdn.digitaloceanspaces.com/WWW/Badge%201.svg)](https://www.digitalocean.com/?refcode=c8bc19d26557&utm_campaign=Referral_Invite&utm_medium=Referral_Program&utm_source=badge)
+
+
+### Join chat on slack
+
+(GamePlay platform Rock)[https://join.slack.com/t/gameplay-rock/shared_invite/zt-ffcgl80x-CYu4s~YC0bD9Od9_bkqmzw]
