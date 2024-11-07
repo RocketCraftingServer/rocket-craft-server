@@ -1,7 +1,7 @@
 
 # Rocket Crafting Servers
 ## for Rocket Craft (ue4 project) clients.
-## General status : `underconstruct`
+## General status : `ROCK 2024`
 
 Project original name : `Rocket Crafting Servers`
 to avoid misunderstandings with other randomly
@@ -13,7 +13,7 @@ similar server names. Rocket is an alias for Unreal engine.
 
 ### Get server account part:
   https://github.com/RocketCraftingServer/rocket-craft-server
-  
+
 
 Basic account session staff based on node.js and MongoDB.
  Integration done:
@@ -22,7 +22,7 @@ Basic account session staff based on node.js and MongoDB.
  - Vue-Typescript administrator panel project
  - Test clients (rocket-craft repo)
  - Rocket-craft client (4.22) exchange IP for opened dedicated users server run.
- - Basic implementation for client library `safir`.
+ - Basic implementation for client library `safir` or any vanilljs.
 
 ### Run rocketcraftingserver in local (dev):
 ![](https://github.com/zlatnaspirala/rocket-craft-server/blob/main/non-project-files/tutorial-steps/local-run-rocket-crafting-server.gif)
@@ -41,7 +41,7 @@ Do not use any dev tools on public server it is my personal advice.
 ![](https://github.com/zlatnaspirala/rocket-craft-server/blob/main/non-project-files/tutorial-steps/profile-preview-in-ue-client-game-brm.png)
 
 
-### Project structure ###
+### Project structure
 
  - First char in name `I` (for example IApp.ts) represent 
    current interface used for generating API documentation.
@@ -51,7 +51,7 @@ Do not use any dev tools on public server it is my personal advice.
    Dont import any file from root like congif.js.
    Even admin access it is still posible for public access.
  - Top secret list:
-      - system email password
+      - system email mailtrap api
       - public database password
 
 <pre>
@@ -72,11 +72,20 @@ Do not use any dev tools on public server it is my personal advice.
 |   |   └── components/            
 |   |       └── administrator/
 |   |           └── accounts.vue
+|   |       └── profile/
+|   |           └── avatar.vue
+|   |           └── profile.vue  [ If not visible not active in project like `generic`]
+|   |       └── IFooter.ts
+|   |       └── IHeader.ts
+|   |       └── myFooter.vue
+|   |       └── myHeader.vue
 |   |   └── local-storage/
 |   |   └── my-common/
 |   |       └── common-func.ts
 |   |       └── literal.ts
 |   |   └── styles/
+|   |       └── global.scss
+|   |       └── style.scss
 |   |   └── App.vue
 |   |   └── IApp.ts
 |   |   └── main.ts
@@ -95,13 +104,9 @@ Do not use any dev tools on public server it is my personal advice.
 |   ├── tsconfig.ts
 |   ├── vue.config.js         [PWA - staff]
 ├── self-cert/                [server side local cert]
-├── multiplayer/              (raw implementation - support servers)
-|   ├──matchmaker             [optimal]
-|   ├──signalling-webserver   [optimal]
-|   ├──server-builds          [optimal]
-|   |  ├──windows             [for win host plan]
-|   |  ├──macos               [for macos host plan]
-|   |  ├──linux               [for linux host plan]
+├── game-servers/             (Control from config)
+|   ├──matrix-roulette        [optimal] WIP
+|   ├──hang3d-reborn          [optimal] WIP
 ├── .gitignore        
 ├── config.js                 [server side config]
 ├── LICENCE
