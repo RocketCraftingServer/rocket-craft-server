@@ -491,7 +491,7 @@ fetch("/rocket/login/", {
 ```
 
 For private job i also run KureOrange at:
-https://kure.maximumroulette.com/
+https://maximumroulette.com:2020
 
 ## Dedicated ue4 server from rocket-craft project [not rocketcraftingserver].
 
