@@ -119,7 +119,7 @@ class ServerConfig {
 	 */
 	get systemEmail() {
 		return {
-			TOKEN: "*******",
+			TOKEN: "******",
 			SENDER_EMAIL: "gameplay@maximumroulette.com"
 		};
 	};
@@ -127,6 +127,14 @@ class ServerConfig {
 	get connectorPort() {
 		return 80
 	}
+
+	get gameServers() {
+		return {
+			matrixRoulette: {
+				active: true
+			}
+		}
+	};
 
 	/**
 	 * @description Database name
@@ -137,7 +145,6 @@ class ServerConfig {
 	 *   secured => Public Domain with no possible remote connection
 	 * }
 	 */
-
 	get databaseName() {
 		return "rocket-1";
 	}
@@ -147,7 +154,7 @@ class ServerConfig {
 			dev: "mongodb://localhost:27017",
 			prod: "mongodb://userAdmin:***@*.*.*.140:49326/admin",
 			secured: "mongodb://userAdmin:***@*.*.*.140:49326/admin",
-			freeService: "mongodb+srv://zlatnaspirala:******@cluster0.kft9q9e.mongodb.net/?retryWrites=true&w=majority"
+			freeService: "mongodb+srv://adminn:*******@cluster0.kft9q9e.mongodb.net/?retryWrites=true&w=majority"
 		};
 
 		if(this.serverMode == "dev") {
