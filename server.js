@@ -15,6 +15,7 @@ const MyDatabase = require("./database/database");
 let database = new MyDatabase(config);
 
 module.exports = config;
+
 /**
  * @description Create if not exist
  * all defined collections.
@@ -206,7 +207,7 @@ let routerProfileDeleteAdmin = new require('./api/admin/admin-profile')(app, exp
 // nothing wiht routes !
 let routerRocket = new require('./api/account/account')(app, express, database, crypto);
 let routerUsers = new require('./api/users/users')(app, express, database, crypto);
-let routerProfile = new require('./api/profile/profile')(app,	express,
+let routerProfile = new require('./api/profile/profile')(app, express,
 	{
 		dbName: config.databaseName,
 		dbRoot: config.getDatabaseRoot,
@@ -234,6 +235,52 @@ let routerVisitors = new require('./api/visitors/visitors')(app, express,
 // hostingHTTP part.
 // hostingHTTP.use(bodyParser.json({ limit: config.maxRequestSize }))
 hostingHTTP.use(bodyParser.json());
+
+/**
+ * @description
+ * GamePlay Servers part
+ * Based on `Server Events` tech.
+ */
+if(config.gameServers.matrixRoulette.active == true) {
+	// let clients = [];
+	let facts = [];
+	const matrixRouletteCore = require("./game-servers/matrix-roulette/roulette-server.js");
+	matrixRouletteCore.clients = [];
+	matrixRouletteCore.init();
+
+	hostingHTTP.get('/matrix-roulette-status', (request, response) => response.json({clients: matrixRouletteCore.clients.length}));
+
+	function eventsHandler(request, response, next) {
+		const headers = {
+			'Content-Type': 'text/event-stream',
+			'Connection': 'keep-alive',
+			'Cache-Control': 'no-cache'
+		};
+		response.writeHead(200, headers);
+		const data = `data: ${JSON.stringify(facts)}\n\n`;
+		response.write(data);
+		const clientId = Date.now();
+		const newClient = {id: clientId, response};
+		matrixRouletteCore.clients.push(newClient);
+		request.on('close', () => {
+			console.log(`${clientId} Connection closed`);
+			matrixRouletteCore.clients = matrixRouletteCore.clients.filter(client => client.id !== clientId);
+		});
+	}
+
+	hostingHTTP.get('/matrix-roulette', eventsHandler);
+
+	// |In case of adding new Event from client by the POST call.
+	// No need for roulette logic.
+	// async function addFact(request, respsonse, next) {
+	// 	const newFact = request.body;
+	// 	facts.push(newFact);
+	// 	respsonse.json(newFact)
+	// 	return sendEventsToAll(newFact);
+	// }
+	// Update from clients
+	// hostingHTTP.post('/fact', addFact);
+}
 
 let routerProfileDeleteAdmin2 = new require('./api/admin/admin-profile')(
 	hostingHTTP, express,
