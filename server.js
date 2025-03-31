@@ -243,7 +243,7 @@ hostingHTTP.use(bodyParser.json());
 if(config.gameServers.matrixRoulette.active == true) {
 	// let clients = [];
 	let facts = [];
-	const matrixRouletteCore = require("./game-servers/matrix-roulette/roulette-server.js");
+	const matrixRouletteCore = require("./game-servers/matrix-roulette/matrix-roulette-server.js");
 	matrixRouletteCore.clients = [];
 	matrixRouletteCore.init();
 
