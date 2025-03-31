@@ -239,7 +239,6 @@ hostingHTTP.use(bodyParser.json());
 /**
  * @description
  * GamePlay Servers part
- * Based on `Server Events` tech.
  */
 if(config.gameServers.matrixRoulette.active == true) {
 	// let clients = [];
@@ -270,14 +269,15 @@ if(config.gameServers.matrixRoulette.active == true) {
 
 	hostingHTTP.get('/matrix-roulette', eventsHandler);
 
-	// |In case of adding new Event from client by the POST call.
-	// No need for roulette logic.
-	// async function addFact(request, respsonse, next) {
-	// 	const newFact = request.body;
-	// 	facts.push(newFact);
-	// 	respsonse.json(newFact)
-	// 	return sendEventsToAll(newFact);
-	// }
+	async function addFact(request, respsonse, next) {
+		const newFact = request.body;
+		facts.push(newFact);
+		respsonse.json(newFact)
+		return sendEventsToAll(newFact);
+	}
+
+	// 
+
 	// Update from clients
 	// hostingHTTP.post('/fact', addFact);
 }

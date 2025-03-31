@@ -1,0 +1,100 @@
+
+<style>
+	p {
+		margin: 3px 3px;
+		padding: 0;
+	}
+	pre {
+		width: 80%;
+		text-align: left;
+		background-color: gray;
+		color: white;
+		border-radius: 5px;
+	}
+</style>
+
+
+<h2>TEST MATRIX-ROULETTE-SERVER </h2>
+
+<h3>How to start server part?</h3>
+<p> You can find server part in `projects\matrix-roulette\server` folder.</p>
+First install deps:
+<pre>
+	cd server
+	npm i
+</pre>
+
+Run on localhost : 
+From `projects\matrix-roulette\server` project folder run
+<pre>
+	npm run dev
+</pre>
+
+
+<h3>How to implement frontend part?</h3>
+
+<p>This is basic example for web app frontend part. It is Javascript code.</p>
+<p>My domain is https://maximumroulette.com/matrix-roulette. You need to </p>
+<p>replace with your own. Next block code must be loaded initialy.</p>
+
+Example for public server:
+<pre>
+
+	const events = new EventSource('https://maximumroulette.com/matrix-roulette');
+	events.onmessage = (event) => {
+		const parsedData = JSON.parse(event.data);
+		if(typeof parsedData.matrixRoulette === 'undefined') {return }
+		console.log('[serverEvent:matrix-roulette]', parsedData.matrixRoulette.status)
+		if(parsedData.matrixRoulette.status == "MEDITATE") {
+			console.log('status game: MEDITATE');
+			dispatchEvent(new CustomEvent('MEDITATE_SERVER', {detail: parsedData.matrixRoulette.counter}))
+		} else if(parsedData.matrixRoulette.status == "RESULT") {
+			console.log('status game: RESULT');
+			console.log('[serverEvent:matrix-roulette[win number]]', parsedData.matrixRoulette.winNumber)
+		} else {
+			alert()
+		}
+	};
+	events.onerror = (event) => {
+		console.log('ServerEvent Error:', event)
+	};
+
+</pre>
+
+Example for localhost server:
+<pre>
+
+	const events = new EventSource('https://localhost:8080/matrix-roulette');
+	events.onmessage = (event) => {
+		const parsedData = JSON.parse(event.data);
+		if(typeof parsedData.matrixRoulette === 'undefined') {return }
+		console.log('[serverEvent:matrix-roulette]', parsedData.matrixRoulette.status)
+		if(parsedData.matrixRoulette.status == "MEDITATE") {
+			console.log('status game: MEDITATE');
+			dispatchEvent(new CustomEvent('MEDITATE_SERVER', {detail: parsedData.matrixRoulette.counter}))
+		} else if(parsedData.matrixRoulette.status == "RESULT") {
+			console.log('status game: RESULT');
+			console.log('[serverEvent:matrix-roulette[win number]]', parsedData.matrixRoulette.winNumber)
+		} else {
+			alert()
+		}
+	};
+	events.onerror = (event) => {
+		console.log('ServerEvent Error:', event)
+	};
+
+</pre>
+
+<p>Later somewhere in your code add listener for our custom events.</p>
+
+<pre>
+
+	addEventListener('MEDITATE_SERVER', (e) => {
+		console.log('Server Meditate: ', e)
+	})
+
+	addEventListener('RESULT', (e) => {
+		console.log('Results from server: ', e)
+	})
+	
+</pre>

@@ -8,6 +8,7 @@ Project original name : `Rocket Crafting Servers`
 to avoid misunderstandings with other randomly
 similar server names. Rocket is an alias for Unreal engine.
 
+
 => Migrate to ue4 builded from source.
 => Only active for now is 4.24.3 , i will wait until finish
 `Barbarian Road Mashines` basic demo with one game play map.
@@ -154,8 +155,9 @@ Only implications between ue client vs server.js is account session status
     - register form        [DONE]
     - reg/confirmaton form [DONE]
     - login form           [DONE]
-    - foast-login [token]  [DONE]
+    - fast-login [token]   [DONE]
     - profile              [DONE]
+		- point-plus10         [DONE]
 </pre>
 
 <pre>
@@ -167,7 +169,7 @@ Only implications between ue client vs server.js is account session status
 |  +-----------------------------------------------------+                                              |
 |                                                                                                       |
 |                                                                                                       |
-|      DESKTOPS                            MOBILE     GameConsoles          WEB                         |
+|      DESKTOPS                            MOBILE     GameConsoles          WEB && Hybrids              |
 | +-------------------------------+   +------------------------------+  +----------------------------+  |
 | |                               |   |                              |  |                            |  |
 | |   WINDOWS                     |   |  ANDROID       X-Box         |  | Unreal export direct from  |  |
@@ -206,6 +208,7 @@ Only implications between ue client vs server.js is account session status
 |     | [/rocket/profile]         |                                                                      |
 |     | [/rocket/profile-delete]  |                                                                      |
 |     | [/rocket/leaderboard]     |                                                                      |
+|     | [/rocket/point-plus10]    |                                                                      |
 |     +---------------------------+                                                                      |
 |                                                                                                        |
 |  +------------------------------------------------------------+                                        |

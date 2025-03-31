@@ -172,7 +172,6 @@ class ResponseHandler {
 				myIp: req.connection.remoteAddress
 			};
 			var responseFlag = await action.updateProfilePoints(user, this.dataOptions)
-			// console.log("/rocket/point-plus10", responseFlag.status);
 			if(responseFlag.status == "POINTS_ACTION_POINTPLUS") {
 
 				res.status(200).json({
@@ -253,7 +252,6 @@ class ResponseHandler {
 				myIp: req.connection.remoteAddress
 			};
 			var responseFlag = await action.updateProfilePointsAfterDead(user, this.dataOptions)
-			// console.log("/rocket/point-plus10", responseFlag.status);
 			if(responseFlag.status == "POINTS_ACTION_ONDEAD") {
 
 				res.status(200).json({

@@ -10,32 +10,38 @@ const ResponseHandler = require("./active-list-handler")
  */
 class RocketRouteActiveList extends ResponseHandler {
 
-  /**
-   * @description 
-   * Keep it simple.
-   */
-  constructor(app, express, dataOptions, crypto) {
+	/**
+	 * @description 
+	 * Keep it simple.
+	 */
+	constructor(app, express, dataOptions, crypto) {
 
-    super(crypto, dataOptions);
+		super(crypto, dataOptions);
 
-    this.app = app;
-    this.express = express;
-    this.dataOptions = dataOptions;
+		this.app = app;
+		this.express = express;
+		this.dataOptions = dataOptions;
 
-    this.routeRegister();
+		this.routeRegister();
 
-  }
+	}
 
-  routeRegister() {
-    this.app.post("/rocket/active-games", this.getServerListResponse.bind(this));
-    this.app.post("/rocket/wanna-play", this.getResponse.bind(this));
-    this.app.post("/rocket/remove-from-server-list", this.getResponseRemoveFromServerList.bind(this));
-    this.app.post("/rocket/leaderboard", this.getResponseLeaderboard.bind(this));
+	routeRegister() {
+		/**Related to the ActiveList only for IP HOST/CLIENT reason */
+		this.app.post("/rocket/active-games", this.getServerListResponse.bind(this));
+		this.app.post("/rocket/wanna-play", this.getResponse.bind(this));
+		this.app.post("/rocket/remove-from-server-list", this.getResponseRemoveFromServerList.bind(this));
+
+		/**General routes*/
+		this.app.post("/rocket/leaderboard", this.getResponseLeaderboard.bind(this));
 		this.app.post("/rocket/public-leaderboard", this.getResponsePublicLeaderboard.bind(this));
-    this.app.post("/rocket/point-plus10", this.getResponsePointPlus10.bind(this));
-    this.app.post("/rocket/dead", this.getResponseDead.bind(this));
-    console.info("Wanna play route loaded.");
-  }
+		this.app.post("/rocket/point-plus10", this.getResponsePointPlus10.bind(this));
+
+		/**Related ?? maybe for all dead cases in any game */
+		this.app.post("/rocket/dead", this.getResponseDead.bind(this));
+
+		console.info("Wanna play route loaded.");
+	}
 
 }
 

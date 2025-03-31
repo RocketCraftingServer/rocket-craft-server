@@ -1,0 +1,33 @@
+{
+  "name": "matrix-roulette-server",
+  "version": "1.0.0",
+  "description": "matrix-roulette-server",
+  "main": "matrix-roulette-server.js",
+  "scripts": {
+    "start": "node matrix-roulette-server.js",
+    "dev": "node matrix-roulette-server.js localhost"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/RocketCraftingServer/rocket-craft-server"
+  },
+  "author": "zlatnaspirala@gmail.com",
+  "license": "MIT License",
+  "bugs": {
+    "url": "https://github.com/RocketCraftingServer/rocket-craft-server/issues"
+  },
+  "homepage": "maximumroulette.com",
+  "dependencies": {
+    "body-parser": "^1.20.2",
+    "compression": "^1.7.4",
+    "cors": "^2.8.5",
+    "express": "^4.19.2",
+    "express-subdomain": "^1.0.5",
+    "http2": "^3.3.7",
+    "http2-express-bridge": "^1.0.7",
+    "node-static": "^0.7.11",
+    "spdy": "^4.0.2",
+    "vhost": "^3.0.2"
+  },
+  "devDependencies": {}
+}
