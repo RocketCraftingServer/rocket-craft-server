@@ -83,8 +83,8 @@ let matrixRouletteCore = {
 	},
 
 	giveMeNum: () => {
-		// var t = randomIntFromTo(0, 36)
-		var t = 0;
+		var t = randomIntFromTo(0, 36)
+		// var t = 0;
 		matrixRouletteCore.winningNumbers.push(t)
 		if (matrixRouletteCore.winningNumbers.length > matrixRouletteCore.maxStackOfWinNums) {
 			matrixRouletteCore.winningNumbers.pop();
