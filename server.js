@@ -312,6 +312,14 @@ let routerProfileWannaPlay2 = new require('./api/crafting/active-list')(hostingH
 	crypto
 );
 
+let routerFOHBLogs = new require('./api/fohb/active-list')(hostingHTTP, express,
+	{
+		dbName: config.databaseName,
+		dbRoot: config.getDatabaseRoot
+	},
+	crypto
+);
+
 let routerVisitors2 = new require('./api/visitors/visitors')(hostingHTTP, express,
 	{
 		dbName: config.databaseName,

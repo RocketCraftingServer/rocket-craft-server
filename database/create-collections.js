@@ -22,7 +22,6 @@ class CreateDatabaseCollections {
 		const r2 = this.createActiveSessions();
 		const r3 = this.createRouletteServerCollection();
     const r4 = this.createFOHB_RPG_Sessions();
-    console.info('createFOHB_RPG_Sessions')
 		return r4;
 	}
 
@@ -157,10 +156,11 @@ class CreateDatabaseCollections {
 					if(list.length == 0) {
             const collection = await dbo.createCollection(collName);
 						collection.createIndex({userId: 1}, {unique: true});
-						collection.createIndex({userNickname: 1}, {unique: true});
+						collection.createIndex({players: 1}, {unique: true});
 						collection.createIndex({gameDescription: 1}, {unique: true});
-						collection.createIndex({sessionMapName: 1}, {unique: false});
+						collection.createIndex({sessionName: 1}, {unique: false});
 						collection.createIndex({gameName: 1}, {unique: false});
+            collection.createIndex({teamWinner: 1}, {unique: false});
 						collection.createIndex({isFinished: 1}, {unique: false});
 						resolve(`Collections ${collName} created.`);
 					} else {
