@@ -22,8 +22,8 @@ class CreateDatabaseCollections {
 		const r2 = this.createActiveSessions();
 		const r3 = this.createRouletteServerCollection();
     const r4 = this.createFOHB_RPG_Sessions();
-
-		return r0;
+    console.info('createFOHB_RPG_Sessions')
+		return r4;
 	}
 
 	createRouletteServerCollection() {
@@ -147,19 +147,21 @@ class CreateDatabaseCollections {
 			MongoClient.connect(
 				this.config.getDatabaseRoot,
 				{useNewUrlParser: true, useUnifiedTopology: true},
-				function(error, db) {
+				async function(error, db) {
 					if(error) {
 						console.warn("MyDatabase  error:" + error);
 						return;
 					}
 					const dbo = db.db(databaseName);
-					if(!dbo.collection(collName)) {
-						dbo.createCollection(collName).createIndex({userId: 1}, {unique: true});
-						dbo.createCollection(collName).createIndex({userNickname: 1}, {unique: true});
-						dbo.createCollection(collName).createIndex({gameDescription: 1}, {unique: true});
-						dbo.createCollection(collName).createIndex({sessionMapName: 1}, {unique: false});
-						dbo.createCollection(collName).createIndex({gameName: 1}, {unique: false});
-						dbo.createCollection(collName).createIndex({isFinished: 1}, {unique: false});
+          const list = await dbo.listCollections({ name: collName }).toArray();
+					if(list.length == 0) {
+            const collection = await dbo.createCollection(collName);
+						collection.createIndex({userId: 1}, {unique: true});
+						collection.createIndex({userNickname: 1}, {unique: true});
+						collection.createIndex({gameDescription: 1}, {unique: true});
+						collection.createIndex({sessionMapName: 1}, {unique: false});
+						collection.createIndex({gameName: 1}, {unique: false});
+						collection.createIndex({isFinished: 1}, {unique: false});
 						resolve(`Collections ${collName} created.`);
 					} else {
 						resolve(`Collections ${collName} already exist.`);
