@@ -26,7 +26,7 @@ class ResponseHandler {
 			})
 		} else {
 			res.status(401).json({
-				message: "Maybe you are developer interest in who this works.",
+				message: "Maybe you are developer interest in how this works.",
 				rocketStatus: "Maybe Bad Request"
 			})
 		}

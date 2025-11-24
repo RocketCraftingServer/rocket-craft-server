@@ -21,6 +21,7 @@ class CreateDatabaseCollections {
 		const r1 = this.createUsersCollection();
 		const r2 = this.createActiveSessions();
 		const r3 = this.createRouletteServerCollection();
+    const r4 = this.createFOHB_RPG_Sessions();
 
 		return r0;
 	}
@@ -126,6 +127,42 @@ class CreateDatabaseCollections {
 						resolve("Collections activegames created.")
 					} else {
 						resolve("Collections activegames already exist.")
+					}
+
+				});
+		});
+	}
+
+  	/**
+	 * @description Before start
+	 * game play. We need to login.
+	 */
+	createFOHB_RPG_Sessions() {
+
+		var root = this;
+		const databaseName = this.config.databaseName;
+
+    const collName = "forestofhollowblood";
+		return new Promise((resolve) => {
+			MongoClient.connect(
+				this.config.getDatabaseRoot,
+				{useNewUrlParser: true, useUnifiedTopology: true},
+				function(error, db) {
+					if(error) {
+						console.warn("MyDatabase  error:" + error);
+						return;
+					}
+					const dbo = db.db(databaseName);
+					if(!dbo.collection(collName)) {
+						dbo.createCollection(collName).createIndex({userId: 1}, {unique: true});
+						dbo.createCollection(collName).createIndex({userNickname: 1}, {unique: true});
+						dbo.createCollection(collName).createIndex({gameDescription: 1}, {unique: true});
+						dbo.createCollection(collName).createIndex({sessionMapName: 1}, {unique: false});
+						dbo.createCollection(collName).createIndex({gameName: 1}, {unique: false});
+						dbo.createCollection(collName).createIndex({isFinished: 1}, {unique: false});
+						resolve(`Collections ${collName} created.`);
+					} else {
+						resolve(`Collections ${collName} already exist.`);
 					}
 
 				});
