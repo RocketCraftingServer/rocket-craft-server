@@ -66,7 +66,7 @@ module.exports = {
     })
   },
 
-  gameplayStarted() {
+  gameplayStarted(user, dataOptions) {
     const databaseName = dataOptions.dbName;
     return new Promise((resolve) => {
       var root = this;
@@ -79,17 +79,25 @@ module.exports = {
             return;
           }
           const dbo = db.db(databaseName);
-          dbo.collection("activegames").insertOne({
-            gameDescription: "Hosted by " + result.nickname,
+          const now = new Date();
+          let currTime = now.toLocaleString('en-US', {
+              year: 'numeric',
+              month: '2-digit',
+              day: '2-digit',
+              hour: '2-digit',
+              minute: '2-digit',
+              second: '2-digit'
+            });
+          dbo.collection("forestofhollowblood").insertOne({
+            gameDescription: "Started by " + user.username,
             userid: "nickname",
-            userNickname: "nickname",
-            sessionMapName: "nickname",
-            gameName: "nickname",
-            gameHostAlias: "nickname"
-          }, function(test) {
+            userNickname: user.username,
+            sessionMapName: "main map",
+            gameName: "Forrest of hollow blood",
+            time: currTime
+          }, function() {
             console.log('GAMEPLAY START added to server active list. GOOD.')
-            console.log(test)
-            resolve("OK");
+            resolve({status: "OK", currTime: currTime});
             db.close();
           });
         })

@@ -155,11 +155,11 @@ class CreateDatabaseCollections {
           const list = await dbo.listCollections({ name: collName }).toArray();
 					if(list.length == 0) {
             const collection = await dbo.createCollection(collName);
-						collection.createIndex({userId: 1}, {unique: true});
-						collection.createIndex({players: 1}, {unique: true});
-						collection.createIndex({gameDescription: 1}, {unique: true});
+						collection.createIndex({time: 1}, {unique: false});
+						collection.createIndex({players: 1}, {unique: false});
+						collection.createIndex({gameDescription: 1}, {unique: false});
 						collection.createIndex({sessionName: 1}, {unique: false});
-						collection.createIndex({gameName: 1}, {unique: false});
+						collection.createIndex({username: 1}, {unique: false});
             collection.createIndex({teamWinner: 1}, {unique: false});
 						collection.createIndex({isFinished: 1}, {unique: false});
 						resolve(`Collections ${collName} created.`);

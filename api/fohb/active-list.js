@@ -8,7 +8,7 @@ const ResponseHandler = require("./active-list-handler")
  * with one route api collections egg.
  * `api/account`.
  */
-class RocketRouteActiveList extends ResponseHandler {
+class FOHBLogs extends ResponseHandler {
 
 	/**
 	 * @description 
@@ -34,4 +34,4 @@ class RocketRouteActiveList extends ResponseHandler {
 
 }
 
-module.exports = (app, express, dataOptions, crypto) => {return new RocketRouteActiveList(app, express, dataOptions, crypto)}
+module.exports = (app, express, dataOptions, crypto) => {return new FOHBLogs(app, express, dataOptions, crypto)}
