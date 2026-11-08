@@ -28,3 +28,6 @@ package-lock.json
 database/data
 admin-panel/public/storage/
 email/mail-service.js
+non-project-files/config.js
+non-project-files/server.js
+config.js
